@@ -1,0 +1,21 @@
+Test case: TC-09 SMTP command
+Test date: 2026-09-18
+Environment: Python 3.12.3, Scapy 2.7.0, pytest 9.1.1
+
+Generate command: python -m tests.generate_smtp_command_pcap
+Generate result: Created TEST/smtp-command.pcap with 4 packets
+
+Pipeline command: python main.py --pcap TEST/smtp-command.pcap --output TEST/smtp-command.jsonl
+Pipeline result: Processed 4 packets. Output: TEST/smtp-command.jsonl
+
+Test command: python -m pytest -v tests/test_smtp_command.py
+
+tests/test_smtp_command.py::test_smtp_commands PASSED [100%]
+
+Parsed packet summary:
+- Packet 1: HELO, domain=legacy.example.test, parse_status=ok
+- Packet 2: EHLO, domain=client.example.test, parse_status=ok
+- Packet 3: MAIL FROM, mailbox=alice@example.test, parameters=SIZE=123, parse_status=ok
+- Packet 4: RCPT TO, mailbox=bob@example.test, parse_status=ok
+
+Result: 1 passed in 0.64s
