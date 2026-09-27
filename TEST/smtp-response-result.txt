@@ -1,0 +1,21 @@
+Test case: TC-10 SMTP response
+Test date: 2026-09-27
+Environment: Python 3.12.3, Scapy 2.7.0, pytest 9.1.1
+
+Generate command: python -m tests.generate_smtp_response_pcap
+Generate result: Created TEST/smtp-response.pcap with 4 packets
+
+Pipeline command: python main.py --pcap TEST/smtp-response.pcap --output TEST/smtp-response.jsonl
+Pipeline result: Processed 4 packets. Output: TEST/smtp-response.jsonl
+
+Test command: python -m pytest -v tests/test_smtp_response.py
+
+tests/test_smtp_response.py::test_smtp_responses PASSED [100%]
+
+Parsed packet summary:
+- Packet 1: status_code=220, multiline=false, parse_status=ok
+- Packet 2: status_code=250, multiline=true, messages=mail.example.test|PIPELINING|STARTTLS, parse_status=ok
+- Packet 3: status_code=354, multiline=false, parse_status=ok
+- Packet 4: status_code=550, multiline=false, parse_status=ok
+
+Result: 1 passed in 0.38s
