@@ -81,6 +81,12 @@ def test_detects_smtp_response_on_smtp_port():
     assert detect(payload, src_port=25, dst_port=51000) == "SMTP"
 
 
+def test_detects_smtp_354_response_on_smtp_port():
+    payload = b"354 End data with <CR><LF>.<CR><LF>\r\n"
+
+    assert detect(payload, src_port=25, dst_port=51000) == "SMTP"
+
+
 def test_port_alone_does_not_force_a_protocol():
     assert detect(b"not an HTTP message", dst_port=80) == "UNKNOWN"
     assert detect(b"not a DNS message", transport="UDP", dst_port=53) == "UNKNOWN"

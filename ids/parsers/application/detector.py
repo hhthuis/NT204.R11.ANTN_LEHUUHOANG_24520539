@@ -19,7 +19,7 @@ SMTP_COMMAND_LINE = re.compile(
     re.IGNORECASE,
 )
 SMTP_RESPONSE_LINE = re.compile(
-    rb"^[245][0-9]{2}(?:[ -])[^\r\n]*(?:\r?\n|$)",
+    rb"^[2-5][0-9]{2}(?:[ -])[^\r\n]*(?:\r?\n|$)",
 )
 
 SMTP_PORTS = {25, 465, 587, 2525}
