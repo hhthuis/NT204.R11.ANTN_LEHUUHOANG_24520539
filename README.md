@@ -31,14 +31,14 @@ cập trực tiếp đối tượng packet của Scapy.
 - Lưu payload dưới dạng Base64 và text preview.
 - Chuẩn hóa dữ liệu bằng `PacketEvent`.
 - Ghi mỗi event thành một dòng JSON.
-- Hoàn thành 10/12 test case bắt buộc, từ TC-01 đến TC-10.
+- Hoàn thành 11/12 test case bắt buộc, từ TC-01 đến TC-11.
 - Đánh dấu packet không hỗ trợ hoặc lỗi bằng `parse_status` và `errors`.
 
 Chưa triển khai:
 
 - Live capture từ network interface.
 - TCP stream reassembly.
-- Test case chính thức cho unknown protocol và malformed packet.
+- Test case chính thức cho malformed packet.
 
 ## Yêu cầu môi trường
 
@@ -219,6 +219,12 @@ python -m pytest -v tests/test_smtp_command.py
 python -m pytest -v tests/test_smtp_response.py
 ```
 
+Chạy test unknown protocol:
+
+```bash
+python -m pytest -v tests/test_unknown_protocol.py
+```
+
 Tài liệu và log kết quả:
 
 - [TCP handshake](TEST/tcp-handshake.md)
@@ -233,6 +239,7 @@ Tài liệu và log kết quả:
 - [DNS response](TEST/dns-response.md)
 - [SMTP command](TEST/smtp-command.md)
 - [SMTP response](TEST/smtp-response.md)
+- [Unknown protocol](TEST/unknown-protocol.md)
 
 TC-09 SMTP command có đầy đủ artifact:
 
@@ -246,13 +253,19 @@ TC-10 SMTP response có đầy đủ artifact:
 - [JSONL đầu ra](TEST/smtp-response.jsonl)
 - [Log kiểm thử](TEST/smtp-response-result.txt)
 
+TC-11 unknown protocol có đầy đủ artifact:
+
+- [PCAP đầu vào](TEST/unknown-protocol.pcap)
+- [JSONL đầu ra](TEST/unknown-protocol.jsonl)
+- [Log kiểm thử](TEST/unknown-protocol-result.txt)
+
 Kết quả kiểm thử hiện tại:
 
 ```text
-49 passed
+50 passed
 ```
 
-Tiến độ test case bắt buộc: 10/12, tương đương khoảng 83%.
+Tiến độ test case bắt buộc: 11/12, tương đương khoảng 92%.
 
 ## Giới hạn hiện tại
 
@@ -288,6 +301,5 @@ Tiến độ test case bắt buộc: 10/12, tương đương khoảng 83%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành TC-11 unknown protocol.
-2. Hoàn thành TC-12 malformed packet.
-3. Thêm live capture dùng chung parsing pipeline.
+1. Hoàn thành TC-12 malformed packet.
+2. Thêm live capture dùng chung parsing pipeline.
