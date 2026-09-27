@@ -1,0 +1,20 @@
+Test case: TC-11 Unknown protocol
+Test date: 2026-09-27
+Environment: Python 3.12.3, Scapy 2.7.0, pytest 9.1.1
+
+Generate command: python -m tests.generate_unknown_protocol_pcap
+Generate result: Created TEST/unknown-protocol.pcap with 3 packets
+
+Pipeline command: python main.py --pcap TEST/unknown-protocol.pcap --output TEST/unknown-protocol.jsonl
+Pipeline result: Processed 3 packets. Output: TEST/unknown-protocol.jsonl
+
+Test command: python -m pytest -v tests/test_unknown_protocol.py
+
+tests/test_unknown_protocol.py::test_unknown_protocol_does_not_crash PASSED [100%]
+
+Parsed packet summary:
+- Packet 1: transport=TCP, dst_port=9999, application=UNKNOWN, parse_status=ok
+- Packet 2: transport=UDP, dst_port=9999, application=UNKNOWN, parse_status=ok
+- Packet 3: transport=TCP, dst_port=80, application=UNKNOWN, parse_status=ok
+
+Result: 1 passed in 0.48s
