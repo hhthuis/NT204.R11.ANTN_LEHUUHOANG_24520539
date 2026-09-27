@@ -31,15 +31,14 @@ cập trực tiếp đối tượng packet của Scapy.
 - Lưu payload dưới dạng Base64 và text preview.
 - Chuẩn hóa dữ liệu bằng `PacketEvent`.
 - Ghi mỗi event thành một dòng JSON.
-- Hoàn thành 9/12 test case bắt buộc, từ TC-01 đến TC-09.
+- Hoàn thành 10/12 test case bắt buộc, từ TC-01 đến TC-10.
 - Đánh dấu packet không hỗ trợ hoặc lỗi bằng `parse_status` và `errors`.
 
 Chưa triển khai:
 
 - Live capture từ network interface.
 - TCP stream reassembly.
-- Test case chính thức cho SMTP response, unknown protocol và malformed
-  packet.
+- Test case chính thức cho unknown protocol và malformed packet.
 
 ## Yêu cầu môi trường
 
@@ -217,6 +216,7 @@ Chạy các test SMTP hiện có:
 ```bash
 python -m pytest -v tests/test_smtp_parser.py
 python -m pytest -v tests/test_smtp_command.py
+python -m pytest -v tests/test_smtp_response.py
 ```
 
 Tài liệu và log kết quả:
@@ -232,6 +232,7 @@ Tài liệu và log kết quả:
 - [DNS query](TEST/dns-query.md)
 - [DNS response](TEST/dns-response.md)
 - [SMTP command](TEST/smtp-command.md)
+- [SMTP response](TEST/smtp-response.md)
 
 TC-09 SMTP command có đầy đủ artifact:
 
@@ -239,13 +240,19 @@ TC-09 SMTP command có đầy đủ artifact:
 - [JSONL đầu ra](TEST/smtp-command.jsonl)
 - [Log kiểm thử](TEST/smtp-command-result.txt)
 
+TC-10 SMTP response có đầy đủ artifact:
+
+- [PCAP đầu vào](TEST/smtp-response.pcap)
+- [JSONL đầu ra](TEST/smtp-response.jsonl)
+- [Log kiểm thử](TEST/smtp-response-result.txt)
+
 Kết quả kiểm thử hiện tại:
 
 ```text
-47 passed
+49 passed
 ```
 
-Tiến độ test case bắt buộc: 9/12, tương đương 75%.
+Tiến độ test case bắt buộc: 10/12, tương đương khoảng 83%.
 
 ## Giới hạn hiện tại
 
@@ -259,8 +266,8 @@ Tiến độ test case bắt buộc: 9/12, tương đương 75%.
 - DNS response bắt buộc hiện được kiểm thử với bản ghi `A`; parser lưu được
   các resource record khác dưới dạng dữ liệu JSON an toàn nhưng chưa có test
   riêng cho từng loại record.
-- SMTP parser đã có unit test cho command, response và multiline response;
-  thư mục `TEST/` hiện mới có artifact chính thức cho SMTP command.
+- SMTP command và response hiện được kiểm thử bằng PCAP sinh bởi Scapy;
+  chưa có capture SMTP từ lưu lượng thực tế.
 - Parser làm việc trên từng packet và chưa ghép dữ liệu từ nhiều TCP segment.
 - Chương trình mới hỗ trợ IPv4 với TCP hoặc UDP.
 
@@ -281,7 +288,6 @@ Tiến độ test case bắt buộc: 9/12, tương đương 75%.
 
 ## Kế hoạch tiếp theo
 
-1. Tạo PCAP, JSONL, log và tài liệu cho TC-10 SMTP response.
-2. Hoàn thành TC-11 unknown protocol.
-3. Hoàn thành TC-12 malformed packet.
-4. Thêm live capture dùng chung parsing pipeline.
+1. Hoàn thành TC-11 unknown protocol.
+2. Hoàn thành TC-12 malformed packet.
+3. Thêm live capture dùng chung parsing pipeline.
