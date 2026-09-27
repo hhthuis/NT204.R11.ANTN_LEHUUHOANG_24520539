@@ -1,9 +1,9 @@
 # Packet Capture & Parser for IDS
 
-Module đọc packet từ file PCAP, phân tích IPv4, TCP, UDP, HTTP/1.x và DNS,
-sau đó chuyển mỗi packet thành một event chuẩn hóa và ghi ra file JSON Lines.
-Cấu trúc event được thiết kế để các module IDS phía sau không cần truy cập
-trực tiếp đối tượng packet của Scapy.
+Module đọc packet từ file PCAP, phân tích IPv4, TCP, UDP, HTTP/1.x, DNS và
+SMTP, sau đó chuyển mỗi packet thành một event chuẩn hóa và ghi ra file JSON
+Lines. Cấu trúc event được thiết kế để các module IDS phía sau không cần truy
+cập trực tiếp đối tượng packet của Scapy.
 
 ## Trạng thái hiện tại
 
@@ -22,19 +22,24 @@ trực tiếp đối tượng packet của Scapy.
 - Trích xuất DNS transaction ID, opcode, response code, flags, questions,
   answers, authority và additional records.
 - Kiểm tra số lượng DNS record thực tế với các count trong header.
+- Parse SMTP command và response.
+- Trích xuất `HELO`, `EHLO`, `MAIL FROM`, `RCPT TO`, domain, mailbox và các
+  tham số mở rộng của command.
+- Trích xuất SMTP status code, message và multiline response.
+- Hỗ trợ nhiều SMTP command hoặc response trong cùng một TCP payload.
 - Ghi nhận timestamp của packet.
 - Lưu payload dưới dạng Base64 và text preview.
 - Chuẩn hóa dữ liệu bằng `PacketEvent`.
 - Ghi mỗi event thành một dòng JSON.
-- Kiểm thử TCP handshake, TCP data và UDP data.
+- Hoàn thành 9/12 test case bắt buộc, từ TC-01 đến TC-09.
 - Đánh dấu packet không hỗ trợ hoặc lỗi bằng `parse_status` và `errors`.
 
 Chưa triển khai:
 
 - Live capture từ network interface.
-- Parser SMTP.
 - TCP stream reassembly.
-- Bộ test đầy đủ cho unknown protocol, malformed và truncated packet.
+- Test case chính thức cho SMTP response, unknown protocol và malformed
+  packet.
 
 ## Yêu cầu môi trường
 
@@ -42,7 +47,7 @@ Chưa triển khai:
 - Linux hoặc WSL được khuyến nghị.
 - Quyền root hoặc Linux capabilities sẽ cần khi live capture được bổ sung.
 
-Phiên bản đã dùng khi kiểm thử ngày 17/09/2026:
+Phiên bản đã dùng khi kiểm thử gần nhất ngày 27/09/2026:
 
 - Python 3.12.3.
 - Scapy 2.7.0.
@@ -96,10 +101,10 @@ IPv4 parser
 TCP/UDP parser
     ↓
 Application protocol detector
-    ↓
-HTTP parser (khi protocol là HTTP)
-    ↓
-DNS parser (khi protocol là DNS)
+    ├── HTTP parser
+    ├── DNS parser
+    ├── SMTP parser
+    └── UNKNOWN
     ↓
 PacketEvent
     ↓
@@ -126,7 +131,7 @@ ids/
 │       ├── detector.py        Nhận diện HTTP, DNS và SMTP
 │       ├── http.py            HTTP/1.x request/response parser
 │       ├── dns.py             DNS query/response parser
-│       └── smtp.py            Chưa triển khai
+│       └── smtp.py            SMTP command/response parser
 └── output/
     └── jsonl.py               JSON Lines writer
 tests/                         Kiểm thử tự động và script sinh PCAP
@@ -207,6 +212,13 @@ python -m pytest -v tests/test_dns_query.py
 python -m pytest -v tests/test_dns_response.py
 ```
 
+Chạy các test SMTP hiện có:
+
+```bash
+python -m pytest -v tests/test_smtp_parser.py
+python -m pytest -v tests/test_smtp_command.py
+```
+
 Tài liệu và log kết quả:
 
 - [TCP handshake](TEST/tcp-handshake.md)
@@ -219,19 +231,26 @@ Tài liệu và log kết quả:
 - [HTTP response](TEST/http-response.md)
 - [DNS query](TEST/dns-query.md)
 - [DNS response](TEST/dns-response.md)
+- [SMTP command](TEST/smtp-command.md)
+
+TC-09 SMTP command có đầy đủ artifact:
+
+- [PCAP đầu vào](TEST/smtp-command.pcap)
+- [JSONL đầu ra](TEST/smtp-command.jsonl)
+- [Log kiểm thử](TEST/smtp-command-result.txt)
 
 Kết quả kiểm thử hiện tại:
 
 ```text
-26 passed
+47 passed
 ```
+
+Tiến độ test case bắt buộc: 9/12, tương đương 75%.
 
 ## Giới hạn hiện tại
 
 - PCAP kiểm thử transport được tạo bằng Scapy, chưa phải capture từ traffic
   thực tế.
-- Detector đã gắn nhãn SMTP, nhưng các trường chi tiết của SMTP chưa được
-  parse.
 - HTTP parser xử lý một message nằm trọn trong một TCP packet; chưa ghép HTTP
   message bị chia trên nhiều TCP segment.
 - Chưa giải mã `Transfer-Encoding: chunked`; body chunked hiện được giữ ở
@@ -240,6 +259,8 @@ Kết quả kiểm thử hiện tại:
 - DNS response bắt buộc hiện được kiểm thử với bản ghi `A`; parser lưu được
   các resource record khác dưới dạng dữ liệu JSON an toàn nhưng chưa có test
   riêng cho từng loại record.
+- SMTP parser đã có unit test cho command, response và multiline response;
+  thư mục `TEST/` hiện mới có artifact chính thức cho SMTP command.
 - Parser làm việc trên từng packet và chưa ghép dữ liệu từ nhiều TCP segment.
 - Chương trình mới hỗ trợ IPv4 với TCP hoặc UDP.
 
@@ -253,13 +274,14 @@ Kết quả kiểm thử hiện tại:
   `ids/capture/pcap.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,
-  `ids/pipeline.py`, `ids/cli.py`, `main.py`, các file trong `tests/` và tài
-  liệu trong `TEST/`.
+  `ids/parsers/application/smtp.py`, `ids/pipeline.py`, `ids/cli.py`,
+  `main.py`, các file trong `tests/` và tài liệu trong `TEST/`.
 - Người thực hiện có trách nhiệm kiểm tra, chạy thử và hiểu mã nguồn trước khi
   nộp bài.
 
 ## Kế hoạch tiếp theo
 
-1. Triển khai và kiểm thử SMTP command và response.
-2. Kiểm thử unknown và malformed packet.
-3. Thêm live capture dùng chung parsing pipeline.
+1. Tạo PCAP, JSONL, log và tài liệu cho TC-10 SMTP response.
+2. Hoàn thành TC-11 unknown protocol.
+3. Hoàn thành TC-12 malformed packet.
+4. Thêm live capture dùng chung parsing pipeline.
