@@ -1,0 +1,21 @@
+Test case: TC-12 Malformed packet
+Test date: 2026-09-27
+Environment: Python 3.12.3, Scapy 2.7.0, pytest 9.1.1
+
+Generate command: python -m tests.generate_malformed_packet_pcap
+Generate result: Created TEST/malformed-packet.pcap with 4 packets
+
+Pipeline command: python main.py --pcap TEST/malformed-packet.pcap --output TEST/malformed-packet.jsonl
+Pipeline result: Processed 4 packets. Output: TEST/malformed-packet.jsonl
+
+Test command: python -m pytest -v tests/test_malformed_packet.py
+
+tests/test_malformed_packet.py::test_malformed_packets_do_not_crash_pipeline PASSED [100%]
+
+Parsed packet summary:
+- Packet 1: stage=network, parse_status=malformed, truncated IPv4 header
+- Packet 2: stage=transport, parse_status=malformed, missing TCP header
+- Packet 3: stage=http, parse_status=partial, malformed HTTP header
+- Packet 4: stage=smtp, parse_status=partial, missing SMTP line terminator
+
+Result: 1 passed in 0.50s
