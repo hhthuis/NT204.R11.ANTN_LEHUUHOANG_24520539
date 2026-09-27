@@ -31,14 +31,13 @@ cập trực tiếp đối tượng packet của Scapy.
 - Lưu payload dưới dạng Base64 và text preview.
 - Chuẩn hóa dữ liệu bằng `PacketEvent`.
 - Ghi mỗi event thành một dòng JSON.
-- Hoàn thành 11/12 test case bắt buộc, từ TC-01 đến TC-11.
+- Hoàn thành đầy đủ 12/12 test case bắt buộc.
 - Đánh dấu packet không hỗ trợ hoặc lỗi bằng `parse_status` và `errors`.
 
 Chưa triển khai:
 
 - Live capture từ network interface.
 - TCP stream reassembly.
-- Test case chính thức cho malformed packet.
 
 ## Yêu cầu môi trường
 
@@ -225,6 +224,12 @@ Chạy test unknown protocol:
 python -m pytest -v tests/test_unknown_protocol.py
 ```
 
+Chạy test malformed packet:
+
+```bash
+python -m pytest -v tests/test_malformed_packet.py
+```
+
 Tài liệu và log kết quả:
 
 - [TCP handshake](TEST/tcp-handshake.md)
@@ -240,6 +245,7 @@ Tài liệu và log kết quả:
 - [SMTP command](TEST/smtp-command.md)
 - [SMTP response](TEST/smtp-response.md)
 - [Unknown protocol](TEST/unknown-protocol.md)
+- [Malformed packet](TEST/malformed-packet.md)
 
 TC-09 SMTP command có đầy đủ artifact:
 
@@ -259,13 +265,19 @@ TC-11 unknown protocol có đầy đủ artifact:
 - [JSONL đầu ra](TEST/unknown-protocol.jsonl)
 - [Log kiểm thử](TEST/unknown-protocol-result.txt)
 
+TC-12 malformed packet có đầy đủ artifact:
+
+- [PCAP đầu vào](TEST/malformed-packet.pcap)
+- [JSONL đầu ra](TEST/malformed-packet.jsonl)
+- [Log kiểm thử](TEST/malformed-packet-result.txt)
+
 Kết quả kiểm thử hiện tại:
 
 ```text
-50 passed
+53 passed
 ```
 
-Tiến độ test case bắt buộc: 11/12, tương đương khoảng 92%.
+Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Giới hạn hiện tại
 
@@ -281,6 +293,8 @@ Tiến độ test case bắt buộc: 11/12, tương đương khoảng 92%.
   riêng cho từng loại record.
 - SMTP command và response hiện được kiểm thử bằng PCAP sinh bởi Scapy;
   chưa có capture SMTP từ lưu lượng thực tế.
+- Malformed packet test sử dụng các frame bị cắt và payload lỗi được tạo có
+  chủ đích bằng Scapy; chưa kiểm thử với PCAP hỏng thu từ môi trường thật.
 - Parser làm việc trên từng packet và chưa ghép dữ liệu từ nhiều TCP segment.
 - Chương trình mới hỗ trợ IPv4 với TCP hoặc UDP.
 
@@ -301,5 +315,6 @@ Tiến độ test case bắt buộc: 11/12, tương đương khoảng 92%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành TC-12 malformed packet.
-2. Thêm live capture dùng chung parsing pipeline.
+1. Thêm live capture dùng chung parsing pipeline.
+2. Kiểm thử với PCAP và traffic thu từ môi trường thực tế.
+3. Nghiên cứu TCP stream reassembly cho application message qua nhiều segment.
