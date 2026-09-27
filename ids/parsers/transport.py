@@ -1,12 +1,16 @@
 from dataclasses import dataclass
 
-from scapy.layers.inet import TCP, UDP
+from scapy.layers.inet import IP, TCP, UDP
 from scapy.packet import Packet
 
 from ids.models import TransportInfo
 
 
 class UnsupportedTransportProtocol(Exception):
+    pass
+
+
+class MalformedTransportPacket(ValueError):
     pass
 
 
@@ -97,6 +101,19 @@ def parse_transport(packet: Packet) -> TransportParseResult:
             info=info,
             payload=payload,
         )
+
+    if IP in packet:
+        protocol_number = int(packet[IP].proto)
+
+        if protocol_number == 6:
+            raise MalformedTransportPacket(
+                "IPv4 packet declares TCP but its header is missing or truncated"
+            )
+
+        if protocol_number == 17:
+            raise MalformedTransportPacket(
+                "IPv4 packet declares UDP but its header is missing or truncated"
+            )
 
     raise UnsupportedTransportProtocol(
         "IPv4 packet does not contain TCP or UDP"
