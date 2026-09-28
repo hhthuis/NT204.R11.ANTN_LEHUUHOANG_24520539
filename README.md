@@ -1,15 +1,20 @@
 # Packet Capture & Parser for IDS
 
-Module đọc packet từ file PCAP, phân tích IPv4, TCP, UDP, HTTP/1.x, DNS và
-SMTP, sau đó chuyển mỗi packet thành một event chuẩn hóa và ghi ra file JSON
-Lines. Cấu trúc event được thiết kế để các module IDS phía sau không cần truy
-cập trực tiếp đối tượng packet của Scapy.
+Module bắt packet trực tiếp từ network interface hoặc đọc packet từ file PCAP,
+phân tích IPv4, TCP, UDP, HTTP/1.x, DNS và SMTP, sau đó chuyển mỗi packet thành
+một event chuẩn hóa và ghi ra file JSON Lines. Cấu trúc event được thiết kế để
+các module IDS phía sau không cần truy cập trực tiếp đối tượng packet của Scapy.
 
 ## Trạng thái hiện tại
 
 Đã triển khai:
 
 - Đọc lần lượt từng packet từ file PCAP bằng Scapy `PcapReader`.
+- Bắt packet trực tiếp từ network interface bằng Scapy `sniff`.
+- Chuyển từng live packet ngay vào parsing pipeline và không lưu toàn bộ packet
+  trong bộ nhớ.
+- CLI yêu cầu chọn đúng một nguồn bằng `--pcap` hoặc `--interface`.
+- PCAP và live capture sử dụng chung `parse_packet()` và `JsonlWriter`.
 - Parse IPv4, TCP và UDP.
 - Nhận diện HTTP, DNS và SMTP từ payload kết hợp thông tin transport/port.
 - Nhận diện HTTP request và SMTP command trên port không chuẩn.
@@ -36,16 +41,15 @@ cập trực tiếp đối tượng packet của Scapy.
 
 Chưa triển khai:
 
-- Live capture từ network interface.
 - TCP stream reassembly.
 
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
 - Linux hoặc WSL được khuyến nghị.
-- Quyền root hoặc Linux capabilities sẽ cần khi live capture được bổ sung.
+- Live capture cần quyền root hoặc Linux capabilities để truy cập raw socket.
 
-Phiên bản đã dùng khi kiểm thử gần nhất ngày 27/09/2026:
+Phiên bản đã dùng khi kiểm thử gần nhất ngày 28/09/2026:
 
 - Python 3.12.3.
 - Scapy 2.7.0.
@@ -61,6 +65,11 @@ python -m pip install -r requirements.txt
 ```
 
 ## Sử dụng
+
+Chương trình yêu cầu chọn đúng một trong hai nguồn packet: file PCAP hoặc network
+interface.
+
+### Đọc file PCAP
 
 Đọc một file PCAP và ghi kết quả ra JSONL:
 
@@ -87,13 +96,47 @@ Created TEST/transport-test.pcap with 5 packets
 Processed 5 packets. Output: TEST/transport-test.jsonl
 ```
 
+### Live capture
+
+Xem danh sách interface có trên máy:
+
+```bash
+ip link show
+```
+
+Hoặc lấy danh sách interface Scapy có thể sử dụng:
+
+```bash
+python - <<'PY'
+from scapy.interfaces import get_if_list
+print(get_if_list())
+PY
+```
+
+Bắt packet trực tiếp từ `eth0` và ghi kết quả ra JSONL:
+
+```bash
+sudo ./venv/bin/python main.py \
+  --interface eth0 \
+  --output output/live-events.jsonl
+```
+
+Mỗi packet được chuyển ngay vào pipeline và ghi thành một dòng JSON. Nhấn
+`Ctrl+C` để dừng capture; chương trình sẽ đóng file output và in tổng số packet
+đã xử lý.
+
+Không truyền đồng thời `--pcap` và `--interface`. CLI sẽ báo lỗi nếu thiếu cả hai
+nguồn hoặc nếu cả hai cùng xuất hiện.
+
 ## Pipeline xử lý
 
 ```text
-PCAP file
-    ↓
-PcapReader
-    ↓
+PCAP file ──→ PcapReader ──┐
+                           ├──→ process_packet()
+Interface ──→ sniff ───────┘
+                                  ↓
+                            parse_packet()
+                                  ↓
 IPv4 parser
     ↓
 TCP/UDP parser
@@ -109,19 +152,20 @@ PacketEvent
 JSONL writer
 ```
 
-Live capture trong tương lai sẽ đưa packet vào cùng hàm `parse_packet()`.
+Hai nguồn cùng gọi `parse_packet()` nên không có parser riêng cho live traffic và
+PCAP.
 
 ## Cấu trúc project
 
 ```text
 main.py                         Điểm khởi chạy chương trình
 ids/
-├── cli.py                     CLI và điều phối PCAP reader
+├── cli.py                     CLI và điều phối PCAP/live capture
 ├── models.py                  Cấu trúc PacketEvent
 ├── pipeline.py                Pipeline parse packet
 ├── capture/
 │   ├── pcap.py                Đọc file PCAP
-│   └── live.py                Chưa triển khai
+│   └── live.py                Bắt packet từ network interface
 ├── parsers/
 │   ├── network.py             IPv4 parser
 │   ├── transport.py           TCP/UDP parser
@@ -230,6 +274,17 @@ Chạy test malformed packet:
 python -m pytest -v tests/test_malformed_packet.py
 ```
 
+Chạy test live capture adapter và live pipeline:
+
+```bash
+python -m pytest -v tests/test_live_capture.py
+python -m pytest -v tests/test_live_pipeline.py
+```
+
+Các test live capture tự động mock Scapy `sniff`, vì vậy không cần quyền root,
+không phụ thuộc interface của máy chạy test và vẫn kiểm tra packet được chuyển
+vào pipeline chung rồi ghi ra JSONL.
+
 Tài liệu và log kết quả:
 
 - [TCP handshake](TEST/tcp-handshake.md)
@@ -274,13 +329,15 @@ TC-12 malformed packet có đầy đủ artifact:
 Kết quả kiểm thử hiện tại:
 
 ```text
-53 passed
+62 passed
 ```
 
 Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Giới hạn hiện tại
 
+- Live capture đã có automated test bằng packet giả lập, nhưng chưa lưu artifact
+  của một phiên capture thủ công trên network interface thật trong `TEST/`.
 - PCAP kiểm thử transport được tạo bằng Scapy, chưa phải capture từ traffic
   thực tế.
 - HTTP parser xử lý một message nằm trọn trong một TCP packet; chưa ghép HTTP
@@ -302,10 +359,10 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 - Công cụ: OpenAI Codex.
 - Mục đích: tư vấn kiến trúc, thiết kế cấu trúc event, hướng dẫn và hỗ trợ
-  triển khai PCAP reader, IPv4/TCP/UDP parser, application protocol detector,
-  pipeline, JSONL writer, kiểm thử tự động và tài liệu kiểm thử.
+  triển khai PCAP reader, live capture, IPv4/TCP/UDP parser, application protocol
+  detector, pipeline, JSONL writer, kiểm thử tự động và tài liệu kiểm thử.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
-  `ids/capture/pcap.py`, `ids/parsers/network.py`,
+  `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,
   `ids/parsers/application/smtp.py`, `ids/pipeline.py`, `ids/cli.py`,
@@ -315,6 +372,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Thêm live capture dùng chung parsing pipeline.
-2. Kiểm thử với PCAP và traffic thu từ môi trường thực tế.
+1. Chạy live capture trên interface thật và lưu JSONL, log cùng tài liệu kiểm thử
+   trong `TEST/`.
+2. Kiểm thử parser với PCAP thu từ traffic thực tế.
 3. Nghiên cứu TCP stream reassembly cho application message qua nhiều segment.
