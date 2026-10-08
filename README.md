@@ -43,6 +43,26 @@ Chưa triển khai:
 
 - TCP stream reassembly.
 
+### Bài tập 2 — Model kết quả xử lý (Task 01)
+
+- `ids/processing_models.py` định nghĩa `ProcessedEvent`, trạng thái decode,
+  preprocess, action và lỗi xử lý theo stage/code/message.
+- `packet` là bản sao sâu của `PacketEvent` gốc; `decoded` và `normalized`
+  lưu kết quả riêng, không ghi đè raw URI/body/payload.
+- Event mới có `decode_status="skipped"`, `preprocess_status=null` (chưa
+  validation) và `processing_action="skip_tracking"`. Bỏ qua tracking vẫn
+  cho phép ghi log event và nguyên nhân.
+- Field đơn chưa có giá trị dùng `null`, danh sách dùng `[]`. Các dictionary
+  `decoded`/`normalized` chỉ chứa dữ liệu tương thích JSON; byte dùng Base64.
+- `flow=null` khi chưa tracking; model liên kết flow sẽ được bổ sung ở Task 02.
+- Model này chưa được nối vào CLI; Decoder, Preprocessor và Flow Tracker sẽ
+  được triển khai ở các task tiếp theo.
+- Kiểm tra hợp đồng dữ liệu bằng:
+  `./venv/bin/python -m pytest tests/lab02/test_processing_models.py -v`.
+  Đây là test nền tảng cho model, chưa phải các case T01–T14 của bài tập 2.
+- Kết quả kiểm thử ngày 09/10/2026: 4 model tests passed, toàn bộ suite
+  66 passed. Tài liệu và log tại `TEST/lab02/task01/`.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -362,6 +382,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   triển khai PCAP reader, live capture, IPv4/TCP/UDP parser, application protocol
   detector, pipeline, JSONL writer, kiểm thử tự động và tài liệu kiểm thử.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
+  `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,

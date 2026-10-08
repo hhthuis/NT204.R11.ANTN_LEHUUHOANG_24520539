@@ -1,0 +1,19 @@
+Task: Lab 2, Stage 1, Task 01 - Define processed event models
+Test date: 2026-10-09
+Environment: Python 3.12.3, pytest 9.1.1, pluggy 1.6.0
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_processing_models.py -v
+
+tests/lab02/test_processing_models.py::test_unprocessed_event_serializes_missing_data_without_authorizing_tracking PASSED [ 25%]
+tests/lab02/test_processing_models.py::test_processed_fields_and_errors_round_trip_without_losing_raw_bytes PASSED [ 50%]
+tests/lab02/test_processing_models.py::test_packet_snapshots_and_mutable_defaults_are_isolated_between_events PASSED [ 75%]
+tests/lab02/test_processing_models.py::test_serialized_output_does_not_share_nested_state_with_event PASSED [100%]
+
+Result: 4 passed in 0.06s
+
+Command: ./venv/bin/python -m pytest -q
+
+..................................................................       [100%]
+66 passed in 0.89s
+
+Scope: Model contract tests only. Lab 2 required cases T01-T14 are not implemented by this task.
