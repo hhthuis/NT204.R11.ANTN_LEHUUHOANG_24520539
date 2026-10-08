@@ -1,0 +1,33 @@
+Task: Lab 2, Stage 1, Task 02 - Define flow tracking models
+Test date: 2026-10-09
+Scope: Model contracts only; tracking cases T07-T13 are not implemented by this task.
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_flow_models.py tests/lab02/test_processing_models.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 13 items
+
+tests/lab02/test_flow_models.py::test_flow_summary_round_trips_all_required_statistics_and_utc_times PASSED [  7%]
+tests/lab02/test_flow_models.py::test_udp_summary_has_no_tcp_state_and_converts_local_time_to_utc PASSED [ 15%]
+tests/lab02/test_flow_models.py::test_flow_rejects_ambiguous_timestamps_without_timezone[start_time] PASSED [ 23%]
+tests/lab02/test_flow_models.py::test_flow_rejects_ambiguous_timestamps_without_timezone[last_seen] PASSED [ 30%]
+tests/lab02/test_flow_models.py::test_flow_rejects_initial_last_seen_before_start_time PASSED [ 38%]
+tests/lab02/test_flow_models.py::test_duration_uses_elapsed_time_across_daylight_saving_clock_change PASSED [ 46%]
+tests/lab02/test_flow_models.py::test_flow_key_matches_reverse_endpoints_without_reordering_record_direction PASSED [ 53%]
+tests/lab02/test_flow_models.py::test_processed_event_keeps_flow_state_snapshot_after_record_changes PASSED [ 61%]
+tests/lab02/test_flow_models.py::test_exported_summary_and_endpoints_do_not_allow_mutating_key_identity PASSED [ 69%]
+tests/lab02/test_processing_models.py::test_unprocessed_event_serializes_missing_data_without_authorizing_tracking PASSED [ 76%]
+tests/lab02/test_processing_models.py::test_processed_fields_and_errors_round_trip_without_losing_raw_bytes PASSED [ 84%]
+tests/lab02/test_processing_models.py::test_packet_snapshots_and_mutable_defaults_are_isolated_between_events PASSED [ 92%]
+tests/lab02/test_processing_models.py::test_serialized_output_does_not_share_nested_state_with_event PASSED [100%]
+
+============================== 13 passed in 0.08s ==============================
+
+Command: ./venv/bin/python -m pytest -q
+
+........................................................................ [ 96%]
+...                                                                      [100%]
+75 passed in 0.87s

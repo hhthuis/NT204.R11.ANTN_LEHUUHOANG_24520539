@@ -9,6 +9,7 @@ from dataclasses import asdict, dataclass, field
 from enum import StrEnum
 from typing import Any
 
+from ids.flows.models import FlowAssociation
 from ids.models import PacketEvent
 
 
@@ -50,7 +51,8 @@ class ProcessedEvent:
     ``preprocess_status=None`` means validation has not run. Only the
     preprocessor may authorize tracking after checking the required fields.
     ``skip_tracking`` still permits logging the event and its reasons.
-    The flow association will receive its dedicated model in the next task.
+    ``flow`` captures identity/direction/state for this packet, not a reference
+    to the mutable flow record.
     """
 
     packet: PacketEvent
@@ -61,7 +63,7 @@ class ProcessedEvent:
     preprocess_status: PreprocessStatus | None = None
     processing_action: ProcessingAction = ProcessingAction.SKIP_TRACKING
     reason: str | None = None
-    flow: dict[str, Any] | None = None
+    flow: FlowAssociation | None = None
     errors: list[ProcessingError] = field(default_factory=list)
 
     def __post_init__(self) -> None:

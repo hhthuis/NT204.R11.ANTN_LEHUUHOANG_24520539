@@ -54,7 +54,7 @@ Chưa triển khai:
   cho phép ghi log event và nguyên nhân.
 - Field đơn chưa có giá trị dùng `null`, danh sách dùng `[]`. Các dictionary
   `decoded`/`normalized` chỉ chứa dữ liệu tương thích JSON; byte dùng Base64.
-- `flow=null` khi chưa tracking; model liên kết flow sẽ được bổ sung ở Task 02.
+- `flow=null` khi chưa tracking; sau Task 02 dùng model `FlowAssociation`.
 - Model này chưa được nối vào CLI; Decoder, Preprocessor và Flow Tracker sẽ
   được triển khai ở các task tiếp theo.
 - Kiểm tra hợp đồng dữ liệu bằng:
@@ -62,6 +62,27 @@ Chưa triển khai:
   Đây là test nền tảng cho model, chưa phải các case T01–T14 của bài tập 2.
 - Kết quả kiểm thử ngày 09/10/2026: 4 model tests passed, toàn bộ suite
   66 passed. Tài liệu và log tại `TEST/lab02/task01/`.
+
+### Bài tập 2 — Model flow (Task 02)
+
+- `ids/flows/models.py` định nghĩa `Endpoint`, `FlowKey`, `FlowRecord` và
+  `FlowAssociation`, cùng enum protocol, direction và TCP state.
+- `FlowKey` sắp xếp hai endpoint để tra cứu hai chiều, nhưng endpoint A/B trong
+  `FlowRecord` giữ thứ tự quan sát: A là sender đầu tiên, A→B là forward.
+- `FlowRecord` có đủ định danh, endpoint, thời gian, packet/byte counters tổng
+  và hai chiều, SYN/ACK/FIN/RST counters và state theo yêu cầu bài 2.
+- `byte_count` tính tổng `PacketEvent.captured_length`, gồm header; `duration`
+  được tính từ hai timestamp có timezone, xuất timestamp dưới dạng UTC.
+- UDP dùng `state=null`; TCP tracker sẽ cập nhật các trạng thái NEW,
+  HANDSHAKE, ESTABLISHED, CLOSING, CLOSED, RESET ở task sau.
+- `FlowAssociation` bất biến giữ flow ID, direction và state tại thời điểm
+  xử lý packet; cập nhật `FlowRecord` không sửa state của event trước đó.
+- Chưa có tạo flow ID, active table, tự cập nhật counters/state hay timeout.
+  Test model không thay thế các case tracking T07–T13.
+- Chạy: `./venv/bin/python -m pytest tests/lab02/test_flow_models.py -v`.
+- Kết quả kiểm thử ngày 09/10/2026: 9 flow model tests mới; 13 model tests
+  bài 2 passed và toàn bộ suite 75 passed.
+- Tài liệu và log kiểm thử tại `TEST/lab02/task02/`.
 
 ## Yêu cầu môi trường
 
@@ -383,6 +404,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   detector, pipeline, JSONL writer, kiểm thử tự động và tài liệu kiểm thử.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
+  `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,
