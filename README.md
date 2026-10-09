@@ -627,6 +627,34 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Evidence và log: TEST/lab02/T12/. Integration1 và full suite805 passed.
 - Mandatory T01–T14 đạt14/14; Task17 còn nối config/pipeline/output/live vào CLI.
 
+### Bài tập 2 — CLI pipeline (Task 17)
+
+- `--mode processed`: PCAP/live → Parser → Decoder → Preprocessor → FlowTracker,
+  dùng một tracker/phiên và config TOML. `--mode parser` mặc định giữ bài1.
+- Event JSONL là ProcessedEvent (packet/decoded/normalized/status/errors/flow);
+  flow JSONL là summary flat, thêm end_reason/end_time/observed_state/schema_version.
+  Peek/write/ack và finish batches không làm mất/trùng summaries khi queue nhỏ.
+- EOF xuất flow còn lại với capture_eof, state TCP theo capture; Ctrl+C live
+  đóng socket/xuất capture_stopped. Idle tick vẫn expire dù không có packet.
+  Callback và timer cùng thread, persistent socket giữa sniff sessions.
+- Config/path/input validation trước output; reject aliases/hardlinks với input
+  hoặc output khác. Lỗi capture/I/O exit2, graceful stop thành công exit0.
+- Sửa .gitignore anchor /output/ để ids/output writer được commit và clone được.
+- 32 new tests PASS; full suite837 passed. Source/API/log tại
+  TEST/lab02/task17-source/. Live tests mô phỏng, chưa capture thật trong phiên này.
+
+```bash
+./venv/bin/python main.py --mode processed --pcap TEST/lab02/T10/input.pcap \
+  --config config/default.toml --output output/processed-events.jsonl \
+  --flows-output output/flows.jsonl
+sudo ./venv/bin/python main.py --mode processed --interface eth0 \
+  --config config/default.toml --output output/live-events.jsonl \
+  --flows-output output/live-flows.jsonl
+```
+
+Chọn interface đúng trên máy. Runtime output vẫn ignore; artifacts kiểm thử nằm
+trong TEST. Chưa stream reassembly/TLS và per-key generation history chưa bounded.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -952,6 +980,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
   `tests/lab02/reproduce_t12.py`, `tests/lab02/test_t12_idle_timeout.py`,
+  `ids/processing_pipeline.py`, `tests/lab02/test_processed_cli.py`,
+  `tests/lab02/test_processing_pipeline.py`, `tests/lab02/test_periodic_capture.py`,
   `ids/flows/expiry.py`, `tests/lab02/test_flow_expiry.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,

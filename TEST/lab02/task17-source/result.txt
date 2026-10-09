@@ -1,0 +1,58 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_processed_cli.py tests/lab02/test_processing_pipeline.py tests/lab02/test_periodic_capture.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 32 items
+
+tests/lab02/test_processed_cli.py::test_processed_pcap_writes_nested_events_and_one_final_dns_summary PASSED [  3%]
+tests/lab02/test_processed_cli.py::test_main_processed_config_controls_decoder_capacity_and_outputs PASSED [  6%]
+tests/lab02/test_processed_cli.py::test_processed_pcap_idle_expiry_outputs_old_and_new_lifetimes_once PASSED [  9%]
+tests/lab02/test_processed_cli.py::test_empty_pcap_creates_empty_outputs PASSED [ 12%]
+tests/lab02/test_processed_cli.py::test_bad_or_missing_pcap_does_not_truncate_outputs[False] PASSED [ 15%]
+tests/lab02/test_processed_cli.py::test_bad_or_missing_pcap_does_not_truncate_outputs[True] PASSED [ 18%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[same] PASSED [ 21%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[symlink] PASSED [ 25%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[hardlink] PASSED [ 28%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[outputs] PASSED [ 31%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[config] PASSED [ 34%]
+tests/lab02/test_processed_cli.py::test_cli_rejects_output_collisions_before_truncating_inputs[directory] PASSED [ 37%]
+tests/lab02/test_processed_cli.py::test_bad_config_is_reported_before_opening_outputs PASSED [ 40%]
+tests/lab02/test_processed_cli.py::test_parser_mode_refuses_processed_only_flags[--config] PASSED [ 43%]
+tests/lab02/test_processed_cli.py::test_parser_mode_refuses_processed_only_flags[--flows-output] PASSED [ 46%]
+tests/lab02/test_processed_cli.py::test_default_parser_mode_preserves_flat_packet_schema PASSED [ 50%]
+tests/lab02/test_processed_cli.py::test_cli_preprocessor_config_changes_invalid_uri_tracking_policy[mark-track] PASSED [ 53%]
+tests/lab02/test_processed_cli.py::test_cli_preprocessor_config_changes_invalid_uri_tracking_policy[skip-skip_tracking] PASSED [ 56%]
+tests/lab02/test_processed_cli.py::test_pcap_eof_preserves_established_state_without_inventing_fin PASSED [ 59%]
+tests/lab02/test_processed_cli.py::test_pcap_interrupt_finalizes_flows_and_closes_reader PASSED [ 62%]
+tests/lab02/test_processed_cli.py::test_main_reports_capture_permission_error_with_failure_exit PASSED [ 65%]
+tests/lab02/test_processed_cli.py::test_processed_live_idle_tick_and_ctrl_c_flush_new_lifetime PASSED [ 68%]
+tests/lab02/test_processed_cli.py::test_processed_live_capture_error_is_reported_and_existing_flow_is_finalized PASSED [ 71%]
+tests/lab02/test_processed_cli.py::test_live_invalid_interface_does_not_touch_outputs PASSED [ 75%]
+tests/lab02/test_processing_pipeline.py::test_finish_batches_are_bounded_and_repeated_finish_does_not_duplicate_output PASSED [ 78%]
+tests/lab02/test_processing_pipeline.py::test_failed_flow_write_leaves_summary_pending_and_successful_retry_acks_once PASSED [ 81%]
+tests/lab02/test_processing_pipeline.py::test_skipped_unsupported_future_packet_does_not_advance_maintenance_clock PASSED [ 84%]
+tests/lab02/test_processing_pipeline.py::test_capacity_eviction_is_written_before_eof_without_duplicate_summaries PASSED [ 87%]
+tests/lab02/test_periodic_capture.py::test_live_uses_one_socket_ticks_without_packets_and_propagates_interrupt[False] PASSED [ 90%]
+tests/lab02/test_periodic_capture.py::test_live_uses_one_socket_ticks_without_packets_and_propagates_interrupt[True] PASSED [ 93%]
+tests/lab02/test_periodic_capture.py::test_callback_write_error_is_raised_outside_scapy_instead_of_being_swallowed PASSED [ 96%]
+tests/lab02/test_periodic_capture.py::test_timer_error_propagates_and_socket_is_closed PASSED [100%]
+
+============================== 32 passed in 1.02s ==============================
+Exit code: 0
+
+$ ./venv/bin/python -m pytest -q
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+........................................................................ [ 43%]
+........................................................................ [ 51%]
+........................................................................ [ 60%]
+........................................................................ [ 68%]
+........................................................................ [ 77%]
+........................................................................ [ 86%]
+........................................................................ [ 94%]
+.............................................                            [100%]
+837 passed in 2.98s
+Exit code: 0

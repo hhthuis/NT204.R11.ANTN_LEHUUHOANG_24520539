@@ -1,6 +1,6 @@
 """Event decoder: HTTP fields, SMTP/MIME body, or raw character decoding.
 
-This function is not yet wired into the PCAP/live CLI pipeline.
+Processed CLI mode calls this before Preprocessor and FlowTracker.
 """
 
 import base64

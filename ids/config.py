@@ -1,8 +1,8 @@
 """Validated, immutable configuration contracts for Lab 2 processing.
 
 load_config() uses built-in defaults. A TOML file may override individual
-settings; omitted sections/settings retain defaults. The modules consuming
-these settings and their CLI wiring are implemented in later tasks.
+settings; omitted sections/settings retain defaults. Processed CLI mode passes
+each section to its processing module.
 """
 
 import codecs

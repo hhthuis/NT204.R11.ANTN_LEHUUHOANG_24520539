@@ -14,7 +14,7 @@ venv/
 .idea/
 
 # Runtime output
-output/
+/output/
 *.jsonl
 !TEST/*.jsonl
 !TEST/lab02/**/*.jsonl
