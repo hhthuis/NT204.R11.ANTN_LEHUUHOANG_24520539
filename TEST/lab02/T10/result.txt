@@ -1,0 +1,35 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t10
+
+packet 1: DNS query; forward; bytes=72; decode=ok
+packet 2: DNS response; backward; bytes=100; decode=partial
+T10 PASS: 1 UDP/DNS flow, state=null; packets=2, bytes=172; forward=1/72, backward=1/100, duration=0.2; binary text diagnostic preserved
+Exit code: 0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t10_udp_dns.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t10_udp_dns.py::test_t10_pcap_dns_query_response_share_flow_and_match_wire_bytes_fields_and_diagnostics PASSED [100%]
+
+============================== 1 passed in 0.76s ===============================
+Exit code: 0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [  9%]
+........................................................................ [ 18%]
+........................................................................ [ 27%]
+........................................................................ [ 37%]
+........................................................................ [ 46%]
+........................................................................ [ 55%]
+........................................................................ [ 65%]
+........................................................................ [ 74%]
+........................................................................ [ 83%]
+........................................................................ [ 93%]
+....................................................                     [100%]
+772 passed in 2.95s
+Exit code: 0

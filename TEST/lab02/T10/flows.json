@@ -1,0 +1,29 @@
+[
+  {
+    "flow_id": "flow-b9c4049d557c4aef63cdf8b3c0ba566852aa046982c9b92773f21373c6c45efa",
+    "protocol": "UDP",
+    "endpoint_a": {
+      "ip": "10.0.0.2",
+      "port": 53000
+    },
+    "endpoint_b": {
+      "ip": "10.0.0.1",
+      "port": 53
+    },
+    "start_time": "2026-10-09T00:00:00.000000Z",
+    "last_seen": "2026-10-09T00:00:00.200000Z",
+    "application_protocol": "DNS",
+    "packet_count": 2,
+    "byte_count": 172,
+    "forward_packet_count": 1,
+    "forward_byte_count": 72,
+    "backward_packet_count": 1,
+    "backward_byte_count": 100,
+    "syn_count": 0,
+    "ack_count": 0,
+    "fin_count": 0,
+    "rst_count": 0,
+    "state": null,
+    "duration": 0.2
+  }
+]

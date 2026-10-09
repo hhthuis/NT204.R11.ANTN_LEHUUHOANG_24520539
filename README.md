@@ -587,6 +587,24 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   phần task. Chưa timeout/capacity/queue bounds/CLI bài 2; fixture không có
   EDNS OPT, không kết luận toàn bộ DNS variants được hỗ trợ từ các tests này.
 
+### Bài tập 2 — T10 DNS UDP query/response
+
+- PCAP 2 packet: 10.0.0.2:53000 → 10.0.0.1:53 query Example.Test A; response
+  chiều ngược cùng transaction ID 0x1234, answer 192.0.2.10/TTL300. Một UDP/DNS
+  flow ID, direction forward/backward, state=null và TCP flag counters zero.
+- Captured bytes query72/response100 (payload30/58); totals 2/172, forward1/72,
+  backward1/100, duration=0.2s. Raw domain giữ Example.Test, normalized
+  example.test; DNS question/type/answer/counts và diagnostics exact-match.
+- DNS parse/preprocess/tracking đều hợp lệ. Response decode_status=partial
+  với invalid_character_sequence do generic UTF-8 character view của binary
+  payload; expected/log ghi rõ. Raw Base64 khớp PCAP; tracker giữ chẩn đoán.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t10`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t10_udp_dns.py -v`.
+- PCAP/config/expected/actual/flows/README/log: `TEST/lab02/T10/`.
+- Kết quả: T10 PASS; integration 1 passed; full suite 772 passed.
+- Mandatory T01–T11/T13/T14 hoàn thành: 13/14; còn T12 idle timeout.
+  Capacity/queue limits và main CLI bài 2 vẫn cần hoàn thiện ở các task sau.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -914,6 +932,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,
   `tests/lab02/udp_dns_support.py`, `tests/lab02/test_udp_dns_flow.py`,
+  `tests/lab02/reproduce_t10.py`, `tests/lab02/test_t10_udp_dns.py`,
   `tests/lab02/reproduce_t09.py`, `tests/lab02/test_t09_tcp_close.py`,
   `tests/lab02/reproduce_t07.py`, `tests/lab02/test_t07_tcp_handshake.py`,
   `tests/lab02/flow_pcap_support.py`,
@@ -954,9 +973,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành PCAP và bằng chứng T10 sau phần kiểm thử Task 15.
-2. Task 16: idle timeout/capacity và quản lý summaries, thực hiện T12.
-3. Task 17: nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra
+1. Task 16: idle timeout/capacity và quản lý summaries, thực hiện T12.
+2. Task 17: nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra
    đủ T01–T14.
-4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+3. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.
