@@ -1,0 +1,63 @@
+T03 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t03
+
+replace packet 1: base64; ok; text='Hello'
+replace packet 2: base64; ok; text='Xin chào IDS'
+replace packet 3: quoted-printable; ok; text='Xin chào\r\njoinedline_a+b=1\r\n'
+replace packet 4: base64; error; text=None
+replace packet 5: quoted-printable; partial; text='bad=ZZ good\r\n'
+replace packet 6: base64; partial; text='�'
+replace packet 7: quoted-printable; partial; text='�\r\n'
+replace packet 8: base64; ok; text='OK'
+replace packet 9: x-uuencode; skipped; text=None
+replace packet 10: base64; ok; text=None
+replace packet 11: 7bit; ok; text='SGVsbG8=\r\n'
+replace packet 12: 7bit; skipped; text=None
+replace packet 13: base64; ok; text=''
+replace packet 14: base64; partial; text='Hello'
+T03 replace PASS: 14 events; raw body/payload unchanged
+strict packet 1: base64; ok; text='Hello'
+strict packet 2: base64; ok; text='Xin chào IDS'
+strict packet 3: quoted-printable; ok; text='Xin chào\r\njoinedline_a+b=1\r\n'
+strict packet 4: base64; error; text=None
+strict packet 5: quoted-printable; partial; text='bad=ZZ good\r\n'
+strict packet 6: base64; error; text=None
+strict packet 7: quoted-printable; error; text=None
+strict packet 8: base64; ok; text='OK'
+strict packet 9: x-uuencode; skipped; text=None
+strict packet 10: base64; ok; text=None
+strict packet 11: 7bit; ok; text='SGVsbG8=\r\n'
+strict packet 12: 7bit; skipped; text=None
+strict packet 13: base64; ok; text=''
+strict packet 14: base64; partial; text='Hello'
+T03 strict PASS: 14 events; raw body/payload unchanged
+T03 outputs in /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T03
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t03_smtp_mime.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 2 items
+
+tests/lab02/test_t03_smtp_mime.py::test_t03_base64_qp_and_safe_message_continuation[replace] PASSED [ 50%]
+tests/lab02/test_t03_smtp_mime.py::test_t03_base64_qp_and_safe_message_continuation[strict] PASSED [100%]
+
+============================== 2 passed in 0.72s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+...............                                                          [100%]
+303 passed in 1.49s
+
+exit_code=0

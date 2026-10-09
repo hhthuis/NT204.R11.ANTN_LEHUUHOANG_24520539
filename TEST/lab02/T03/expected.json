@@ -1,0 +1,258 @@
+{
+  "replace": [
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "Hello",
+      "body_base64": "SGVsbG8=",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "Xin chào IDS",
+      "body_base64": "WGluIGNow6BvIElEUw==",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": "Xin chào\r\njoinedline_a+b=1\r\n",
+      "body_base64": "WGluIGNow6BvDQpqb2luZWRsaW5lX2ErYj0xDQo=",
+      "error_codes": []
+    },
+    {
+      "status": "error",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "invalid_mime_base64"
+      ]
+    },
+    {
+      "status": "partial",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": "bad=ZZ good\r\n",
+      "body_base64": "YmFkPVpaIGdvb2QNCg==",
+      "error_codes": [
+        "invalid_quoted_printable"
+      ]
+    },
+    {
+      "status": "partial",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "�",
+      "body_base64": "/w==",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "partial",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": "�\r\n",
+      "body_base64": "/w0K",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "OK",
+      "body_base64": "T0s=",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "parse_status": "ok",
+      "encoding": "x-uuencode",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "unsupported_transfer_encoding"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": null,
+      "body_base64": "AP+A",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "7bit",
+      "text": "SGVsbG8=\r\n",
+      "body_base64": "U0dWc2JHOD0NCg==",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "parse_status": "ok",
+      "encoding": "7bit",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "unsupported_mime_structure"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "",
+      "body_base64": "",
+      "error_codes": []
+    },
+    {
+      "status": "partial",
+      "parse_status": "partial",
+      "encoding": "base64",
+      "text": "Hello",
+      "body_base64": "SGVsbG8=",
+      "error_codes": [
+        "incomplete_mime_message"
+      ]
+    }
+  ],
+  "strict": [
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "Hello",
+      "body_base64": "SGVsbG8=",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "Xin chào IDS",
+      "body_base64": "WGluIGNow6BvIElEUw==",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": "Xin chào\r\njoinedline_a+b=1\r\n",
+      "body_base64": "WGluIGNow6BvDQpqb2luZWRsaW5lX2ErYj0xDQo=",
+      "error_codes": []
+    },
+    {
+      "status": "error",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "invalid_mime_base64"
+      ]
+    },
+    {
+      "status": "partial",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": "bad=ZZ good\r\n",
+      "body_base64": "YmFkPVpaIGdvb2QNCg==",
+      "error_codes": [
+        "invalid_quoted_printable"
+      ]
+    },
+    {
+      "status": "error",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": null,
+      "body_base64": "/w==",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "error",
+      "parse_status": "ok",
+      "encoding": "quoted-printable",
+      "text": null,
+      "body_base64": "/w0K",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "OK",
+      "body_base64": "T0s=",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "parse_status": "ok",
+      "encoding": "x-uuencode",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "unsupported_transfer_encoding"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": null,
+      "body_base64": "AP+A",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "7bit",
+      "text": "SGVsbG8=\r\n",
+      "body_base64": "U0dWc2JHOD0NCg==",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "parse_status": "ok",
+      "encoding": "7bit",
+      "text": null,
+      "body_base64": null,
+      "error_codes": [
+        "unsupported_mime_structure"
+      ]
+    },
+    {
+      "status": "ok",
+      "parse_status": "ok",
+      "encoding": "base64",
+      "text": "",
+      "body_base64": "",
+      "error_codes": []
+    },
+    {
+      "status": "partial",
+      "parse_status": "partial",
+      "encoding": "base64",
+      "text": "Hello",
+      "body_base64": "SGVsbG8=",
+      "error_codes": [
+        "incomplete_mime_message"
+      ]
+    }
+  ]
+}

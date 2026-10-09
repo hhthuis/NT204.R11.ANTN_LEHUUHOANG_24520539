@@ -245,6 +245,20 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   Tài liệu/log tại `TEST/lab02/task07/`; T03 có bằng chứng/commit riêng.
 - Main CLI vẫn chỉ chạy parser; bài 2 decoder chạy qua API/script kiểm thử.
 
+### Bài tập 2 — T03 SMTP Base64/Quoted-Printable
+
+- PCAP 14 mail DATA message gồm Base64 ASCII/UTF-8/line wrapping, QP UTF-8/
+  soft line breaks, lỗi transfer encoding/character bytes và message tiếp theo,
+  binary decoded bytes, không đoán Base64 khi thiếu CTE, multipart skip, body
+  rỗng và SMTP DATA thiếu terminator. Chạy hai policy replace/strict.
+- So sánh decoded body/text/status với expected, giữ nguyên raw headers/body/
+  payload trong output, errors/reason phù hợp và không dừng sau message lỗi.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t03`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t03_smtp_mime.py -v`.
+- PCAP/expected/actual JSONL và tài liệu/log tại `TEST/lab02/T03/`.
+- Kết quả ngày 09/10/2026: T03 PASS cả hai policy, pytest 2 passed; toàn bộ
+  suite 303 passed. Đã hoàn thành T01–T04 (4/14); form là case bổ sung.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -574,6 +588,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/decoders/html.py`, `tests/lab02/test_decoder_html.py`,
   `ids/parsers/application/mime.py`, `ids/decoders/mime.py`,
   `tests/lab02/test_decoder_mime.py`,
+  `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
+  `tests/lab02/test_t03_smtp_mime.py`,
   `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,
   `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
