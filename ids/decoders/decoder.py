@@ -1,13 +1,14 @@
-"""Initial event decoder: character decoding of the complete raw payload.
+"""Event decoder: HTTP fields or character decoding of a raw payload.
 
-HTTP field decoding and MIME dispatch are added in later tasks. This function
-is not yet wired into the PCAP/live CLI pipeline.
+MIME and HTML decoding are added in later tasks. This function is not yet
+wired into the PCAP/live CLI pipeline.
 """
 
 import base64
 import binascii
 
 from ids.config import DecoderConfig
+from ids.decoders.http import decode_http
 from ids.decoders.text import TextDecodeResult, decode_error, decode_text, limit_result
 from ids.models import PacketEvent
 from ids.processing_models import DecodeStatus, ProcessedEvent
@@ -22,6 +23,15 @@ def decode_event(
     """Decode from Base64, never preview; retain the original packet snapshot."""
     config = config if config is not None else DecoderConfig()
     processed = ProcessedEvent(packet=event)
+    protocol = processed.packet.application.protocol
+    if isinstance(protocol, str) and protocol.upper() == "HTTP":
+        http_result = decode_http(processed.packet.application, config, charset=charset)
+        processed.decoded["http"] = http_result.to_dict()
+        processed.decode_status = http_result.status
+        processed.errors.extend(http_result.errors)
+        if http_result.errors:
+            processed.reason = "; ".join(error.message for error in http_result.errors)
+        return processed
     raw = processed.packet.payload.base64
 
     if raw is None:

@@ -129,8 +129,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_text.py -v`.
 - Kết quả ngày 09/10/2026: 25 test mới passed, toàn bộ suite 142 passed.
   Tài liệu/log tại `TEST/lab02/task04/`.
-- Chưa có HTTP URL/form/HTML/MIME decoding hoặc nối character decoder vào CLI;
-  các phần đó triển khai sau. T04 có bằng chứng và commit riêng.
+- HTTP URL/form được bổ sung ở Task 05; HTML/MIME và nối decoder vào CLI
+  triển khai sau. T04 có bằng chứng và commit riêng.
 
 ### Bài tập 2 — T04 Invalid bytes
 
@@ -144,6 +144,23 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - PCAP, expected JSON, actual JSONL và tài liệu/log tại `TEST/lab02/T04/`.
 - Kết quả ngày 09/10/2026: T04 2 passed; toàn bộ suite 144 passed.
   Đã hoàn thành T04; T01–T03 và T05–T14 bài 2 sẽ triển khai sau.
+
+### Bài tập 2 — HTTP URL/form decoder (Task 05)
+
+- `ids/decoders/http.py` percent-decode URI một lần, giữ literal `+` trong URI;
+  form decoder xử lý `+` thành space, `%2B` thành `+`, tách delimiter trước decode.
+- Form chỉ chạy với Content-Type application/x-www-form-urlencoded, hỗ trợ
+  charset header ASCII/UTF-8, giữ giá trị lặp và blank values.
+- `decode_event()` điều phối HTTP theo field; kết quả tại `decoded.http.uri`
+  và `decoded.http.form`. Packet/raw target/body/payload giữ nguyên.
+- Khôi phục URI bytes từ target Latin-1 của parser và form bytes từ body_base64,
+  tránh đọc text body đã thay byte lỗi.
+- Có status/reason cho escape sai, byte lỗi, Base64 hỏng, charset không hỗ trợ,
+  message chưa đầy đủ và vượt giới hạn input/output theo DecoderConfig.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_http.py -v`.
+- Kết quả ngày 09/10/2026: 41 test HTTP mới passed; toàn bộ suite 185 passed.
+  Tài liệu/log tại `TEST/lab02/task05/`; T01/form có commit bằng chứng riêng.
+- Chưa nối decoder vào main CLI; HTML/MIME decoding triển khai sau.
 
 ## Yêu cầu môi trường
 
@@ -469,6 +486,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
+  `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
+  `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t04.py`, `tests/lab02/test_t04_invalid_bytes.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
