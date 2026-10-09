@@ -311,6 +311,20 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   Tài liệu/log tại `TEST/lab02/task09/`; T05 có bằng chứng và commit riêng.
 - Policy còn ở Task 10 nên action vẫn skip_tracking, flow=null. Chưa nối CLI.
 
+### Bài tập 2 — T05 Normalization
+
+- Input JSONL gồm 10 PacketEvent fixture: bốn cặp HTTP/DNS/SMTP EHLO/SMTP mailbox
+  có cùng ý nghĩa nhưng khác case/format, một timestamp lỗi và event hợp lệ kế tiếp.
+- So sánh toàn bộ normalized với expected, xác nhận mỗi cặp cho cùng view;
+  raw PacketEvent và decoded fields giữ nguyên, duplicate header values và case
+  local-part còn nguyên. Không double-decode URI hoặc thay '+' thành space.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t05`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t05_normalization.py -v`.
+- Input JSONL/expected JSON/actual JSONL và tài liệu/log tại `TEST/lab02/T05/`.
+  Đây là synthetic event input cho Preprocessor, không phải PCAP capture thật.
+- Kết quả ngày 09/10/2026: T05 PASS, pytest 1 passed; toàn bộ suite 465 passed.
+  Mandatory cases T01–T05 hoàn thành (5/14); T06/T14 còn ở Task 10.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -644,6 +658,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_validation.py`,
   `ids/preprocessors/normalization.py`, `ids/preprocessors/preprocessor.py`,
   `tests/lab02/test_normalization.py`,
+  `tests/lab02/event_file_support.py`, `tests/lab02/reproduce_t05.py`,
+  `tests/lab02/test_t05_normalization.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
   `tests/lab02/test_t03_smtp_mime.py`,
   `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,

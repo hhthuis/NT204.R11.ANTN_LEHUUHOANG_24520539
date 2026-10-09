@@ -1,0 +1,365 @@
+[
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 8080,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "HTTP",
+        "kind": "request",
+        "fields": {
+          "method": "GET",
+          "headers": {
+            "content-type": [
+              "Text/Plain; charset=UTF8"
+            ],
+            "x-token": [
+              "AbC",
+              "DeF"
+            ]
+          },
+          "uri": {
+            "target": "/Admin%2FA?q=x+y&x=%252f",
+            "path": "/Admin%2FA",
+            "query": "q=x+y&x=%252f",
+            "target_form": "origin"
+          }
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 8080,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "HTTP",
+        "kind": "request",
+        "fields": {
+          "method": "GET",
+          "headers": {
+            "content-type": [
+              "Text/Plain; charset=UTF8"
+            ],
+            "x-token": [
+              "AbC",
+              "DeF"
+            ]
+          },
+          "uri": {
+            "target": "/Admin%2FA?q=x+y&x=%252f",
+            "path": "/Admin%2FA",
+            "query": "q=x+y&x=%252f",
+            "target_form": "origin"
+          }
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "UDP",
+        "src_port": 51000,
+        "dst_port": 53,
+        "flags": null
+      },
+      "application": {
+        "protocol": "DNS",
+        "kind": "response",
+        "fields": {
+          "questions": [
+            {
+              "name": "example.com",
+              "type": "A",
+              "class": "IN"
+            }
+          ],
+          "answers": [
+            {
+              "name": "www.example.com",
+              "type": "CNAME",
+              "data": "target.example.com"
+            }
+          ],
+          "authorities": null,
+          "additionals": null
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "UDP",
+        "src_port": 51000,
+        "dst_port": 53,
+        "flags": null
+      },
+      "application": {
+        "protocol": "DNS",
+        "kind": "response",
+        "fields": {
+          "questions": [
+            {
+              "name": "example.com",
+              "type": "A",
+              "class": "IN"
+            }
+          ],
+          "answers": [
+            {
+              "name": "www.example.com",
+              "type": "CNAME",
+              "data": "target.example.com"
+            }
+          ],
+          "authorities": null,
+          "additionals": null
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 25,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "SMTP",
+        "kind": "command",
+        "fields": {
+          "commands": [
+            {
+              "command": "EHLO",
+              "domain": "client.example.com"
+            }
+          ]
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 25,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "SMTP",
+        "kind": "command",
+        "fields": {
+          "commands": [
+            {
+              "command": "EHLO",
+              "domain": "client.example.com"
+            }
+          ]
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 25,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "SMTP",
+        "kind": "command",
+        "fields": {
+          "commands": [
+            {
+              "command": "MAIL FROM",
+              "mailbox": "Alice@example.com"
+            }
+          ]
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 25,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "SMTP",
+        "kind": "command",
+        "fields": {
+          "commands": [
+            {
+              "command": "MAIL FROM",
+              "mailbox": "Alice@example.com"
+            }
+          ]
+        }
+      }
+    },
+    "error_codes": []
+  },
+  {
+    "status": "invalid",
+    "normalized": {
+      "timestamp": null,
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 8080,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "UNKNOWN",
+        "kind": null,
+        "fields": {}
+      }
+    },
+    "error_codes": [
+      "validation_invalid_timestamp",
+      "normalization_invalid_timestamp"
+    ]
+  },
+  {
+    "status": "valid",
+    "normalized": {
+      "timestamp": "2026-10-09T00:00:00.000000Z",
+      "captured_length": 54,
+      "network": {
+        "protocol": "IPv4",
+        "src_ip": "10.0.0.1",
+        "dst_ip": "10.0.0.2"
+      },
+      "transport": {
+        "protocol": "TCP",
+        "src_port": 51000,
+        "dst_port": 8080,
+        "flags": [
+          "PSH",
+          "ACK"
+        ]
+      },
+      "application": {
+        "protocol": "UNKNOWN",
+        "kind": null,
+        "fields": {}
+      }
+    },
+    "error_codes": []
+  }
+]

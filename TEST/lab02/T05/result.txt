@@ -1,0 +1,39 @@
+T05 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t05
+
+events 1/2: same normalized output; raw variants retained
+events 3/4: same normalized output; raw variants retained
+events 5/6: same normalized output; raw variants retained
+events 7/8: same normalized output; raw variants retained
+event 9: invalid timestamp marked; event 10: valid, processing continues
+T05 PASS: 10 events; outputs in /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T05
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t05_normalization.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t05_normalization.py::test_t05_equivalent_event_formats_normalize_consistently_and_keep_raw PASSED [100%]
+
+============================== 1 passed in 0.08s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 15%]
+........................................................................ [ 30%]
+........................................................................ [ 46%]
+........................................................................ [ 61%]
+........................................................................ [ 77%]
+........................................................................ [ 92%]
+.................................                                        [100%]
+465 passed in 1.91s
+
+exit_code=0
