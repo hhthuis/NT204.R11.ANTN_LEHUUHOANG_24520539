@@ -84,6 +84,37 @@ Chưa triển khai:
   bài 2 passed và toàn bộ suite 75 passed.
 - Tài liệu và log kiểm thử tại `TEST/lab02/task02/`.
 
+### Bài tập 2 — Cấu hình xử lý (Task 03)
+
+- `ids/config.py` định nghĩa config bất biến cho decoder/preprocessor/tracker,
+  đọc TOML bằng thư viện chuẩn `tomllib` và báo lỗi bằng `ConfigError`.
+- `config/default.toml` chứa charset ASCII/UTF-8, policy byte lỗi, giới hạn
+  decode input/output, policy event invalid/unsupported, timeout TCP/UDP,
+  chu kỳ kiểm tra expiry, giới hạn active flow và policy khi đầy bảng.
+- Mặc định của dự án: decode input/output tối đa 1 MiB mỗi giá trị;
+  TCP timeout 180 giây, UDP timeout 30 giây, kiểm tra expiry mỗi 1 giây,
+  tối đa 10000 active flow. Đây là lựa chọn triển khai, không phải số do đề quy định.
+- `load_config()` dùng mặc định trong code; `load_config(path)` đọc file và
+  cho phép ghi đè một phần, giữ mặc định cho setting chưa có.
+- Từ chối giá trị sai, timeout không hữu hạn, boolean thay số, policy không hỗ
+  trợ và key viết nhầm. File lỗi/không tồn tại không âm thầm fallback.
+- Các policy được mô tả trong file TOML và `TEST/lab02/task03/README.md`.
+  Chưa nối cấu hình vào CLI hoặc thực thi decode/preprocess/track ở task này.
+- Chạy test: `./venv/bin/python -m pytest tests/lab02/test_config.py -v`.
+- Kết quả ngày 09/10/2026: 42 config tests passed, toàn bộ suite 117 passed.
+  Tài liệu và log tại `TEST/lab02/task03/`.
+- Hoàn thành giai đoạn 1 của bài 2: model kết quả xử lý, model flow và cấu hình.
+  Bước tiếp theo: triển khai Decoder.
+
+Ví dụ đọc cấu hình trong Python:
+
+```python
+from ids.config import load_config
+
+config = load_config("config/default.toml")
+print(config.tracker.tcp_idle_timeout)  # 180.0
+```
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -405,6 +436,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
+  `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,

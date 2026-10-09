@@ -1,0 +1,62 @@
+Task: Lab 2, Stage 1, Task 03 - Add processing configuration
+Test date: 2026-10-09
+Scope: Configuration loading/validation only; runtime modules and CLI integration are later tasks.
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_config.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 42 items
+
+tests/lab02/test_config.py::test_default_file_matches_builtin_defaults PASSED [  2%]
+tests/lab02/test_config.py::test_partial_overrides_keep_defaults_and_do_not_change_later_loads PASSED [  4%]
+tests/lab02/test_config.py::test_empty_config_uses_all_defaults PASSED   [  7%]
+tests/lab02/test_config.py::test_supported_charset_aliases_are_canonicalized[ASCII-ascii] PASSED [  9%]
+tests/lab02/test_config.py::test_supported_charset_aliases_are_canonicalized[UTF8-utf-8] PASSED [ 11%]
+tests/lab02/test_config.py::test_unsupported_or_non_string_charset_is_rejected["utf-16"] PASSED [ 14%]
+tests/lab02/test_config.py::test_unsupported_or_non_string_charset_is_rejected["made-up-charset"] PASSED [ 16%]
+tests/lab02/test_config.py::test_unsupported_or_non_string_charset_is_rejected[123] PASSED [ 19%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[decoder-max_input_bytes-0] PASSED [ 21%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[decoder-max_input_bytes-true] PASSED [ 23%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[decoder-max_output_bytes--1] PASSED [ 26%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[decoder-max_output_bytes-1.5] PASSED [ 28%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-max_active_flows-0] PASSED [ 30%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-max_active_flows-true] PASSED [ 33%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-max_active_flows-2.5] PASSED [ 35%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-tcp_idle_timeout-0] PASSED [ 38%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-tcp_idle_timeout-true] PASSED [ 40%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-tcp_idle_timeout-"180"] PASSED [ 42%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-tcp_idle_timeout-nan] PASSED [ 45%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-udp_idle_timeout-inf] PASSED [ 47%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-udp_idle_timeout--1.0] PASSED [ 50%]
+tests/lab02/test_config.py::test_invalid_limits_and_timeouts_are_rejected[tracker-expiry_check_interval-0] PASSED [ 52%]
+tests/lab02/test_config.py::test_invalid_policies_list_allowed_choices[decoder-invalid_bytes_policy-"ignore"] PASSED [ 54%]
+tests/lab02/test_config.py::test_invalid_policies_list_allowed_choices[decoder-limit_policy-"truncate"] PASSED [ 57%]
+tests/lab02/test_config.py::test_invalid_policies_list_allowed_choices[preprocessor-invalid_event_policy-"track"] PASSED [ 59%]
+tests/lab02/test_config.py::test_invalid_policies_list_allowed_choices[preprocessor-unsupported_event_policy-false] PASSED [ 61%]
+tests/lab02/test_config.py::test_invalid_policies_list_allowed_choices[tracker-capacity_policy-"unlimited"] PASSED [ 64%]
+tests/lab02/test_config.py::test_unknown_sections_settings_and_wrong_table_types_are_rejected[[decodre]\nmax_input_bytes=10-Unknown configuration section: decodre] PASSED [ 66%]
+tests/lab02/test_config.py::test_unknown_sections_settings_and_wrong_table_types_are_rejected[[decoder]\nmax_inpt_bytes=10-Unknown setting in decoder: max_inpt_bytes] PASSED [ 69%]
+tests/lab02/test_config.py::test_unknown_sections_settings_and_wrong_table_types_are_rejected[decoder=10-decoder must be a TOML table] PASSED [ 71%]
+tests/lab02/test_config.py::test_malformed_toml_or_invalid_file_encoding_has_readable_error[[decoder\n] PASSED [ 73%]
+tests/lab02/test_config.py::test_malformed_toml_or_invalid_file_encoding_has_readable_error[\xff] PASSED [ 76%]
+tests/lab02/test_config.py::test_missing_file_does_not_silently_fall_back_to_defaults PASSED [ 78%]
+tests/lab02/test_config.py::test_directory_cannot_be_loaded_as_a_config_file PASSED [ 80%]
+tests/lab02/test_config.py::test_direct_config_construction_is_validated_too[DecoderConfig-settings0-decoder.max_input_bytes] PASSED [ 83%]
+tests/lab02/test_config.py::test_direct_config_construction_is_validated_too[DecoderConfig-settings1-decoder.default_charset] PASSED [ 85%]
+tests/lab02/test_config.py::test_direct_config_construction_is_validated_too[PreprocessorConfig-settings2-preprocessor.invalid_event_policy] PASSED [ 88%]
+tests/lab02/test_config.py::test_direct_config_construction_is_validated_too[TrackerConfig-settings3-tracker.tcp_idle_timeout] PASSED [ 90%]
+tests/lab02/test_config.py::test_direct_config_construction_is_validated_too[TrackerConfig-settings4-tracker.tcp_idle_timeout] PASSED [ 92%]
+tests/lab02/test_config.py::test_processing_config_requires_validated_section_models[decoder] PASSED [ 95%]
+tests/lab02/test_config.py::test_processing_config_requires_validated_section_models[preprocessor] PASSED [ 97%]
+tests/lab02/test_config.py::test_processing_config_requires_validated_section_models[tracker] PASSED [100%]
+
+============================== 42 passed in 0.12s ==============================
+
+Command: ./venv/bin/python -m pytest -q
+
+........................................................................ [ 61%]
+.............................................                            [100%]
+117 passed in 1.15s
