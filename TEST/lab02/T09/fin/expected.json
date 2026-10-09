@@ -1,0 +1,103 @@
+{
+  "events": [
+    {
+      "packet_id": 1,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "HANDSHAKE"
+      }
+    },
+    {
+      "packet_id": 2,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "backward",
+        "state": "HANDSHAKE"
+      }
+    },
+    {
+      "packet_id": 3,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "ESTABLISHED"
+      }
+    },
+    {
+      "packet_id": 4,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "CLOSING"
+      }
+    },
+    {
+      "packet_id": 5,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "backward",
+        "state": "CLOSING"
+      }
+    },
+    {
+      "packet_id": 6,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "backward",
+        "state": "CLOSING"
+      }
+    },
+    {
+      "packet_id": 7,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "CLOSED"
+      }
+    }
+  ],
+  "flows": [
+    {
+      "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+      "protocol": "TCP",
+      "application_protocol": "UNKNOWN",
+      "endpoint_a": {
+        "ip": "10.0.0.2",
+        "port": 51000
+      },
+      "endpoint_b": {
+        "ip": "10.0.0.1",
+        "port": 8080
+      },
+      "start_time": "2026-10-09T00:00:00.000000Z",
+      "syn_count": 2,
+      "last_seen": "2026-10-09T00:00:00.600000Z",
+      "duration": 0.6,
+      "state": "CLOSED",
+      "packet_count": 7,
+      "byte_count": 378,
+      "forward_packet_count": 4,
+      "forward_byte_count": 216,
+      "backward_packet_count": 3,
+      "backward_byte_count": 162,
+      "ack_count": 6,
+      "fin_count": 2,
+      "rst_count": 0
+    }
+  ]
+}

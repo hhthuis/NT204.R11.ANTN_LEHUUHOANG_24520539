@@ -1,0 +1,38 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t09
+
+T09 fin: HANDSHAKE → HANDSHAKE → ESTABLISHED → CLOSING → CLOSING → CLOSING → CLOSED
+  1 CLOSED flow; packets=7, bytes=378; SYN/ACK/FIN/RST=2/6/2/0
+T09 rst: HANDSHAKE → HANDSHAKE → ESTABLISHED → RESET
+  1 RESET flow; packets=4, bytes=216; SYN/ACK/FIN/RST=2/3/0/1
+T09 PASS: FIN close and RST reset; same flow ID within each independent capture; all payloads empty
+Exit code: 0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t09_tcp_close.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 2 items
+
+tests/lab02/test_t09_tcp_close.py::test_t09_pcap_close_matches_states_and_complete_flow_summary[fin] PASSED [ 50%]
+tests/lab02/test_t09_tcp_close.py::test_t09_pcap_close_matches_states_and_complete_flow_summary[rst] PASSED [100%]
+
+============================== 2 passed in 0.71s ===============================
+Exit code: 0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [  9%]
+........................................................................ [ 19%]
+........................................................................ [ 28%]
+........................................................................ [ 38%]
+........................................................................ [ 47%]
+........................................................................ [ 57%]
+........................................................................ [ 67%]
+........................................................................ [ 76%]
+........................................................................ [ 86%]
+........................................................................ [ 95%]
+................................                                         [100%]
+752 passed in 2.46s
+Exit code: 0

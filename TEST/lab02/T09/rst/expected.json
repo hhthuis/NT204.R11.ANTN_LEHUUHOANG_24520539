@@ -1,0 +1,73 @@
+{
+  "events": [
+    {
+      "packet_id": 1,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "HANDSHAKE"
+      }
+    },
+    {
+      "packet_id": 2,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "backward",
+        "state": "HANDSHAKE"
+      }
+    },
+    {
+      "packet_id": 3,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "forward",
+        "state": "ESTABLISHED"
+      }
+    },
+    {
+      "packet_id": 4,
+      "action": "track",
+      "status": "valid",
+      "flow": {
+        "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+        "direction": "backward",
+        "state": "RESET"
+      }
+    }
+  ],
+  "flows": [
+    {
+      "flow_id": "flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2",
+      "protocol": "TCP",
+      "application_protocol": "UNKNOWN",
+      "endpoint_a": {
+        "ip": "10.0.0.2",
+        "port": 51000
+      },
+      "endpoint_b": {
+        "ip": "10.0.0.1",
+        "port": 8080
+      },
+      "start_time": "2026-10-09T00:00:00.000000Z",
+      "syn_count": 2,
+      "last_seen": "2026-10-09T00:00:00.300000Z",
+      "duration": 0.3,
+      "state": "RESET",
+      "packet_count": 4,
+      "byte_count": 216,
+      "forward_packet_count": 2,
+      "forward_byte_count": 108,
+      "backward_packet_count": 2,
+      "backward_byte_count": 108,
+      "ack_count": 3,
+      "fin_count": 0,
+      "rst_count": 1
+    }
+  ]
+}
