@@ -1,0 +1,37 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t14
+
+default: 23 events match expected; raw/decoded retained
+mark-mark: 23 events match expected; raw/decoded retained
+mark-skip: 23 events match expected; raw/decoded retained
+skip-skip: 23 events match expected; raw/decoded retained
+T14 PASS: 23 events x 4 policy profiles; unsafe metadata blocked; next valid event processed
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t14_malformed_events.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t14_malformed_events.py::test_t14_malformed_and_unsupported_events_obey_all_policy_combinations_and_continue PASSED [100%]
+
+============================== 1 passed in 0.09s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 39%]
+........................................................................ [ 53%]
+........................................................................ [ 66%]
+........................................................................ [ 79%]
+........................................................................ [ 93%]
+.....................................                                    [100%]
+541 passed in 1.68s
+
+exit_code=0

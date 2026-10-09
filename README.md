@@ -349,6 +349,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả tại commit task: 74 test mới passed, T05 regression PASS, toàn bộ
   suite 539 passed. Quy tắc/API/log tại `TEST/lab02/task10/`.
 - T06/T14 được thực hiện và commit riêng sau phần mã nguồn Task 10.
+  Hai case đã hoàn thành, xem các mục tiếp theo; Preprocessor API đã đủ
+  validation/normalization/defaults/policy, CLI bài 2 vẫn chưa được nối.
 
 ### Bài tập 2 — T06 Missing field
 
@@ -362,7 +364,23 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_t06_missing_fields.py -v`.
 - Input/config/expected/actual và README/log tại `TEST/lab02/T06/`.
 - Kết quả: T06 PASS 11/11, integration 1 passed; full suite 540 passed.
-  Mandatory T01–T06 hoàn thành (6/14); T14 có commit riêng tiếp theo.
+  Đây là snapshot tại commit T06; T14 có commit riêng bên dưới.
+
+### Bài tập 2 — T14 Malformed/unsupported event
+
+- 23 synthetic PacketEvent, chạy cả 4 tổ hợp invalid/unsupported mark/skip
+  (92 lượt xử lý). Required IP/port/time/model sai, parser malformed/unsupported,
+  IPv6/SCTP/FTP, optional TTL/URI/DNS fields sai, unsafe flags/fragment/lower-layer
+  parse error, optional model sai kiểu, mixed errors và event hợp lệ kế tiếp.
+- Không exception; status/action/error codes khớp expected; invalid hoặc unsafe
+  metadata luôn skip dù mark. Optional malformed/unsupported áp dụng policy;
+  mixed errors không để mark ghi đè skip. Raw/decoded và reason còn nguyên.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t14`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t14_malformed_events.py -v`.
+- Input/bốn config/expected/bốn actual JSONL và README/log tại `TEST/lab02/T14/`.
+  Fixture ở model boundary, không phải capture thật hoặc JSON syntax parser.
+- Kết quả: T14 PASS 92/92, integration 1 passed; full suite 541 passed.
+- Mandatory cases T01–T06 và T14 hoàn thành: 7/14. T07–T13 thuộc Tracker.
 
 ## Yêu cầu môi trường
 
@@ -700,6 +718,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/preprocessors/policy.py`, `tests/lab02/test_preprocessor_policy.py`,
   `tests/lab02/preprocessor_case_support.py`,
   `tests/lab02/reproduce_t06.py`, `tests/lab02/test_t06_missing_fields.py`,
+  `tests/lab02/reproduce_t14.py`, `tests/lab02/test_t14_malformed_events.py`,
   `tests/lab02/event_file_support.py`, `tests/lab02/reproduce_t05.py`,
   `tests/lab02/test_t05_normalization.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
@@ -719,8 +738,9 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành artifacts/commit riêng T14 cho Task 10.
-2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+1. Task 11: flow key/flow_id hai chiều, direction và T08/T11.
+2. Tracker counters (T13), TCP handshake/close (T07/T09), UDP (T10) và timeout
+   (T12), thực hiện và commit lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.

@@ -1,0 +1,858 @@
+{
+  "default": [
+    {
+      "packet_id": 1,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ip_address",
+        "normalization_invalid_ip",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 3,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_timestamp",
+        "normalization_invalid_timestamp",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 4,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_network",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 5,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_transport",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 6,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 7,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_malformed_packet",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 8,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_network_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 9,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_transport_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 10,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_unsupported_application_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 11,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 12,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "invalid_percent_encoding",
+        "normalization_invalid_percent_encoding",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 13,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "normalization_invalid_dns_records",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 14,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_tcp_flags",
+        "normalization_invalid_tcp_flags",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 15,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_packet",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 16,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_noninitial_fragment",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 17,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_partial_packet",
+        "validation_unsafe_lower_layer_parse",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 18,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_application_fields",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 19,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "invalid_payload_info",
+        "validation_missing_payload_info",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 20,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_application_info",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 21,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "validation_unsupported_application_protocol",
+        "policy_invalid_skip",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 22,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_unsupported_capture_source",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 23,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    }
+  ],
+  "mark-mark": [
+    {
+      "packet_id": 1,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ip_address",
+        "normalization_invalid_ip",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 3,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_timestamp",
+        "normalization_invalid_timestamp",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 4,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_network",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 5,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_transport",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 6,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 7,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_malformed_packet",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 8,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_network_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 9,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_transport_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 10,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_unsupported_application_protocol",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 11,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 12,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "invalid_percent_encoding",
+        "normalization_invalid_percent_encoding",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 13,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "normalization_invalid_dns_records",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 14,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_tcp_flags",
+        "normalization_invalid_tcp_flags",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 15,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_packet",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 16,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_noninitial_fragment",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 17,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_partial_packet",
+        "validation_unsafe_lower_layer_parse",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 18,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_invalid_application_fields",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 19,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "invalid_payload_info",
+        "validation_missing_payload_info",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 20,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_application_info",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 21,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "validation_unsupported_application_protocol",
+        "policy_invalid_mark",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 22,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_unsupported_capture_source",
+        "policy_unsupported_mark"
+      ]
+    },
+    {
+      "packet_id": 23,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    }
+  ],
+  "mark-skip": [
+    {
+      "packet_id": 1,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ip_address",
+        "normalization_invalid_ip",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 3,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_timestamp",
+        "normalization_invalid_timestamp",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 4,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_network",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 5,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_transport",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 6,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 7,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_malformed_packet",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 8,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_network_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 9,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_transport_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 10,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_application_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 11,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 12,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "invalid_percent_encoding",
+        "normalization_invalid_percent_encoding",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 13,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "normalization_invalid_dns_records",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 14,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_tcp_flags",
+        "normalization_invalid_tcp_flags",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 15,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_packet",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 16,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_noninitial_fragment",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 17,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_partial_packet",
+        "validation_unsafe_lower_layer_parse",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 18,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_invalid_application_fields",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 19,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "invalid_payload_info",
+        "validation_missing_payload_info",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 20,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_application_info",
+        "policy_invalid_mark"
+      ]
+    },
+    {
+      "packet_id": 21,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "validation_unsupported_application_protocol",
+        "policy_invalid_mark",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 22,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_capture_source",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 23,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    }
+  ],
+  "skip-skip": [
+    {
+      "packet_id": 1,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ip_address",
+        "normalization_invalid_ip",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 3,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_timestamp",
+        "normalization_invalid_timestamp",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 4,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_network",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 5,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_transport",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 6,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_port",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 7,
+      "status": "invalid",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_malformed_packet",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 8,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_network_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 9,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_transport_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 10,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_application_protocol",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 11,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 12,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "invalid_percent_encoding",
+        "normalization_invalid_percent_encoding",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 13,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "normalization_invalid_dns_records",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 14,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_tcp_flags",
+        "normalization_invalid_tcp_flags",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 15,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_packet",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 16,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_noninitial_fragment",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 17,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_partial_packet",
+        "validation_unsafe_lower_layer_parse",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 18,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_application_fields",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 19,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "invalid_payload_info",
+        "validation_missing_payload_info",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 20,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_missing_application_info",
+        "policy_invalid_skip"
+      ]
+    },
+    {
+      "packet_id": 21,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_invalid_ttl",
+        "validation_unsupported_application_protocol",
+        "policy_invalid_skip",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 22,
+      "status": "partial",
+      "action": "skip_tracking",
+      "error_codes": [
+        "validation_unsupported_capture_source",
+        "policy_unsupported_skip"
+      ]
+    },
+    {
+      "packet_id": 23,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    }
+  ]
+}
