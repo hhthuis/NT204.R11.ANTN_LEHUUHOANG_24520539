@@ -559,6 +559,34 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Mandatory T01–T09/T11/T13/T14 hoàn thành: 12/14; còn T10 DNS UDP và T12
   idle timeout. Capacity/queue bound và main CLI bài 2 còn cần triển khai.
 
+### Bài tập 2 — UDP DNS flow tracking (Task 15)
+
+- DNS parser, Preprocessor và FlowTracker hiện có đã xử lý UDP hai chiều;
+  task này bổ sung wire-packet fixtures và kiểm thử xuyên pipeline, không cần
+  UDP tracker riêng hoặc thay đổi production APIs.
+- `tests/lab02/udp_dns_support.py`: DNS query/response A với explicit MAC,
+  Raw DNS bytes, UTC microseconds, tùy chọn name compression và payload rỗng/
+  unknown; prepare_packet() reload Ethernet bytes rồi parse/decode/preprocess.
+- `tests/lab02/test_udp_dns_flow.py`: 19 tests mới, query/response, transaction
+  IDs/domain khác nhưng cùng 5-tuple, retransmission, changed IP/port, response
+  first, TCP/UDP separation, empty/unknown→DNS, compression, normalization,
+  preserved diagnostics, skipped/bad metadata và statistics atomicity.
+- UDP state=null, TCP flag counters zero, không gọi TCP state handlers; app
+  UNKNOWN nâng lên DNS khi nhận diện được. Direction dựa trên first sender,
+  không ép query thành forward nếu capture bắt đầu bằng response.
+- Query/response cơ bản: captured lengths 72/100, payload 30/58, totals 2/172,
+  forward 1/72, backward 1/100, duration=0.2s. Compressed response 88 bytes,
+  tổng cùng query=160 bytes; count wire captured length, không payload length.
+- DNS response binary vẫn parse_status=ok, preprocess_status=valid/action=track;
+  generic UTF-8 decoder hiện ghi partial/invalid_character_sequence. Đây là
+  chẩn đoán character view, không phải lỗi DNS parse; raw Base64/DNS fields
+  giữ nguyên. Task 15 kiểm tra bảo toàn chẩn đoán, không đổi decoder policy.
+- Kết quả: 19 tests mới passed; T07/T08/T09/T11/T13 regression PASS; full suite
+  771 passed tại commit task. Chi tiết API và log: `TEST/lab02/task15/`.
+- T10 có PCAP/config/expected/actual/flow snapshots và commit test riêng sau
+  phần task. Chưa timeout/capacity/queue bounds/CLI bài 2; fixture không có
+  EDNS OPT, không kết luận toàn bộ DNS variants được hỗ trợ từ các tests này.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -885,6 +913,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,
+  `tests/lab02/udp_dns_support.py`, `tests/lab02/test_udp_dns_flow.py`,
   `tests/lab02/reproduce_t09.py`, `tests/lab02/test_t09_tcp_close.py`,
   `tests/lab02/reproduce_t07.py`, `tests/lab02/test_t07_tcp_handshake.py`,
   `tests/lab02/flow_pcap_support.py`,
@@ -925,7 +954,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 15: UDP DNS query/response, thực hiện T10.
+1. Hoàn thành PCAP và bằng chứng T10 sau phần kiểm thử Task 15.
 2. Task 16: idle timeout/capacity và quản lý summaries, thực hiện T12.
 3. Task 17: nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra
    đủ T01–T14.
