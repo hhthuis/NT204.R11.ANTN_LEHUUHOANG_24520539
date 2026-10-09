@@ -1,0 +1,77 @@
+[
+  {
+    "status": "ok",
+    "parameters": {
+      "tag": [
+        "one",
+        "two"
+      ],
+      "name": [
+        "Alice Bob"
+      ],
+      "plus": [
+        "+"
+      ],
+      "data": [
+        "a&b=c"
+      ],
+      "blank": [
+        ""
+      ]
+    },
+    "error_codes": []
+  },
+  {
+    "status": "ok",
+    "parameters": {
+      "café": [
+        "Việt Nam"
+      ],
+      "once": [
+        "%2B"
+      ]
+    },
+    "error_codes": []
+  },
+  {
+    "status": "partial",
+    "parameters": {
+      "q": [
+        "%ZZ"
+      ]
+    },
+    "error_codes": [
+      "invalid_percent_encoding"
+    ]
+  },
+  {
+    "status": "partial",
+    "parameters": {
+      "q": [
+        "�"
+      ]
+    },
+    "error_codes": [
+      "invalid_character_sequence"
+    ]
+  },
+  {
+    "status": "ok",
+    "parameters": {
+      "q": [
+        "next"
+      ]
+    },
+    "error_codes": []
+  },
+  {
+    "status": "ok",
+    "parameters": null,
+    "error_codes": []
+  },
+  {
+    "status": "ok",
+    "parameters": {},
+    "error_codes": []
+  }
+]

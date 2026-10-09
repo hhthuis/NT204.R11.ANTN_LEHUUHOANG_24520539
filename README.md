@@ -173,6 +173,17 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả ngày 09/10/2026: T01 PASS, pytest 1 passed.
   Đã hoàn thành T01/T04 bài 2; các case còn lại sẽ triển khai sau.
 
+### Bài tập 2 — Kiểm thử HTTP form bổ sung
+
+- PCAP 7 POST request kiểm tra form parameter lặp, `+`/`%2B`, encoded
+  delimiter, UTF-8/charset header, lỗi percent/byte, event tiếp theo, non-form
+  Content-Type và body rỗng. Raw body/payload giữ nguyên trong output.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_http_form`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_http_form_pcap.py -v`.
+- Bằng chứng tại `TEST/lab02/http-form/`; case form 1 passed.
+- Kết quả ngày 09/10/2026 sau Task 05/T01/form: toàn bộ suite 187 passed.
+  T01 và T04 đã hoàn thành (2/14); form là kiểm thử chức năng bổ sung.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -500,6 +511,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
   `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
+  `tests/lab02/reproduce_http_form.py`, `tests/lab02/test_http_form_pcap.py`,
   `tests/lab02/reproduce_t04.py`, `tests/lab02/test_t04_invalid_bytes.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
@@ -511,7 +523,10 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Chạy live capture trên interface thật và lưu JSONL, log cùng tài liệu kiểm thử
-   trong `TEST/`.
-2. Kiểm thử parser với PCAP thu từ traffic thực tế.
-3. Nghiên cứu TCP stream reassembly cho application message qua nhiều segment.
+1. Task 06: HTML entity decoder và T02.
+2. Task 07: SMTP/MIME Base64/Quoted-Printable decoder và T03.
+3. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
+4. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+5. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
+6. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+   qua nhiều segment.

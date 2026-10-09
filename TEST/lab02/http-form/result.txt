@@ -1,0 +1,33 @@
+Supplemental test: Lab 2 HTTP form decoding (required functionality, no separate T ID in PDF)
+Test date: 2026-10-09
+Pipeline: PCAP -> Parser -> HTTP Decoder -> JSONL (not main CLI).
+
+Command: ./venv/bin/python -m tests.lab02.reproduce_http_form
+
+packet 1: ok; parameters={'tag': ['one', 'two'], 'name': ['Alice Bob'], 'plus': ['+'], 'data': ['a&b=c'], 'blank': ['']}
+packet 2: ok; parameters={'café': ['Việt Nam'], 'once': ['%2B']}
+packet 3: partial; parameters={'q': ['%ZZ']}
+packet 4: partial; parameters={'q': ['�']}
+packet 5: ok; parameters={'q': ['next']}
+packet 6: ok; parameters=None
+packet 7: ok; parameters={}
+HTTP form PASS: 7 events; outputs in /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/http-form
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_http_form_pcap.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_http_form_pcap.py::test_form_pcap_preserves_raw_body_and_decodes_repeated_parameters PASSED [100%]
+
+============================== 1 passed in 0.57s ===============================
+
+Command: ./venv/bin/python -m pytest -q
+
+........................................................................ [ 38%]
+........................................................................ [ 77%]
+...........................................                              [100%]
+187 passed in 0.95s
