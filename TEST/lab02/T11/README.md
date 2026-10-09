@@ -1,5 +1,10 @@
 # T11 — Concurrent flows
 
+> Artifacts tại đây là snapshot Task 11 (commit 438ab96), counters còn zero.
+> Từ Task 12, script/test giữ identity/direction và kiểm tra counters/time thực
+> tế của từng flow. Regression log tại ../task12/result.txt. Dùng --output-dir
+> /tmp/ids-t11 để chạy phiên bản hiện tại mà giữ artifacts lịch sử này.
+
 ## Mục đích và input
 
 Kiểm tra ≥2 flow endpoint/port khác nhau không bị gộp nhầm, packet trả lời đúng

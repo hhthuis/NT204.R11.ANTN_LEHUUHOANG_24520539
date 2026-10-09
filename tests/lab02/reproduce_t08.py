@@ -20,10 +20,10 @@ EXPECTED_FLOW = {
     "flow_id": FLOW_ID, "protocol": "TCP", "application_protocol": "UNKNOWN",
     "endpoint_a": {"ip": "10.0.0.2", "port": 51000},
     "endpoint_b": {"ip": "10.0.0.1", "port": 8080},
-    "start_time": "2026-10-09T00:00:00.000000Z", "last_seen": "2026-10-09T00:00:00.000000Z",
-    "duration": 0.0, "state": "NEW", "packet_count": 0, "byte_count": 0,
-    "forward_packet_count": 0, "forward_byte_count": 0, "backward_packet_count": 0, "backward_byte_count": 0,
-    "syn_count": 0, "ack_count": 0, "fin_count": 0, "rst_count": 0,
+    "start_time": "2026-10-09T00:00:00.000000Z", "last_seen": "2026-10-09T00:00:04.000000Z",
+    "duration": 4.0, "state": "NEW", "packet_count": 5, "byte_count": 270,
+    "forward_packet_count": 3, "forward_byte_count": 162, "backward_packet_count": 2, "backward_byte_count": 108,
+    "syn_count": 0, "ack_count": 5, "fin_count": 0, "rst_count": 0,
 }
 EXPECTED = {
     "events": [

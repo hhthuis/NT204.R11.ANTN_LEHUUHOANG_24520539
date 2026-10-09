@@ -1,5 +1,11 @@
 # T08 — Bidirectional flow
 
+> Artifacts tại đây là snapshot Task 11 (commit 57737a9), counters chưa cập nhật.
+> Từ Task 12, script/test hiện tại vẫn cùng flow/direction nhưng có thống kê:
+> 5 packet/270 byte, forward 3/162, backward 2/108, ACK=5, duration=4s.
+> Regression log tại ../task12/result.txt. Dùng --output-dir /tmp/ids-t08
+> để chạy phiên bản hiện tại mà giữ các artifacts lịch sử này.
+
 ## Mục đích
 
 Packet A→B và B→A có 5-tuple đảo chiều phải cùng flow_id, đúng direction.

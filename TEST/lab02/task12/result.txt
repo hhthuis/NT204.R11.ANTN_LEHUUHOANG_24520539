@@ -1,0 +1,98 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_flow_statistics.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 38 items
+
+tests/lab02/test_flow_statistics.py::test_directional_accounting_uses_captured_bytes_and_counts_first_packet_once PASSED [  2%]
+tests/lab02/test_flow_statistics.py::test_bytes_are_captured_length_including_headers_not_wire_or_payload_length PASSED [  5%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags0-expected0] PASSED [  7%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags1-expected1] PASSED [ 10%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags2-expected2] PASSED [ 13%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags3-expected3] PASSED [ 15%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags4-expected4] PASSED [ 18%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags5-expected5] PASSED [ 21%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags6-expected6] PASSED [ 23%]
+tests/lab02/test_flow_statistics.py::test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions[flags7-expected7] PASSED [ 26%]
+tests/lab02/test_flow_statistics.py::test_combined_flags_sum_across_both_directions_without_deduplicating_packets PASSED [ 28%]
+tests/lab02/test_flow_statistics.py::test_duplicate_flags_in_one_observation_count_once_but_retransmission_counts_again PASSED [ 31%]
+tests/lab02/test_flow_statistics.py::test_missing_flags_count_bytes_and_packets_without_inventing_flags PASSED [ 34%]
+tests/lab02/test_flow_statistics.py::test_udp_has_directional_statistics_but_never_tcp_counters_or_state PASSED [ 36%]
+tests/lab02/test_flow_statistics.py::test_out_of_order_times_use_utc_min_max_without_changing_first_observed_orientation PASSED [ 39%]
+tests/lab02/test_flow_statistics.py::test_equal_timestamps_have_zero_duration_while_microseconds_are_preserved PASSED [ 42%]
+tests/lab02/test_flow_statistics.py::test_first_supported_application_upgrades_unknown_without_later_downgrades[HTTP] PASSED [ 44%]
+tests/lab02/test_flow_statistics.py::test_first_supported_application_upgrades_unknown_without_later_downgrades[DNS] PASSED [ 47%]
+tests/lab02/test_flow_statistics.py::test_first_supported_application_upgrades_unknown_without_later_downgrades[SMTP] PASSED [ 50%]
+tests/lab02/test_flow_statistics.py::test_first_supported_application_upgrades_unknown_without_later_downgrades[MIME] PASSED [ 52%]
+tests/lab02/test_flow_statistics.py::test_skipped_and_corrupt_existing_flow_events_leave_all_statistics_unchanged PASSED [ 55%]
+tests/lab02/test_flow_statistics.py::test_concurrent_flows_keep_independent_statistics_and_skip_does_not_create_flow PASSED [ 57%]
+tests/lab02/test_flow_statistics.py::test_export_and_removed_flow_snapshots_remain_detached_and_new_lifetime_resets_statistics PASSED [ 60%]
+tests/lab02/test_flow_statistics.py::test_zero_captured_length_is_a_packet_observation_and_never_negative_bytes PASSED [ 63%]
+tests/lab02/test_flow_statistics.py::test_statistics_helper_builds_new_record_and_counts_duplicate_flag_once PASSED [ 65%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes0] PASSED [ 68%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes1] PASSED [ 71%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes2] PASSED [ 73%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes3] PASSED [ 76%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes4] PASSED [ 78%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes5] PASSED [ 81%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes6] PASSED [ 84%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes7] PASSED [ 86%]
+tests/lab02/test_flow_statistics.py::test_invalid_statistics_input_cannot_partially_mutate_original_record[changes8] PASSED [ 89%]
+tests/lab02/test_flow_statistics.py::test_statistics_helper_uses_elapsed_utc_time_across_daylight_saving_fold PASSED [ 92%]
+tests/lab02/test_flow_statistics.py::test_udp_statistics_helper_does_not_interpret_tcp_flags PASSED [ 94%]
+tests/lab02/test_flow_statistics.py::test_statistics_failure_leaves_table_and_generation_unchanged_and_next_event_continues[False] PASSED [ 97%]
+tests/lab02/test_flow_statistics.py::test_statistics_failure_leaves_table_and_generation_unchanged_and_next_event_continues[True] PASSED [100%]
+
+============================== 38 passed in 0.60s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t08 --output-dir /tmp/ids-task12-t08
+
+packet 1: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 2: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 3: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 4: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 5: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+T08 PASS: 5 packets; 1 flow; first sender A differs from key sort order
+
+exit_code=0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t11 --output-dir /tmp/ids-task12-t11
+
+packet 1: F1; forward
+packet 2: F2; forward
+packet 3: F3; forward
+packet 4: F4; forward
+packet 5: F5; forward
+packet 6: F6; forward
+packet 7: F1; backward
+packet 8: F4; backward
+packet 9: F2; backward
+packet 10: F3; backward
+packet 11: F5; backward
+packet 12: F6; backward
+packet 13: ICMP; skip_tracking
+packet 14: F1; forward
+packet 15: F4; forward
+packet 16: F2; backward
+T11 PASS: 16 packets; 6 distinct flows; skipped ICMP adds no flow; processing continues
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+........................................................................ [ 34%]
+........................................................................ [ 45%]
+........................................................................ [ 56%]
+........................................................................ [ 68%]
+........................................................................ [ 79%]
+........................................................................ [ 90%]
+..........................................................               [100%]
+634 passed in 2.01s
+
+exit_code=0

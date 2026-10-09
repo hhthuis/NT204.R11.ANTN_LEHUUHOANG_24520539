@@ -1,5 +1,8 @@
 # Task 11 — Bidirectional flow identity và direction
 
+> Đây là báo cáo tại commit Task 11. Task 12 bổ sung counters/time/application
+> updates; xem ../task12/README.md để biết hành vi Tracker hiện tại.
+
 ## Mã nguồn
 
 - `ids/flows/tracker.py`: FlowTracker.track(ProcessedEvent), active_flows snapshot,

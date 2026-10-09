@@ -110,7 +110,7 @@ def test_real_parser_transport_packets_are_associated_without_state_transitions(
     assert result.decode_status == "skipped" and result.flow.direction == "forward"
 
 
-def test_application_protocol_is_initial_metadata_and_does_not_define_flow_identity():
+def test_late_application_protocol_updates_metadata_without_changing_flow_identity():
     first = prepared()
     second = reverse(first)
     second.packet.application = ApplicationInfo("HTTP", "response", {})
@@ -118,7 +118,7 @@ def test_application_protocol_is_initial_metadata_and_does_not_define_flow_ident
     tracker = FlowTracker()
     assert tracker.track(first).flow.flow_id == tracker.track(second).flow.flow_id
     assert len(tracker.active_flows) == 1
-    assert next(iter(tracker.active_flows.values())).application_protocol == "UNKNOWN"
+    assert next(iter(tracker.active_flows.values())).application_protocol == "HTTP"
 
 
 def test_new_flow_records_known_application_from_normalized_metadata():
@@ -129,7 +129,7 @@ def test_new_flow_records_known_application_from_normalized_metadata():
     assert tracker.export_flows()[0]["application_protocol"] == "HTTP"
 
 
-def test_creation_times_are_utc_and_counters_remain_unimplemented():
+def test_statistics_update_times_and_counters_in_utc():
     event = prepared()
     event.packet.timestamp = "2026-10-09T07:00:00+07:00"
     event = preprocess_event(decode_event(event.packet))
@@ -139,8 +139,9 @@ def test_creation_times_are_utc_and_counters_remain_unimplemented():
     later.packet.timestamp = "2026-10-09T00:00:02Z"
     tracker.track(preprocess_event(decode_event(later.packet)))
     record = tracker.export_flows()[0]
-    assert record["start_time"] == record["last_seen"] == "2026-10-09T00:00:00.000000Z"
-    assert record["duration"] == record["packet_count"] == record["byte_count"] == 0
+    assert record["start_time"] == "2026-10-09T00:00:00.000000Z"
+    assert record["last_seen"] == "2026-10-09T00:00:02.000000Z"
+    assert record["duration"] == 2 and record["packet_count"] == 2 and record["byte_count"] == 108
 
 
 def test_skipped_event_cannot_create_or_modify_flow_and_clears_stale_association():

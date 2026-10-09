@@ -394,14 +394,14 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - skip_tracking không tạo/sửa flow. Tracker kiểm tra authorization/raw eligible/
   normalized metadata và policy skip diagnostics trước insertion; lỗi stage=track
   không làm dừng event tiếp theo. Caller/raw/decoded/normalized được giữ nguyên.
-- active_flows/export_flows là snapshot độc lập. TCP NEW, UDP null; creation
-  timestamp được lưu, counters/last_seen/state transitions chưa cập nhật.
+- active_flows/export_flows là snapshot độc lập. Tại commit Task 11, TCP NEW,
+  UDP null và counters/time creation-only; Task 12 bổ sung statistics bên dưới.
 - Test: `./venv/bin/python -m pytest tests/lab02/test_flow_tracker.py -v`.
 - Kết quả tại commit task: 53 test mới passed; toàn bộ suite 594 passed.
   API/rules/log tại `TEST/lab02/task11/`; T08/T11 có commit riêng tiếp theo.
 - T08 và T11 đã hoàn thành ở các mục bên dưới; Tracker identity/direction API
   hoạt động qua script PCAP test, chưa được nối vào main CLI.
-- Chưa handshake/close/counters/expiry/capacity enforcement, chưa nối main CLI.
+- Chưa handshake/close/expiry/capacity enforcement, chưa nối main CLI.
 
 ### Bài tập 2 — T08 Bidirectional flow
 
@@ -432,6 +432,25 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả: T11 PASS 16/16, integration 1 passed; full suite 596 passed.
 - Mandatory T01–T06/T08/T11/T14 hoàn thành: 9/14. Còn T07/T09/T10/T12/T13.
   Counters/state/time updates/expiry và main CLI integration thuộc task sau.
+
+### Bài tập 2 — Flow statistics (Task 12)
+
+- `ids/flows/statistics.py`: totals/directional packet/byte counts, SYN/ACK/FIN/
+  RST counters, UTC min/max time và first-known application metadata. Mỗi accepted
+  call tính một packet kể cả không payload/retransmission; bytes dùng captured
+  length gồm headers, không payload length hay wire length.
+- Out-of-order time không làm last_seen lùi và không đổi A/B/direction; duration
+  từ time bounds. UNKNOWN nâng lên nhãn được hỗ trợ đầu tiên, không downgrade.
+- Tracker kiểm tra length khớp raw, dựng record mới rồi commit vào bảng; skip/
+  error không thay thống kê, lỗi updater không làm generation tăng dở. Snapshot
+  cũ và packet/decoded/normalized được giữ nguyên.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_flow_statistics.py -v`.
+- Kết quả tại commit task: 38 test mới passed, T08/T11 regression PASS, full
+  suite 634 passed. API/rules/log tại `TEST/lab02/task12/`.
+- T08/T11 artifacts cũ giữ làm snapshot Task 11; script/test mới so sánh thêm
+  counters/time đúng. Regression chạy ngoài repo, hướng dẫn trong các README.
+- T13 có PCAP/artifacts và commit riêng sau mã nguồn. TCP state vẫn NEW, UDP
+  null; chưa handshake/close/timeout/capacity enforcement/main CLI bài 2.
 
 ## Yêu cầu môi trường
 
@@ -756,6 +775,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
+  `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
   `tests/lab02/flow_pcap_support.py`,
   `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
   `tests/lab02/reproduce_t11.py`, `tests/lab02/test_t11_concurrent_flows.py`,
@@ -793,8 +813,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 12: cập nhật packet/byte/directional/flag counters, start/last_seen/duration
-   và application metadata của flow; thực hiện T13.
+1. Hoàn thành artifacts và commit riêng T13 cho Task 12.
 2. TCP handshake/close (T07/T09), UDP DNS (T10), timeout/capacity (T12),
    thực hiện và commit lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.

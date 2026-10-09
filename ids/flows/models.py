@@ -68,8 +68,8 @@ class FlowRecord:
     A is the first observed sender; A -> B is forward. Byte counters sum
     PacketEvent.captured_length, including headers, rather than payload length.
     TCP tracking sets state explicitly; UDP state stays None. All times must be
-    timezone-aware. The tracker will maintain counters and last_seen in later
-    tasks; these models do not consume packets or implement state transitions.
+    timezone-aware. Tracker/statistics maintain counters and UTC time bounds;
+    these models do not consume packets or implement state transitions.
     """
 
     flow_id: str

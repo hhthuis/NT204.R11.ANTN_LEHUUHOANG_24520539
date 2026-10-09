@@ -46,16 +46,29 @@ SKIP_ERRORS = [
     "policy_invalid_skip", "policy_unsupported_mark",
 ]
 
+# Literal statistics from the fixed fixture (TCP frame=54 bytes, UDP=42 bytes).
+# last_second, duration, packets, bytes, forward packets/bytes, backward packets/bytes, ACKs.
+STATISTICS = {
+    "F1": (13, 13.0, 3, 162, 2, 108, 1, 54, 3),
+    "F2": (15, 14.0, 3, 162, 1, 54, 2, 108, 3),
+    "F3": (9, 7.0, 2, 108, 1, 54, 1, 54, 2),
+    "F4": (14, 11.0, 3, 126, 2, 84, 1, 42, 0),
+    "F5": (10, 6.0, 2, 108, 1, 54, 1, 54, 2),
+    "F6": (11, 6.0, 2, 108, 1, 54, 1, 54, 2),
+}
+
 
 def expected_flow(label, protocol, a_ip, a_port, b_ip, b_port, second) -> dict:
     instant = f"2026-10-09T00:00:{second:02d}.000000Z"
+    last_second, duration, packets, byte_count, forward_packets, forward_bytes, backward_packets, backward_bytes, acks = STATISTICS[label]
     return {
         "flow_id": FLOW_IDS[label], "protocol": protocol, "application_protocol": "UNKNOWN",
         "endpoint_a": {"ip": a_ip, "port": a_port}, "endpoint_b": {"ip": b_ip, "port": b_port},
-        "start_time": instant, "last_seen": instant, "duration": 0.0,
-        "state": None if protocol == "UDP" else "NEW", "packet_count": 0, "byte_count": 0,
-        "forward_packet_count": 0, "forward_byte_count": 0, "backward_packet_count": 0, "backward_byte_count": 0,
-        "syn_count": 0, "ack_count": 0, "fin_count": 0, "rst_count": 0,
+        "start_time": instant, "last_seen": f"2026-10-09T00:00:{last_second:02d}.000000Z", "duration": duration,
+        "state": None if protocol == "UDP" else "NEW", "packet_count": packets, "byte_count": byte_count,
+        "forward_packet_count": forward_packets, "forward_byte_count": forward_bytes,
+        "backward_packet_count": backward_packets, "backward_byte_count": backward_bytes,
+        "syn_count": 0, "ack_count": acks, "fin_count": 0, "rst_count": 0,
     }
 
 

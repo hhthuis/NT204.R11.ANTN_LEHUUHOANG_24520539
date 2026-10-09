@@ -1,1 +1,1 @@
-"""Flow data models and bidirectional identity/direction tracking."""
+"""Flow data models, bidirectional identity/direction and statistics."""

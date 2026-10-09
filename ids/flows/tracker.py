@@ -1,12 +1,14 @@
-"""Bidirectional flow identity and direction; counters/state/expiry come later."""
+"""Bidirectional flow identity, direction and statistics; state/expiry come later."""
 
 import hashlib
 import json
 from copy import deepcopy
+from dataclasses import dataclass
 from datetime import datetime, timezone
 from ipaddress import ip_address
 
 from ids.flows.models import Endpoint, FlowDirection, FlowKey, FlowProtocol, FlowRecord, TcpState
+from ids.flows.statistics import update_statistics
 from ids.preprocessors.validation import TCP_FLAGS, validate_packet
 from ids.processing_models import (
     PreprocessStatus, ProcessedEvent, ProcessingAction, ProcessingError, ProcessingStage,
@@ -29,7 +31,18 @@ def make_flow_id(key: FlowKey, generation: int = 1) -> str:
     return "flow-" + hashlib.sha256(canonical).hexdigest()
 
 
-def _tracking_input(event: ProcessedEvent) -> tuple[FlowKey, Endpoint, Endpoint, datetime, str]:
+@dataclass(frozen=True, slots=True)
+class _TrackingInput:
+    key: FlowKey
+    src: Endpoint
+    dst: Endpoint
+    timestamp: datetime
+    application: str
+    captured_length: int
+    flags: tuple[str, ...]
+
+
+def _tracking_input(event: ProcessedEvent) -> _TrackingInput:
     if event.preprocess_status not in (PreprocessStatus.VALID, PreprocessStatus.PARTIAL):
         raise ValueError("Tracking requires a validated valid/partial event")
     if any(error.stage == ProcessingStage.PREPROCESS and error.code in (
@@ -66,8 +79,12 @@ def _tracking_input(event: ProcessedEvent) -> tuple[FlowKey, Endpoint, Endpoint,
     instant = datetime.fromisoformat(timestamp)
     if instant.utcoffset() is None or instant.utcoffset().total_seconds() != 0:
         raise ValueError("Normalized timestamp must be UTC with timezone")
-    if type(normalized["captured_length"]) is not int or normalized["captured_length"] < 0:
+    captured_length = normalized["captured_length"]
+    if type(captured_length) is not int or captured_length < 0:
         raise ValueError("Normalized captured_length must be a nonnegative integer")
+    if captured_length != event.packet.captured_length:
+        raise ValueError("Normalized captured_length must match the raw packet")
+    flags = ()
     if protocol == FlowProtocol.TCP:
         flags = transport["flags"]
         if not isinstance(flags, list) or any(not isinstance(flag, str) or flag not in TCP_FLAGS for flag in flags):
@@ -76,14 +93,14 @@ def _tracking_input(event: ProcessedEvent) -> tuple[FlowKey, Endpoint, Endpoint,
     app_protocol = application.get("protocol") if isinstance(application, dict) else None
     if not isinstance(app_protocol, str) or app_protocol not in ("HTTP", "DNS", "SMTP", "MIME"):
         app_protocol = "UNKNOWN"
-    return FlowKey(protocol, src, dst), src, dst, instant.astimezone(timezone.utc), app_protocol
+    return _TrackingInput(FlowKey(protocol, src, dst), src, dst, instant.astimezone(timezone.utc), app_protocol, captured_length, tuple(flags))
 
 
 class FlowTracker:
     """Single-stream mutable tracker; callers receive detached event/table views.
 
     A is the first observed sender, not a key sort order or a client/server guess.
-    At this stage counters remain zero and times describe flow creation only.
+    Every accepted call counts one observation; retransmissions are not removed.
     Timeout/capacity and TCP state transitions are intentionally not implemented.
     """
 
@@ -97,7 +114,7 @@ class FlowTracker:
         return deepcopy(self._active_flows)
 
     def export_flows(self) -> list[dict]:
-        """Detached snapshots for inspection; no counters/last_seen updates yet."""
+        """Detached snapshots with current statistics and UTC time bounds."""
         return [record.to_dict() for record in sorted(self._active_flows.values(), key=lambda flow: flow.flow_id)]
 
     def remove_flow(self, key: FlowKey) -> FlowRecord | None:
@@ -106,7 +123,7 @@ class FlowTracker:
         return deepcopy(flow) if flow is not None else None
 
     def track(self, event: ProcessedEvent) -> ProcessedEvent:
-        """Attach identity/direction safely without mutating the caller's event.
+        """Attach identity/direction and update statistics without mutating caller.
 
         Only Preprocessor can authorize tracking. A skipped event never touches
         the table. Malformed normalized metadata is diagnosed before insertion.
@@ -122,20 +139,27 @@ class FlowTracker:
             error.stage == ProcessingStage.TRACK and error.code.startswith("tracker_")
         )]
         try:
-            key, src, dst, instant, application = _tracking_input(processed)
+            data = _tracking_input(processed)
+            key, src, dst = data.key, data.src, data.dst
             record = self._active_flows.get(key)
+            is_new = record is None
             if record is None:
                 generation = self._generations.get(key, 0) + 1
                 record = FlowRecord(
                     flow_id=make_flow_id(key, generation), protocol=key.protocol,
-                    endpoint_a=src, endpoint_b=dst, start_time=instant, last_seen=instant,
-                    application_protocol=application,
+                    endpoint_a=src, endpoint_b=dst, start_time=data.timestamp, last_seen=data.timestamp,
+                    application_protocol=data.application,
                     state=TcpState.NEW if key.protocol == FlowProtocol.TCP else None,
                 )
-                self._active_flows[key] = record
-                self._generations[key] = generation
             direction = FlowDirection.FORWARD if (src, dst) == (record.endpoint_a, record.endpoint_b) else FlowDirection.BACKWARD
-            processed.flow = record.association(direction)
+            updated = update_statistics(
+                record, direction=direction, timestamp=data.timestamp,
+                captured_length=data.captured_length, flags=data.flags, application_protocol=data.application,
+            )
+            processed.flow = updated.association(direction)
+            self._active_flows[key] = updated
+            if is_new:
+                self._generations[key] = generation
         except (KeyError, TypeError, ValueError, OverflowError) as error:
             processed.processing_action = ProcessingAction.SKIP_TRACKING
             processed.errors.append(ProcessingError(
