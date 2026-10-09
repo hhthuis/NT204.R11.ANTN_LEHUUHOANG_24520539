@@ -1,0 +1,100 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_flow_expiry.py -v
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 32 items
+
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[-1e-06-0-TCP-3] PASSED [  3%]
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[-1e-06-0-UDP-2] PASSED [  6%]
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[0-1-TCP-3] PASSED [  9%]
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[0-1-UDP-2] PASSED [ 12%]
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[1e-06-1-TCP-3] PASSED [ 15%]
+tests/lab02/test_flow_expiry.py::test_expiry_before_at_after_protocol_threshold[1e-06-1-UDP-2] PASSED [ 18%]
+tests/lab02/test_flow_expiry.py::test_activity_renews_last_seen_and_tcp_udp_timeouts_are_independent PASSED [ 21%]
+tests/lab02/test_flow_expiry.py::test_same_key_expiry_is_checked_even_when_sweep_interval_is_long PASSED [ 25%]
+tests/lab02/test_flow_expiry.py::test_periodic_sweep_and_forced_expiry_without_packets PASSED [ 28%]
+tests/lab02/test_flow_expiry.py::test_expired_flow_is_reclaimed_before_skip_new_capacity_policy_between_sweeps PASSED [ 31%]
+tests/lab02/test_flow_expiry.py::test_capacity_preserves_existing_updates_and_applies_only_to_new_flows[skip_new] PASSED [ 34%]
+tests/lab02/test_flow_expiry.py::test_capacity_preserves_existing_updates_and_applies_only_to_new_flows[evict_oldest] PASSED [ 37%]
+tests/lab02/test_flow_expiry.py::test_eviction_uses_oldest_last_seen_and_id_for_deterministic_ties PASSED [ 40%]
+tests/lab02/test_flow_expiry.py::test_out_of_order_clock_never_goes_back_and_stale_new_flow_is_rejected PASSED [ 43%]
+tests/lab02/test_flow_expiry.py::test_skipped_invalid_events_do_not_advance_clock_or_expire_any_flow[skip] PASSED [ 46%]
+tests/lab02/test_flow_expiry.py::test_skipped_invalid_events_do_not_advance_clock_or_expire_any_flow[metadata] PASSED [ 50%]
+tests/lab02/test_flow_expiry.py::test_skipped_invalid_events_do_not_advance_clock_or_expire_any_flow[status] PASSED [ 53%]
+tests/lab02/test_flow_expiry.py::test_expire_rejects_invalid_time_without_mutation[None] PASSED [ 56%]
+tests/lab02/test_flow_expiry.py::test_expire_rejects_invalid_time_without_mutation[bad] PASSED [ 59%]
+tests/lab02/test_flow_expiry.py::test_expire_rejects_invalid_time_without_mutation[now2] PASSED [ 62%]
+tests/lab02/test_flow_expiry.py::test_summary_queue_backpressure_refuses_eviction_without_losing_data PASSED [ 65%]
+tests/lab02/test_flow_expiry.py::test_expire_full_queue_fails_atomically_and_recovers_after_ack PASSED [ 68%]
+tests/lab02/test_flow_expiry.py::test_terminal_tcp_flow_expires_preserving_terminal_state_and_cleans_context[closed] PASSED [ 71%]
+tests/lab02/test_flow_expiry.py::test_terminal_tcp_flow_expires_preserving_terminal_state_and_cleans_context[reset] PASSED [ 75%]
+tests/lab02/test_flow_expiry.py::test_failed_new_packet_does_not_partially_expire_or_evict[update_statistics] PASSED [ 78%]
+tests/lab02/test_flow_expiry.py::test_failed_new_packet_does_not_partially_expire_or_evict[update_handshake] PASSED [ 81%]
+tests/lab02/test_flow_expiry.py::test_failed_new_packet_does_not_partially_expire_or_evict[update_close] PASSED [ 84%]
+tests/lab02/test_flow_expiry.py::test_finish_queues_bounded_batches_preserves_observed_state_and_no_duplicate_output PASSED [ 87%]
+tests/lab02/test_flow_expiry.py::test_summary_ack_requires_fifo_and_does_not_remove_on_bad_id PASSED [ 90%]
+tests/lab02/test_flow_expiry.py::test_pending_summary_limit_is_validated[0] PASSED [ 93%]
+tests/lab02/test_flow_expiry.py::test_pending_summary_limit_is_validated[True] PASSED [ 96%]
+tests/lab02/test_flow_expiry.py::test_pending_summary_limit_is_validated[1.5] PASSED [100%]
+
+============================== 32 passed in 0.54s ==============================
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t07 --output-dir /tmp/ids-task16-t07
+packet 1: forward; HANDSHAKE
+packet 2: backward; HANDSHAKE
+packet 3: forward; ESTABLISHED
+T07 PASS: 3 empty-payload packets; 1 ESTABLISHED flow; bytes=162; SYN=2, ACK=2
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t08 --output-dir /tmp/ids-task16-t08
+packet 1: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 2: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 3: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 4: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 5: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+T08 PASS: 5 packets; 1 flow; first sender A differs from key sort order
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t09 --output-dir /tmp/ids-task16-t09
+T09 fin: HANDSHAKE → HANDSHAKE → ESTABLISHED → CLOSING → CLOSING → CLOSING → CLOSED
+  1 CLOSED flow; packets=7, bytes=378; SYN/ACK/FIN/RST=2/6/2/0
+T09 rst: HANDSHAKE → HANDSHAKE → ESTABLISHED → RESET
+  1 RESET flow; packets=4, bytes=216; SYN/ACK/FIN/RST=2/3/0/1
+T09 PASS: FIN close and RST reset; same flow ID within each independent capture; all payloads empty
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t10 --output-dir /tmp/ids-task16-t10
+packet 1: DNS query; forward; bytes=72; decode=ok
+packet 2: DNS response; backward; bytes=100; decode=partial
+T10 PASS: 1 UDP/DNS flow, state=null; packets=2, bytes=172; forward=1/72, backward=1/100, duration=0.2; binary text diagnostic preserved
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t11 --output-dir /tmp/ids-task16-t11
+packet 1: F1; forward
+packet 2: F2; forward
+packet 3: F3; forward
+packet 4: F4; forward
+packet 5: F5; forward
+packet 6: F6; forward
+packet 7: F1; backward
+packet 8: F4; backward
+packet 9: F2; backward
+packet 10: F3; backward
+packet 11: F5; backward
+packet 12: F6; backward
+packet 13: ICMP; skip_tracking
+packet 14: F1; forward
+packet 15: F4; forward
+packet 16: F2; backward
+T11 PASS: 16 packets; 6 distinct flows; skipped ICMP adds no flow; processing continues
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t13 --output-dir /tmp/ids-task16-t13
+TCP: packets=9, bytes=638; forward=5/356, backward=4/282; duration=1.6
+UDP: packets=3, bytes=137; forward=2/89, backward=1/48; duration=2.0
+T13 PASS: 13 packets, 2 flows; TCP flags 2/8/1/1; retransmission counted; skipped ICMP excluded
+Exit code: 0
+
+Full-suite result from preceding validation: ./venv/bin/python -m pytest -q — 804 passed in 3.02s, exit code 0.

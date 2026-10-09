@@ -37,7 +37,7 @@ def write_transport_pcap(path: Path, scenarios: list[tuple[str, str, int, str, i
 def track_pcap(input_path: Path, output_path: Path, flows_path: Path, config: ProcessingConfig) -> tuple[list[dict], list[dict]]:
     output_path.parent.mkdir(parents=True, exist_ok=True)
     flows_path.parent.mkdir(parents=True, exist_ok=True)
-    tracker = FlowTracker()
+    tracker = FlowTracker(config.tracker)
     source = CaptureSource("pcap", input_path.name)
     events = []
     with output_path.open("w", encoding="utf-8") as output:

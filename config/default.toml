@@ -28,6 +28,8 @@ tcp_idle_timeout = 180.0
 udp_idle_timeout = 30.0
 expiry_check_interval = 1.0
 max_active_flows = 10000
+# Completed summaries must be written/acknowledged; never silently discarded.
+max_pending_summaries = 10000
 # evict_oldest: export/remove the least recently seen flow to admit a new one.
 # skip_new: preserve existing flows, skip the new flow with a reason.
 capacity_policy = "evict_oldest"

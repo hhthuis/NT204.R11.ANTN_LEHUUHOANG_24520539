@@ -605,6 +605,19 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Mandatory T01–T11/T13/T14 hoàn thành: 13/14; còn T12 idle timeout.
   Capacity/queue limits và main CLI bài 2 vẫn cần hoàn thiện ở các task sau.
 
+### Bài tập 2 — Idle timeout/capacity (Task 16)
+
+- FlowTracker(config.tracker) thực thi TCP/UDP timeout, >= boundary, UTC clock
+  không lùi, quét theo interval và same-key expiry; skip/invalid không tiến clock.
+- evict_oldest xuất/xóa least-recent flow với tie theo ID; skip_new ghi reason,
+  giữ bảng. Pending summaries bounded bằng max_pending_summaries, đầy thì
+  backpressure. Lifetime mới sau expiry có generation/ID/counters/context mới.
+- Stream output dùng pending_summary()/acknowledge_summary() sau write thành
+  công; end_reason/end_time/observed_state tách khỏi last_seen/duration. finish()
+  xuất batch khi EOF/stop; generation history giữ ổn định ID và chưa bounded.
+- 32 tests mới và regression T07–T11/T13 PASS; full suite804 passed. Source/API/
+  log tại TEST/lab02/task16/. T12 có evidence và commit riêng ngay sau task.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -929,6 +942,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
+  `ids/flows/expiry.py`, `tests/lab02/test_flow_expiry.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,
   `tests/lab02/udp_dns_support.py`, `tests/lab02/test_udp_dns_flow.py`,

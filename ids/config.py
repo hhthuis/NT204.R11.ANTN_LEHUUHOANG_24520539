@@ -127,6 +127,7 @@ class TrackerConfig:
     udp_idle_timeout: float = 30.0
     expiry_check_interval: float = 1.0
     max_active_flows: int = 10_000
+    max_pending_summaries: int = 10_000
     capacity_policy: CapacityPolicy = CapacityPolicy.EVICT_OLDEST
 
     def __post_init__(self) -> None:
@@ -135,6 +136,7 @@ class TrackerConfig:
                 self, name, _positive_seconds(f"tracker.{name}", getattr(self, name))
             )
         _positive_integer("tracker.max_active_flows", self.max_active_flows)
+        _positive_integer("tracker.max_pending_summaries", self.max_pending_summaries)
         object.__setattr__(
             self,
             "capacity_policy",
