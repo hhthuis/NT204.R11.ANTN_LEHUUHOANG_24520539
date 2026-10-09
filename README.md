@@ -1,9 +1,20 @@
-# Packet Capture & Parser for IDS
+# Packet Capture, Parser, Decoder, Preprocessor & Flow Tracker for IDS
 
 Module bắt packet trực tiếp từ network interface hoặc đọc packet từ file PCAP,
 phân tích IPv4, TCP, UDP, HTTP/1.x, DNS và SMTP, sau đó chuyển mỗi packet thành
 một event chuẩn hóa và ghi ra file JSON Lines. Cấu trúc event được thiết kế để
 các module IDS phía sau không cần truy cập trực tiếp đối tượng packet của Scapy.
+
+Bài tập 2 bổ sung Decoder → Preprocessor → Flow Tracker, cấu hình TOML,
+ProcessedEvent và flow summary JSONL. CLI `--mode processed` chạy pipeline này
+cho PCAP hoặc interface; mode mặc định `parser` chạy bài 1.
+
+**Tiến độ hiện tại:** Task 01–17 đã triển khai; bài 1 đạt 12/12 case bắt buộc,
+bài 2 đạt T01–T14 (14/14). Toàn bộ suite **838 passed**. Task 17 có 13 lần chạy
+CLI PCAP với 93 events/21 summaries; live được kiểm thử mô phỏng, chưa có
+bằng chứng capture thật trong task này. Xem [kết quả Task 17](TEST/lab02/task17/README.md).
+Các mục theo task bên dưới ghi kết quả tại thời điểm hoàn thành từng task;
+những ghi chú “chưa nối CLI” trong task cũ mô tả trạng thái khi đó.
 
 ## Trạng thái hiện tại
 
@@ -642,6 +653,10 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Sửa .gitignore anchor /output/ để ids/output writer được commit và clone được.
 - 32 new tests PASS; full suite837 passed. Source/API/log tại
   TEST/lab02/task17-source/. Live tests mô phỏng, chưa capture thật trong phiên này.
+- Thêm kiểm thử executable qua 13 CLI subprocess: 93 events, 90 observations
+  được tracking, 21 summaries. Evidence tại [TEST/lab02/task17/](TEST/lab02/task17/README.md).
+  Kiểm thử này 1 passed; full suite sau cùng **838 passed**. Checkout Git sạch
+  của commit source cũng đạt837 tests trước khi thêm test executable.
 
 ```bash
 ./venv/bin/python main.py --mode processed --pcap TEST/lab02/T10/input.pcap \
@@ -661,7 +676,7 @@ trong TEST. Chưa stream reassembly/TLS và per-key generation history chưa bou
 - Linux hoặc WSL được khuyến nghị.
 - Live capture cần quyền root hoặc Linux capabilities để truy cập raw socket.
 
-Phiên bản đã dùng khi kiểm thử gần nhất ngày 28/09/2026:
+Phiên bản đã dùng khi kiểm thử gần nhất ngày 09/10/2026:
 
 - Python 3.12.3.
 - Scapy 2.7.0.
@@ -982,6 +997,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/reproduce_t12.py`, `tests/lab02/test_t12_idle_timeout.py`,
   `ids/processing_pipeline.py`, `tests/lab02/test_processed_cli.py`,
   `tests/lab02/test_processing_pipeline.py`, `tests/lab02/test_periodic_capture.py`,
+  `tests/lab02/reproduce_task17_cli.py`, `tests/lab02/test_task17_cli_replay.py`,
   `ids/flows/expiry.py`, `tests/lab02/test_flow_expiry.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,
@@ -1027,8 +1043,9 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 16: idle timeout/capacity và quản lý summaries, thực hiện T12.
-2. Task 17: nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra
-   đủ T01–T14.
-3. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
-   qua nhiều segment.
+1. Kiểm thử traffic thực tế trên interface của máy, lưu events/flows và log
+   thao tác để bổ sung bằng chứng ngoài các PCAP tổng hợp và live mock tests.
+2. Dùng ProcessedEvent/FlowRecord làm đầu vào cho module IDS tiếp theo theo
+   yêu cầu bài tập mới.
+3. Nghiên cứu TCP stream reassembly cho message qua nhiều segment; đây là
+   hướng mở rộng từ giới hạn parser hiện tại.

@@ -1,0 +1,140 @@
+Task 17 validation — 2026-10-09
+
+CLI subprocess evidence captured in cases.json:
+
+Case T01
+Input: TEST/lab02/T01/input.pcap
+Config: cli/T01/config.toml
+Exit code: 0
+Processed 5 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T01/events.jsonl. Flows: <output-dir>/cli/T01/flows.jsonl
+
+Case T02
+Input: TEST/lab02/T02/input.pcap
+Config: cli/T02/config.toml
+Exit code: 0
+Processed 11 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T02/events.jsonl. Flows: <output-dir>/cli/T02/flows.jsonl
+
+Case T03
+Input: TEST/lab02/T03/input.pcap
+Config: cli/T03/config.toml
+Exit code: 0
+Processed 14 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T03/events.jsonl. Flows: <output-dir>/cli/T03/flows.jsonl
+
+Case T04
+Input: TEST/lab02/T04/input.pcap
+Config: cli/T04/config.toml
+Exit code: 0
+Processed 2 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T04/events.jsonl. Flows: <output-dir>/cli/T04/flows.jsonl
+
+Case http-form
+Input: TEST/lab02/http-form/input.pcap
+Config: cli/http-form/config.toml
+Exit code: 0
+Processed 7 packets, wrote 1 flow summaries. Events: <output-dir>/cli/http-form/events.jsonl. Flows: <output-dir>/cli/http-form/flows.jsonl
+
+Case T07
+Input: TEST/lab02/T07/input.pcap
+Config: cli/T07/config.toml
+Exit code: 0
+Processed 3 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T07/events.jsonl. Flows: <output-dir>/cli/T07/flows.jsonl
+
+Case T08
+Input: TEST/lab02/T08/input.pcap
+Config: cli/T08/config.toml
+Exit code: 0
+Processed 5 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T08/events.jsonl. Flows: <output-dir>/cli/T08/flows.jsonl
+
+Case T09/fin
+Input: TEST/lab02/T09/fin/input.pcap
+Config: cli/T09/fin/config.toml
+Exit code: 0
+Processed 7 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T09/fin/events.jsonl. Flows: <output-dir>/cli/T09/fin/flows.jsonl
+
+Case T09/rst
+Input: TEST/lab02/T09/rst/input.pcap
+Config: cli/T09/rst/config.toml
+Exit code: 0
+Processed 4 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T09/rst/events.jsonl. Flows: <output-dir>/cli/T09/rst/flows.jsonl
+
+Case T10
+Input: TEST/lab02/T10/input.pcap
+Config: cli/T10/config.toml
+Exit code: 0
+Processed 2 packets, wrote 1 flow summaries. Events: <output-dir>/cli/T10/events.jsonl. Flows: <output-dir>/cli/T10/flows.jsonl
+
+Case T11
+Input: TEST/lab02/T11/input.pcap
+Config: cli/T11/config.toml
+Exit code: 0
+Processed 16 packets, wrote 6 flow summaries. Events: <output-dir>/cli/T11/events.jsonl. Flows: <output-dir>/cli/T11/flows.jsonl
+
+Case T12
+Input: TEST/lab02/T12/input.pcap
+Config: cli/T12/config.toml
+Exit code: 0
+Processed 4 packets, wrote 3 flow summaries. Events: <output-dir>/cli/T12/events.jsonl. Flows: <output-dir>/cli/T12/flows.jsonl
+
+Case T13
+Input: TEST/lab02/T13/input.pcap
+Config: cli/T13/config.toml
+Exit code: 0
+Processed 13 packets, wrote 2 flow summaries. Events: <output-dir>/cli/T13/events.jsonl. Flows: <output-dir>/cli/T13/flows.jsonl
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_task17_cli_replay.py -v -s
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_task17_cli_replay.py::test_existing_lab_pcaps_run_through_executable_and_produce_complete_flow_outputs T01: PASS; packets=5; tracked=4; flows=1
+T02: PASS; packets=11; tracked=11; flows=1
+T03: PASS; packets=14; tracked=14; flows=1
+T04: PASS; packets=2; tracked=2; flows=1
+http-form: PASS; packets=7; tracked=7; flows=1
+T07: PASS; packets=3; tracked=3; flows=1
+T08: PASS; packets=5; tracked=5; flows=1
+T09/fin: PASS; packets=7; tracked=7; flows=1
+T09/rst: PASS; packets=4; tracked=4; flows=1
+T10: PASS; packets=2; tracked=2; flows=1
+T11: PASS; packets=16; tracked=15; flows=6
+T12: PASS; packets=4; tracked=4; flows=3
+T13: PASS; packets=13; tracked=12; flows=2
+Task 17 CLI replay PASS: 13 subprocess runs; each raw event preserved; all tracked observations summarized once
+PASSED
+
+============================== 1 passed in 4.32s ===============================
+Exit code: 0
+
+Command: ./venv/bin/python -m pytest -q
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+........................................................................ [ 42%]
+........................................................................ [ 51%]
+........................................................................ [ 60%]
+........................................................................ [ 68%]
+........................................................................ [ 77%]
+........................................................................ [ 85%]
+........................................................................ [ 94%]
+..............................................                           [100%]
+838 passed in 7.25s
+Exit code: 0
+
+Clean Git archive checkout: e04d198
+Command: <repo>/venv/bin/python -m pytest -q (cwd: temporary checkout)
+........................................................................ [  8%]
+........................................................................ [ 17%]
+........................................................................ [ 25%]
+........................................................................ [ 34%]
+........................................................................ [ 43%]
+........................................................................ [ 51%]
+........................................................................ [ 60%]
+........................................................................ [ 68%]
+........................................................................ [ 77%]
+........................................................................ [ 86%]
+........................................................................ [ 94%]
+.............................................                            [100%]
+837 passed in 4.08s
+Exit code: 0
