@@ -207,6 +207,19 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   Tài liệu/log tại `TEST/lab02/task06/`; T02 có bằng chứng/commit riêng.
 - Decoder vẫn chạy qua API/script kiểm thử; main CLI chưa gọi module bài 2.
 
+### Bài tập 2 — T02 HTML entity
+
+- PCAP 11 HTTP message kiểm tra named/decimal/hex entities, decode một lần,
+  UTF-8 và charset header, numeric entity lỗi, byte lỗi và message kế tiếp,
+  không decode JSON, body rỗng, charset không hỗ trợ và bỏ qua gzip có reason.
+- Chạy cả replace/strict; raw URI, body và payload giữ nguyên trong JSONL.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t02`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t02_html_entity.py -v`.
+- PCAP, expected JSON, actual-replace/actual-strict JSONL và tài liệu/log:
+  `TEST/lab02/T02/`.
+- Kết quả ngày 09/10/2026: T02 PASS cả hai policy, pytest 2 passed;
+  toàn bộ suite 238 passed. T01/T02/T04 hoàn thành (3/14), form là case bổ sung.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -533,6 +546,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_decoder_text.py`,
   `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
   `ids/decoders/html.py`, `tests/lab02/test_decoder_html.py`,
+  `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,
   `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
   `tests/lab02/reproduce_http_form.py`, `tests/lab02/test_http_form_pcap.py`,

@@ -1,0 +1,56 @@
+T02 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t02
+
+replace packet 1: ok; text='<script>alert("x")</script>'
+replace packet 2: ok; text="<b> <i> & '"
+replace packet 3: ok; text='&lt;script&gt;'
+replace packet 4: ok; text='Việt Nam <3 + café'
+replace packet 5: partial; text='� � �'
+replace packet 6: partial; text='�<bad>'
+replace packet 7: ok; text='<next>'
+replace packet 8: skipped; text=None
+replace packet 9: ok; text=''
+replace packet 10: error; text=None
+replace packet 11: skipped; text=None
+T02 replace PASS: 11 events; raw body/URI unchanged
+strict packet 1: ok; text='<script>alert("x")</script>'
+strict packet 2: ok; text="<b> <i> & '"
+strict packet 3: ok; text='&lt;script&gt;'
+strict packet 4: ok; text='Việt Nam <3 + café'
+strict packet 5: partial; text='� � �'
+strict packet 6: error; text=None
+strict packet 7: ok; text='<next>'
+strict packet 8: skipped; text=None
+strict packet 9: ok; text=''
+strict packet 10: error; text=None
+strict packet 11: skipped; text=None
+T02 strict PASS: 11 events; raw body/URI unchanged
+T02 outputs in /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T02
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t02_html_entity.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 2 items
+
+tests/lab02/test_t02_html_entity.py::test_t02_http_text_entities_and_safe_continuation[replace] PASSED [ 50%]
+tests/lab02/test_t02_html_entity.py::test_t02_http_text_entities_and_safe_continuation[strict] PASSED [100%]
+
+============================== 2 passed in 0.71s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 30%]
+........................................................................ [ 60%]
+........................................................................ [ 90%]
+......................                                                   [100%]
+238 passed in 1.09s
+
+exit_code=0

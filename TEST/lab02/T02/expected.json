@@ -1,0 +1,132 @@
+{
+  "replace": [
+    {
+      "status": "ok",
+      "text": "<script>alert(\"x\")</script>",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "<b> <i> & '",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "&lt;script&gt;",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "Việt Nam <3 + café",
+      "error_codes": []
+    },
+    {
+      "status": "partial",
+      "text": "� � �",
+      "error_codes": [
+        "invalid_html_entity"
+      ]
+    },
+    {
+      "status": "partial",
+      "text": "�<bad>",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "ok",
+      "text": "<next>",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "text": null,
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "",
+      "error_codes": []
+    },
+    {
+      "status": "error",
+      "text": null,
+      "error_codes": [
+        "unsupported_charset"
+      ]
+    },
+    {
+      "status": "skipped",
+      "text": null,
+      "error_codes": [
+        "unsupported_http_body_encoding"
+      ]
+    }
+  ],
+  "strict": [
+    {
+      "status": "ok",
+      "text": "<script>alert(\"x\")</script>",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "<b> <i> & '",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "&lt;script&gt;",
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "Việt Nam <3 + café",
+      "error_codes": []
+    },
+    {
+      "status": "partial",
+      "text": "� � �",
+      "error_codes": [
+        "invalid_html_entity"
+      ]
+    },
+    {
+      "status": "error",
+      "text": null,
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "status": "ok",
+      "text": "<next>",
+      "error_codes": []
+    },
+    {
+      "status": "skipped",
+      "text": null,
+      "error_codes": []
+    },
+    {
+      "status": "ok",
+      "text": "",
+      "error_codes": []
+    },
+    {
+      "status": "error",
+      "text": null,
+      "error_codes": [
+        "unsupported_charset"
+      ]
+    },
+    {
+      "status": "skipped",
+      "text": null,
+      "error_codes": [
+        "unsupported_http_body_encoding"
+      ]
+    }
+  ]
+}
