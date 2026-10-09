@@ -401,6 +401,22 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   API/rules/log tại `TEST/lab02/task11/`; T08/T11 có commit riêng tiếp theo.
 - Chưa handshake/close/counters/expiry/capacity enforcement, chưa nối main CLI.
 
+### Bài tập 2 — T08 Bidirectional flow
+
+- PCAP Scapy 5 TCP ACK packets A→B/B→A xen kẽ, A=10.0.0.2:51000 và
+  B=10.0.0.1:8080. Sender đầu tiên khác endpoint_low của sorted key để kiểm
+  tra direction không bị đảo. Không payload và không phải capture mạng thật.
+- Reader → Parser → Decoder → Preprocessor → Tracker: 1 flow, cùng SHA-256 ID,
+  directions forward/backward/forward/backward/forward; views trước Tracker
+  giữ nguyên. Expected literal ID và creation snapshot độc lập với Tracker.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t08`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t08_bidirectional_flow.py -v`.
+- PCAP/config/expected/actual/flow snapshot và README/log tại `TEST/lab02/T08/`.
+- Kết quả: T08 PASS 5/5, integration 1 passed; full suite 595 passed.
+  Mandatory T01–T06/T08/T14 hoàn thành: 8/14; T11 commit riêng tiếp theo.
+- TCP NEW/counters zero/time creation-only phản ánh scope Task 11; chưa xác
+  nhận handshake/close/statistics. main CLI bài 2 chưa được nối.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -725,6 +741,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `tests/lab02/flow_pcap_support.py`,
+  `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
@@ -759,7 +776,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành artifacts và commit riêng T08/T11 cho Task 11.
+1. Hoàn thành artifacts và commit riêng T11 cho Task 11.
 2. Tracker counters (T13), TCP handshake/close (T07/T09), UDP (T10) và timeout
    (T12), thực hiện và commit lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.

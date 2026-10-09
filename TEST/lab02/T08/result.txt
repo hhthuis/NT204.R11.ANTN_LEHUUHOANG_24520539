@@ -1,0 +1,39 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t08
+
+packet 1: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 2: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 3: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 4: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 5: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+T08 PASS: 5 packets; 1 flow; first sender A differs from key sort order
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t08_bidirectional_flow.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t08_bidirectional_flow.py::test_t08_pcap_packets_share_bidirectional_identity_with_correct_direction PASSED [100%]
+
+============================== 1 passed in 0.58s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 96%]
+...................                                                      [100%]
+595 passed in 1.80s
+
+exit_code=0
