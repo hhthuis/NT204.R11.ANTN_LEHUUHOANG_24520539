@@ -1,0 +1,106 @@
+Task 08 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m pytest tests/lab02/test_validation.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 80 items
+
+tests/lab02/test_validation.py::test_valid_metadata_with_empty_payload_and_unknown_application[TCP] PASSED [  1%]
+tests/lab02/test_validation.py::test_valid_metadata_with_empty_payload_and_unknown_application[UDP] PASSED [  2%]
+tests/lab02/test_validation.py::test_timezone_aware_timestamp_is_accepted_without_normalizing_raw[2026-10-09T00:00:00Z] PASSED [  3%]
+tests/lab02/test_validation.py::test_timezone_aware_timestamp_is_accepted_without_normalizing_raw[2026-10-09T07:00:00+07:00] PASSED [  5%]
+tests/lab02/test_validation.py::test_timezone_aware_timestamp_is_accepted_without_normalizing_raw[2026-10-09T00:00:00.123456-04:00] PASSED [  6%]
+tests/lab02/test_validation.py::test_timezone_aware_timestamp_is_accepted_without_normalizing_raw[ 2026-10-09T00:00:00+00:00 ] PASSED [  7%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[None] PASSED [  8%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[123] PASSED [ 10%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[] PASSED [ 11%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[not a date] PASSED [ 12%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[2026-02-30T00:00:00Z] PASSED [ 13%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[2026-10-09] PASSED [ 15%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[2026-10-09T00:00:00] PASSED [ 16%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[0001-01-01T00:00:00+14:00] PASSED [ 17%]
+tests/lab02/test_validation.py::test_invalid_or_timezone_naive_timestamp_blocks_tracking[9999-12-31T23:59:59-14:00] PASSED [ 18%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[packet_id-0-invalid_packet_id] PASSED [ 20%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[packet_id-True-invalid_packet_id] PASSED [ 21%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[packet_id-1-invalid_packet_id] PASSED [ 22%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[captured_length--1-invalid_captured_length] PASSED [ 23%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[captured_length-True-invalid_captured_length] PASSED [ 25%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[captured_length-54.0-invalid_captured_length] PASSED [ 26%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network-None-missing_network] PASSED [ 27%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network-value7-missing_network] PASSED [ 28%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport-None-missing_transport] PASSED [ 30%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport-value9-missing_transport] PASSED [ 31%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.protocol-None-invalid_network_protocol] PASSED [ 32%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.protocol- -invalid_network_protocol] PASSED [ 33%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.protocol-6-invalid_transport_protocol] PASSED [ 35%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.src_ip-None-invalid_ip_address] PASSED [ 36%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.dst_ip-999.1.1.1-invalid_ip_address] PASSED [ 37%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.src_ip-167772161-invalid_ip_address] PASSED [ 38%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[network.dst_ip-2001:db8::1-ip_protocol_mismatch] PASSED [ 40%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.src_port--1-invalid_port] PASSED [ 41%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.dst_port-65536-invalid_port] PASSED [ 42%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.src_port-True-invalid_port] PASSED [ 43%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.dst_port-80-invalid_port] PASSED [ 45%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[transport.dst_port-80.0-invalid_port] PASSED [ 46%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[parse_status-malformed-malformed_packet] PASSED [ 47%]
+tests/lab02/test_validation.py::test_missing_or_invalid_required_fields_have_structured_errors[parse_status-None-invalid_parse_status] PASSED [ 48%]
+tests/lab02/test_validation.py::test_port_range_boundaries[0] PASSED     [ 50%]
+tests/lab02/test_validation.py::test_port_range_boundaries[65535] PASSED [ 51%]
+tests/lab02/test_validation.py::test_mixed_case_protocol_and_whitespace_are_checked_without_rewriting_raw PASSED [ 52%]
+tests/lab02/test_validation.py::test_partial_metadata_that_is_unsafe_for_tracking[transport.protocol-SCTP-unsupported_transport_protocol] PASSED [ 53%]
+tests/lab02/test_validation.py::test_partial_metadata_that_is_unsafe_for_tracking[parse_status-unsupported-unsupported_packet] PASSED [ 55%]
+tests/lab02/test_validation.py::test_partial_metadata_that_is_unsafe_for_tracking[network.fragment_offset-1-noninitial_fragment] PASSED [ 56%]
+tests/lab02/test_validation.py::test_partial_metadata_that_is_unsafe_for_tracking[network.fragment_offset--1-invalid_fragment_offset] PASSED [ 57%]
+tests/lab02/test_validation.py::test_partial_metadata_that_is_unsafe_for_tracking[transport.fields-value4-invalid_transport_fields] PASSED [ 58%]
+tests/lab02/test_validation.py::test_ipv6_is_recognized_as_unsupported_instead_of_invalid_address PASSED [ 60%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[wire_length--1-invalid_wire_length] PASSED [ 61%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[wire_length-53-invalid_wire_length] PASSED [ 62%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[wire_length-True-invalid_wire_length] PASSED [ 63%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[source-None-invalid_capture_source] PASSED [ 65%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[source.name--invalid_capture_source] PASSED [ 66%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[source.type-synthetic-unsupported_capture_source] PASSED [ 67%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[network.ttl-256-invalid_ttl] PASSED [ 68%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[payload-None-missing_payload_info] PASSED [ 70%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[payload.length--1-invalid_payload_length] PASSED [ 71%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[payload.length-55-invalid_payload_length] PASSED [ 72%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[payload.base64-123-invalid_payload_representation] PASSED [ 73%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[application-None-missing_application_info] PASSED [ 75%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[application.protocol-None-invalid_application_protocol] PASSED [ 76%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[application.protocol-FTP-unsupported_application_protocol] PASSED [ 77%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[application.fields-value14-invalid_application_fields] PASSED [ 78%]
+tests/lab02/test_validation.py::test_optional_data_issues_are_partial_but_keep_valid_flow_endpoints[parse_status-partial-partial_packet] PASSED [ 80%]
+tests/lab02/test_validation.py::test_invalid_tcp_flags_block_state_tracking[SYN] PASSED [ 81%]
+tests/lab02/test_validation.py::test_invalid_tcp_flags_block_state_tracking[flags1] PASSED [ 82%]
+tests/lab02/test_validation.py::test_invalid_tcp_flags_block_state_tracking[flags2] PASSED [ 83%]
+tests/lab02/test_validation.py::test_invalid_tcp_flags_block_state_tracking[flags3] PASSED [ 85%]
+tests/lab02/test_validation.py::test_missing_and_duplicate_flags_are_partial_and_do_not_invent_state PASSED [ 86%]
+tests/lab02/test_validation.py::test_parser_lower_layer_errors_block_tracking_but_application_errors_do_not PASSED [ 87%]
+tests/lab02/test_validation.py::test_multiple_issues_are_reported_and_invalid_takes_precedence PASSED [ 88%]
+tests/lab02/test_validation.py::test_wrong_event_type_returns_invalid_without_exception PASSED [ 90%]
+tests/lab02/test_validation.py::test_nonempty_payload_missing_raw_is_partial_without_requiring_application_decode PASSED [ 91%]
+tests/lab02/test_validation.py::test_validation_preserves_decode_errors_and_raw_without_authorizing_tracking PASSED [ 92%]
+tests/lab02/test_validation.py::test_repeat_validation_replaces_old_validation_errors_and_preserves_other_reasons PASSED [ 93%]
+tests/lab02/test_validation.py::test_real_parser_decoder_validation_accepts_empty_transport_packets[layer0] PASSED [ 95%]
+tests/lab02/test_validation.py::test_real_parser_decoder_validation_accepts_empty_transport_packets[layer1] PASSED [ 96%]
+tests/lab02/test_validation.py::test_real_parser_decoder_validation_accepts_empty_transport_packets[layer2] PASSED [ 97%]
+tests/lab02/test_validation.py::test_real_parser_decoder_validation_accepts_empty_transport_packets[layer3] PASSED [ 98%]
+tests/lab02/test_validation.py::test_decoder_failure_does_not_make_good_transport_metadata_invalid_and_next_event_continues PASSED [100%]
+
+============================== 80 passed in 0.47s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 18%]
+........................................................................ [ 37%]
+........................................................................ [ 56%]
+........................................................................ [ 75%]
+........................................................................ [ 93%]
+.......................                                                  [100%]
+383 passed in 1.41s
+
+exit_code=0

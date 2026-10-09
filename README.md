@@ -259,6 +259,30 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả ngày 09/10/2026: T03 PASS cả hai policy, pytest 2 passed; toàn bộ
   suite 303 passed. Đã hoàn thành T01–T04 (4/14); form là case bổ sung.
 
+### Bài tập 2 — Event validation (Task 08)
+
+- `ids/preprocessors/validation.py`: validate_packet() trả ValidationResult
+  gồm status/tracking_eligible/errors/reason; validate_event() trả bản sao
+  ProcessedEvent với preprocess_status và lỗi stage=preprocess.
+- Kiểm tra packet_id, captured_length, IP/network protocol, TCP/UDP và port
+  0..65535; timestamp ISO có timezone và chuyển được sang UTC. Không coi bool/
+  float/string là integer hợp lệ và không sửa raw values khi kiểm tra.
+- valid: metadata đạt kiểm tra; invalid: field bắt buộc sai/thiếu hoặc packet
+  malformed; partial: optional data lỗi/thiếu, parser partial hoặc unsupported.
+- Unsupported network/transport, fragment không phải đầu, TCP flags sai hoặc
+  parse errors ở network/transport không đủ điều kiện tracking. Lỗi application
+  không tự loại metadata TCP/UDP tốt; UNKNOWN và payload rỗng vẫn được hỗ trợ.
+- Decode status độc lập với validation; giữ errors/reason trước đó, cập nhật
+  lỗi validation khi chạy lại, không sửa packet/decoded/normalized của caller.
+- Đây là validation stage: action vẫn skip_tracking và flow=null cho tới khi
+  hoàn thiện normalization/policy. Chưa dùng policy mark/skip ở task này.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_validation.py -v`.
+- Kết quả ngày 09/10/2026: 80 test mới passed; toàn bộ suite 383 passed.
+  Tài liệu/log tại `TEST/lab02/task08/`. T14 chưa hoàn thành; sẽ có artifacts
+  riêng sau khi Preprocessor có đầy đủ normalization/policy.
+- Validation chạy qua API/test tích hợp parser → decoder → validation; chưa
+  nối vào main CLI. Bước tiếp theo: Task 09 normalization và T05.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -588,6 +612,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/decoders/html.py`, `tests/lab02/test_decoder_html.py`,
   `ids/parsers/application/mime.py`, `ids/decoders/mime.py`,
   `tests/lab02/test_decoder_mime.py`,
+  `ids/preprocessors/__init__.py`, `ids/preprocessors/validation.py`,
+  `tests/lab02/test_validation.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
   `tests/lab02/test_t03_smtp_mime.py`,
   `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,
@@ -605,8 +631,9 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
-2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
-3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
-4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+1. Task 09: Preprocessor normalization và T05.
+2. Task 10: missing/unsupported data, policy/action, T06/T14.
+3. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+4. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
+5. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.
