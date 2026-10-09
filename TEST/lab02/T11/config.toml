@@ -1,0 +1,33 @@
+# Defaults chosen for this project; the lab does not prescribe these numbers.
+# A custom file may override only the settings it needs.
+
+[decoder]
+default_charset = "utf-8"
+# replace: retain readable text, but still mark invalid bytes as partial/error.
+# strict: report a decode error; processing of subsequent events continues.
+invalid_bytes_policy = "replace"
+max_input_bytes = 1048576
+max_output_bytes = 1048576
+# skip/error: do not decode oversized data; retain raw data and record a reason.
+limit_policy = "skip"
+
+[preprocessor]
+# Both retain events for logs; missing optional data is not malformed data.
+# mark: record status/reason and process whatever fields remain safe.
+# skip: record status/reason, then skip tracking.
+# Neither policy authorizes tracking if required endpoint/time fields are invalid.
+invalid_event_policy = "skip"
+unsupported_event_policy = "mark"
+# Normalization limits per text field or header/record collection; no truncation.
+max_input_bytes = 1048576
+max_output_bytes = 1048576
+
+[tracker]
+# Seconds. PCAP uses event timestamps; live capture also needs periodic expiry.
+tcp_idle_timeout = 180.0
+udp_idle_timeout = 30.0
+expiry_check_interval = 1.0
+max_active_flows = 10000
+# evict_oldest: export/remove the least recently seen flow to admit a new one.
+# skip_new: preserve existing flows, skip the new flow with a reason.
+capacity_policy = "evict_oldest"

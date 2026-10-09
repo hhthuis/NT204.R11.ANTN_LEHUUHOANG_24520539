@@ -399,6 +399,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_flow_tracker.py -v`.
 - Kết quả tại commit task: 53 test mới passed; toàn bộ suite 594 passed.
   API/rules/log tại `TEST/lab02/task11/`; T08/T11 có commit riêng tiếp theo.
+- T08 và T11 đã hoàn thành ở các mục bên dưới; Tracker identity/direction API
+  hoạt động qua script PCAP test, chưa được nối vào main CLI.
 - Chưa handshake/close/counters/expiry/capacity enforcement, chưa nối main CLI.
 
 ### Bài tập 2 — T08 Bidirectional flow
@@ -413,9 +415,23 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_t08_bidirectional_flow.py -v`.
 - PCAP/config/expected/actual/flow snapshot và README/log tại `TEST/lab02/T08/`.
 - Kết quả: T08 PASS 5/5, integration 1 passed; full suite 595 passed.
-  Mandatory T01–T06/T08/T14 hoàn thành: 8/14; T11 commit riêng tiếp theo.
+  Đây là snapshot tại commit T08; T11 có commit riêng bên dưới.
 - TCP NEW/counters zero/time creation-only phản ánh scope Task 11; chưa xác
   nhận handshake/close/statistics. main CLI bài 2 chưa được nối.
+
+### Bài tập 2 — T11 Concurrent flows
+
+- PCAP 16 packet: sáu flow TCP/UDP khác từng thành phần 5-tuple, reverse
+  packets xen kẽ, một ICMP skipped rồi ba packet hợp lệ tiếp theo. F1 TCP và
+  F4 UDP có endpoint pair giống hệt để kiểm tra protocol không bị bỏ khỏi key.
+- 6 active flows/6 IDs; mọi phản hồi đúng ID/direction; ICMP không tạo flow mới.
+  Raw/decoded/normalized/status/errors được giữ, reason giải thích skipped event.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t11`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t11_concurrent_flows.py -v`.
+- PCAP/config/expected/actual/flow snapshots và README/log tại `TEST/lab02/T11/`.
+- Kết quả: T11 PASS 16/16, integration 1 passed; full suite 596 passed.
+- Mandatory T01–T06/T08/T11/T14 hoàn thành: 9/14. Còn T07/T09/T10/T12/T13.
+  Counters/state/time updates/expiry và main CLI integration thuộc task sau.
 
 ## Yêu cầu môi trường
 
@@ -742,6 +758,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `tests/lab02/flow_pcap_support.py`,
   `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
+  `tests/lab02/reproduce_t11.py`, `tests/lab02/test_t11_concurrent_flows.py`,
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
@@ -776,9 +793,10 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành artifacts và commit riêng T11 cho Task 11.
-2. Tracker counters (T13), TCP handshake/close (T07/T09), UDP (T10) và timeout
-   (T12), thực hiện và commit lần lượt.
+1. Task 12: cập nhật packet/byte/directional/flag counters, start/last_seen/duration
+   và application metadata của flow; thực hiện T13.
+2. TCP handshake/close (T07/T09), UDP DNS (T10), timeout/capacity (T12),
+   thực hiện và commit lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.

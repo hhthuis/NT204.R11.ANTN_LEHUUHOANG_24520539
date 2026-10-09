@@ -1,0 +1,50 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t11
+
+packet 1: F1; forward
+packet 2: F2; forward
+packet 3: F3; forward
+packet 4: F4; forward
+packet 5: F5; forward
+packet 6: F6; forward
+packet 7: F1; backward
+packet 8: F4; backward
+packet 9: F2; backward
+packet 10: F3; backward
+packet 11: F5; backward
+packet 12: F6; backward
+packet 13: ICMP; skip_tracking
+packet 14: F1; forward
+packet 15: F4; forward
+packet 16: F2; backward
+T11 PASS: 16 packets; 6 distinct flows; skipped ICMP adds no flow; processing continues
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t11_concurrent_flows.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t11_concurrent_flows.py::test_t11_interleaved_pcap_flows_stay_separate_and_skipped_packet_does_not_add_flow PASSED [100%]
+
+============================== 1 passed in 0.62s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 96%]
+....................                                                     [100%]
+596 passed in 1.83s
+
+exit_code=0
