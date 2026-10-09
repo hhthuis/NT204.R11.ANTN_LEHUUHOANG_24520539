@@ -1,6 +1,6 @@
-"""Event decoder: HTTP fields or character decoding of a raw payload.
+"""Event decoder: HTTP URI/form/HTML fields or raw payload character decoding.
 
-MIME and HTML decoding are added in later tasks. This function is not yet
+MIME decoding is added in a later task. This function is not yet
 wired into the PCAP/live CLI pipeline.
 """
 

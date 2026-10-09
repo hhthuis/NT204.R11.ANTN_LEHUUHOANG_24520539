@@ -129,8 +129,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_text.py -v`.
 - Kết quả ngày 09/10/2026: 25 test mới passed, toàn bộ suite 142 passed.
   Tài liệu/log tại `TEST/lab02/task04/`.
-- HTTP URL/form được bổ sung ở Task 05; HTML/MIME và nối decoder vào CLI
-  triển khai sau. T04 có bằng chứng và commit riêng.
+- HTTP URL/form được bổ sung ở Task 05, HTML ở Task 06; MIME và nối decoder
+  vào CLI triển khai sau. T04 có bằng chứng và commit riêng.
 
 ### Bài tập 2 — T04 Invalid bytes
 
@@ -160,7 +160,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_http.py -v`.
 - Kết quả ngày 09/10/2026: 41 test HTTP mới passed; toàn bộ suite 185 passed.
   Tài liệu/log tại `TEST/lab02/task05/`; T01/form có commit bằng chứng riêng.
-- Chưa nối decoder vào main CLI; HTML/MIME decoding triển khai sau.
+- HTML decoding được bổ sung ở Task 06; MIME và nối decoder vào main CLI
+  triển khai sau.
 
 ### Bài tập 2 — T01 HTTP URL decode
 
@@ -183,6 +184,28 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Bằng chứng tại `TEST/lab02/http-form/`; case form 1 passed.
 - Kết quả ngày 09/10/2026 sau Task 05/T01/form: toàn bộ suite 187 passed.
   T01 và T04 đã hoàn thành (2/14); form là kiểm thử chức năng bổ sung.
+
+### Bài tập 2 — HTML entity decoder (Task 06)
+
+- `ids/decoders/html.py`: character-decode ASCII/UTF-8 rồi HTML5 entity-decode
+  đúng một lần. Hỗ trợ named/decimal/hex entities: `&lt;script&gt;` → `<script>`,
+  `&#60;`/`&#x3C;` → `<`; `&amp;lt;` → `&lt;`.
+- Adapter HTTP áp dụng cho body có Content-Type text/html hoặc text/plain,
+  request và response. Đọc body_base64, giữ nguyên PacketEvent/body/payload;
+  kết quả riêng tại `decoded.http.html.text/charset/status/errors`.
+- Không tự HTML-decode URI/form, JSON, binary, CSS hoặc body thiếu Content-Type.
+  Với text/plain, đây là biểu diễn bổ sung để phân tích; raw text vẫn giữ nguyên.
+- Unknown named entities giữ literal theo HTML5. Numeric entity NUL/surrogate/
+  ngoài Unicode range được thay U+FFFD, partial và invalid_html_entity.
+  Numeric reference rất dài không gây lỗi chuyển số nguyên; errors được giới hạn.
+- Byte lỗi theo replace/strict; charset sai/Base64 lỗi/thiếu body ghi error/reason.
+  Input bị chặn trước decode; output limit tính UTF-8 bytes sau entity decoding,
+  không cắt text. HTTP chưa đầy đủ có partial/reason.
+- Body gzip/chunked được skipped có reason vì chưa có decompression/dechunking.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_html.py -v`.
+- Kết quả ngày 09/10/2026: 49 test mới passed; toàn bộ suite 236 passed.
+  Tài liệu/log tại `TEST/lab02/task06/`; T02 có bằng chứng/commit riêng.
+- Decoder vẫn chạy qua API/script kiểm thử; main CLI chưa gọi module bài 2.
 
 ## Yêu cầu môi trường
 
@@ -509,6 +532,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
   `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
+  `ids/decoders/html.py`, `tests/lab02/test_decoder_html.py`,
   `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
   `tests/lab02/reproduce_http_form.py`, `tests/lab02/test_http_form_pcap.py`,
@@ -523,10 +547,9 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 06: HTML entity decoder và T02.
-2. Task 07: SMTP/MIME Base64/Quoted-Printable decoder và T03.
-3. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
-4. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
-5. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
-6. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+1. Task 07: SMTP/MIME Base64/Quoted-Printable decoder và T03.
+2. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
+3. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+4. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
+5. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.

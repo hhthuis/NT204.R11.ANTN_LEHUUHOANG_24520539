@@ -1,4 +1,4 @@
-"""One-pass HTTP URI/form decoding, preserving all raw parser fields."""
+"""One-pass HTTP URI/form/HTML decoding, preserving all raw parser fields."""
 
 import base64
 import binascii
@@ -9,6 +9,7 @@ from typing import Any
 from urllib.parse import unquote_to_bytes
 
 from ids.config import DecoderConfig
+from ids.decoders.html import decode_html
 from ids.decoders.text import TextDecodeResult, decode_error, decode_text, limit_result
 from ids.models import ApplicationInfo
 from ids.processing_models import DecodeStatus, ProcessingError
@@ -29,6 +30,7 @@ class FormDecodeResult:
 class HttpDecodeResult:
     uri: TextDecodeResult | None = None
     form: FormDecodeResult | None = None
+    html: TextDecodeResult | None = None
     status: DecodeStatus = DecodeStatus.SKIPPED
     errors: list[ProcessingError] = field(default_factory=list)
 
@@ -149,24 +151,26 @@ def decode_form(
     return FormDecodeResult(parameters, encoding.charset, status, errors)
 
 
-def _raw_form_body(fields: dict[str, Any], config: DecoderConfig) -> bytes | FormDecodeResult:
+def _raw_http_body(
+    fields: dict[str, Any], config: DecoderConfig, context: str
+) -> bytes | TextDecodeResult:
     raw = fields.get("body_base64")
     if raw is None:
         if fields.get("body_length") == 0:
             return b""
-        return _form_failure(_text_error(
-            "missing_raw_form_body", "HTTP form needs body_base64 or explicit body_length=0"
-        ))
+        return _text_error(
+            f"missing_raw_{context}_body", f"HTTP {context} needs body_base64 or explicit body_length=0"
+        )
     if not isinstance(raw, str):
-        return _form_failure(_text_error("invalid_form_base64", "HTTP body Base64 must be text"))
+        return _text_error(f"invalid_{context}_base64", "HTTP body Base64 must be text")
     if len(raw) > 4 * ((config.max_input_bytes + 2) // 3):
-        return _form_failure(limit_result(
-            config, "input_limit_exceeded", "HTTP form Base64 exceeds input byte limit"
-        ))
+        return limit_result(
+            config, "input_limit_exceeded", f"HTTP {context} Base64 exceeds input byte limit"
+        )
     try:
         return base64.b64decode(raw, validate=True)
     except (binascii.Error, ValueError):
-        return _form_failure(_text_error("invalid_form_base64", "HTTP body has invalid Base64 data"))
+        return _text_error(f"invalid_{context}_base64", "HTTP body has invalid Base64 data")
 
 
 def decode_http(
@@ -175,7 +179,7 @@ def decode_http(
     *,
     charset: str | None = None,
 ) -> HttpDecodeResult:
-    """Decode parsed URI and form fields, leaving ApplicationInfo untouched."""
+    """Decode URI/form and text/html or text/plain bodies without mutating raw fields."""
     config = config if config is not None else DecoderConfig()
     result = HttpDecodeResult()
     fields = application.fields
@@ -214,13 +218,37 @@ def decode_http(
                 mime = Message()
                 mime["Content-Type"] = content_type
                 if mime.get_content_type() == "application/x-www-form-urlencoded":
-                    body = _raw_form_body(fields, config)
-                    result.form = body if isinstance(body, FormDecodeResult) else decode_form(
+                    body = _raw_http_body(fields, config, "form")
+                    result.form = _form_failure(body) if isinstance(body, TextDecodeResult) else decode_form(
                         body, config, charset=mime.get_param("charset", charset)
                     )
+                elif mime.get_content_type() in ("text/html", "text/plain"):
+                    encodings = [
+                        value for key, value in headers.items()
+                        if isinstance(key, str) and key.lower() in (
+                            "content-encoding", "transfer-encoding"
+                        )
+                    ]
+                    if any(not isinstance(value, str) for value in encodings):
+                        result.html = _text_error(
+                            "invalid_http_body_encoding", "HTTP body encoding headers must be text"
+                        )
+                    elif any(value.strip().lower() != "identity" for value in encodings):
+                        result.html = TextDecodeResult(
+                            None, None, DecodeStatus.SKIPPED,
+                            [decode_error(
+                                "unsupported_http_body_encoding",
+                                "HTML decoding needs an uncompressed, unchunked HTTP body",
+                            )],
+                        )
+                    else:
+                        body = _raw_http_body(fields, config, "html")
+                        result.html = body if isinstance(body, TextDecodeResult) else decode_html(
+                            body, config, charset=mime.get_param("charset", charset)
+                        )
 
     statuses = []
-    for item in (result.uri, result.form):
+    for item in (result.uri, result.form, result.html):
         if item is not None:
             statuses.append(item.status)
             _collect_errors(result.errors, item.errors)
