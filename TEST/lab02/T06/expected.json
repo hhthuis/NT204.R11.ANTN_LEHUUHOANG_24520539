@@ -1,0 +1,78 @@
+{
+  "default": [
+    {
+      "packet_id": 1,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 2,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_application_info"
+      ]
+    },
+    {
+      "packet_id": 3,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_payload_info"
+      ]
+    },
+    {
+      "packet_id": 4,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_tcp_flags"
+      ]
+    },
+    {
+      "packet_id": 5,
+      "status": "partial",
+      "action": "track",
+      "error_codes": [
+        "validation_missing_tcp_flags"
+      ]
+    },
+    {
+      "packet_id": 6,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 7,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 8,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 9,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 10,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    },
+    {
+      "packet_id": 11,
+      "status": "valid",
+      "action": "track",
+      "error_codes": []
+    }
+  ]
+}

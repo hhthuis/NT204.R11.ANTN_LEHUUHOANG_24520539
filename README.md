@@ -350,6 +350,20 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   suite 539 passed. Quy tắc/API/log tại `TEST/lab02/task10/`.
 - T06/T14 được thực hiện và commit riêng sau phần mã nguồn Task 10.
 
+### Bài tập 2 — T06 Missing field
+
+- 11 synthetic PacketEvent JSONL: optional scalars/model null, missing/null TCP
+  flags, DNS lists thiếu/null, HTTP headers thiếu, SMTP commands thiếu/null và
+  event hợp lệ tiếp theo. Source là mock, không phải PCAP capture mạng thật.
+- Defaults null/[]/{} đúng ngữ cảnh; không sửa raw hay decoded, không tự tạo
+  endpoint/time/state. Optional missing vẫn được track dưới invalid=skip nếu
+  metadata an toàn; flow=null vì chưa triển khai Tracker runtime.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t06`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t06_missing_fields.py -v`.
+- Input/config/expected/actual và README/log tại `TEST/lab02/T06/`.
+- Kết quả: T06 PASS 11/11, integration 1 passed; full suite 540 passed.
+  Mandatory T01–T06 hoàn thành (6/14); T14 có commit riêng tiếp theo.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -685,6 +699,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_normalization.py`,
   `ids/preprocessors/policy.py`, `tests/lab02/test_preprocessor_policy.py`,
   `tests/lab02/preprocessor_case_support.py`,
+  `tests/lab02/reproduce_t06.py`, `tests/lab02/test_t06_missing_fields.py`,
   `tests/lab02/event_file_support.py`, `tests/lab02/reproduce_t05.py`,
   `tests/lab02/test_t05_normalization.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
@@ -704,7 +719,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành artifacts/commit riêng T06 và T14 cho Task 10.
+1. Hoàn thành artifacts/commit riêng T14 cho Task 10.
 2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message

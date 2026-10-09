@@ -109,4 +109,3 @@ $ ./venv/bin/python -m pytest -q
 539 passed in 1.38s
 
 exit_code=0
-
