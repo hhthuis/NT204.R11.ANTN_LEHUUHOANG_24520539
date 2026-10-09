@@ -3,6 +3,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from ids.models import ApplicationInfo
+from ids.parsers.application.mime import looks_like_mime, parse_mime
 
 
 SMTP_RESPONSE_LINE = re.compile(
@@ -265,6 +266,9 @@ def _parse_response_lines(
 
 
 def parse_smtp(payload: bytes) -> SmtpParseResult:
+    if looks_like_mime(payload):
+        mime = parse_mime(payload, smtp_data=True)
+        return SmtpParseResult(mime.application, mime.complete, mime.warnings)
     lines, payload_complete, warnings = _split_lines(payload)
 
     if SMTP_RESPONSE_LINE.fullmatch(lines[0]):

@@ -129,8 +129,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_text.py -v`.
 - Kết quả ngày 09/10/2026: 25 test mới passed, toàn bộ suite 142 passed.
   Tài liệu/log tại `TEST/lab02/task04/`.
-- HTTP URL/form được bổ sung ở Task 05, HTML ở Task 06; MIME và nối decoder
-  vào CLI triển khai sau. T04 có bằng chứng và commit riêng.
+- HTTP URL/form được bổ sung ở Task 05, HTML ở Task 06, MIME ở Task 07;
+  nối decoder vào CLI triển khai sau. T04 có bằng chứng và commit riêng.
 
 ### Bài tập 2 — T04 Invalid bytes
 
@@ -160,8 +160,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_http.py -v`.
 - Kết quả ngày 09/10/2026: 41 test HTTP mới passed; toàn bộ suite 185 passed.
   Tài liệu/log tại `TEST/lab02/task05/`; T01/form có commit bằng chứng riêng.
-- HTML decoding được bổ sung ở Task 06; MIME và nối decoder vào main CLI
-  triển khai sau.
+- HTML decoding được bổ sung ở Task 06, MIME ở Task 07; nối decoder vào
+  main CLI triển khai sau.
 
 ### Bài tập 2 — T01 HTTP URL decode
 
@@ -219,6 +219,31 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   `TEST/lab02/T02/`.
 - Kết quả ngày 09/10/2026: T02 PASS cả hai policy, pytest 2 passed;
   toàn bộ suite 238 passed. T01/T02/T04 hoàn thành (3/14), form là case bổ sung.
+
+### Bài tập 2 — SMTP/MIME decoder (Task 07)
+
+- `ids/parsers/application/mime.py` đọc header/body MIME, giữ raw headers/body
+  bằng Base64, giữ header lặp và unfold continuation. SMTP parser nhận message
+  ngoài command/response; detector nhận MIME trên các SMTP port đã hỗ trợ.
+- `ids/decoders/mime.py` giải mã đúng một lần theo Content-Transfer-Encoding:
+  Base64 và Quoted-Printable; thiếu header dùng identity 7bit, không đoán Base64.
+- Base64 hỗ trợ whitespace/line wrapping; alphabet/padding sai trả error.
+  QP hỗ trợ =HH, soft line breaks; dấu `_`/`+` literal giữ nguyên; escape sai
+  giữ literal và partial, không silently bỏ dấu `=` cuối body.
+- Text được character-decode ASCII/UTF-8; charset header ưu tiên, thiếu thì
+  dùng caller/config. Binary giữ decoded bytes Base64, không ép thành UTF-8.
+- Kết quả tại `decoded.mime`: encoding/media type/charset/text/body_base64/
+  body_length/status/errors. Dữ liệu gốc nằm nguyên trong `packet`.
+- SMTP DATA terminator được tách ở parser; dot transparency được xử lý ở
+  decoder, wire body và payload gốc giữ nguyên. DATA thiếu terminator có partial.
+- Byte lỗi/charset sai/header encoding lặp/raw thiếu/Base64 hỏng có status/reason;
+  giới hạn input/output dùng DecoderConfig, vượt limit không truncate dữ liệu.
+- Multipart/nested MIME và encoding chưa hỗ trợ được skipped có reason;
+  chưa TCP reassembly/SMTP session state hoặc TLS decryption.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_mime.py -v`.
+- Kết quả ngày 09/10/2026: 63 test mới passed; toàn bộ suite 301 passed.
+  Tài liệu/log tại `TEST/lab02/task07/`; T03 có bằng chứng/commit riêng.
+- Main CLI vẫn chỉ chạy parser; bài 2 decoder chạy qua API/script kiểm thử.
 
 ## Yêu cầu môi trường
 
@@ -350,7 +375,8 @@ ids/
 │       ├── detector.py        Nhận diện HTTP, DNS và SMTP
 │       ├── http.py            HTTP/1.x request/response parser
 │       ├── dns.py             DNS query/response parser
-│       └── smtp.py            SMTP command/response parser
+│       ├── smtp.py            SMTP command/response/MIME adapter
+│       └── mime.py            Header và raw body của MIME entity
 └── output/
     └── jsonl.py               JSON Lines writer
 tests/                         Kiểm thử tự động và script sinh PCAP
@@ -546,6 +572,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_decoder_text.py`,
   `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
   `ids/decoders/html.py`, `tests/lab02/test_decoder_html.py`,
+  `ids/parsers/application/mime.py`, `ids/decoders/mime.py`,
+  `tests/lab02/test_decoder_mime.py`,
   `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,
   `tests/lab02/http_pcap_support.py`,
   `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
@@ -561,9 +589,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 07: SMTP/MIME Base64/Quoted-Printable decoder và T03.
-2. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
-3. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
-4. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
-5. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+1. Preprocessor: validation/normalization, dữ liệu thiếu và T05/T06/T14.
+2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
+4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.

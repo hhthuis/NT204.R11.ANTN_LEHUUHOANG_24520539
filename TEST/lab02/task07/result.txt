@@ -1,0 +1,88 @@
+Task 07 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m pytest tests/lab02/test_decoder_mime.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 63 items
+
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[SGVsbG8=-base64-Hello] PASSED [  1%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[SGVs\r\nbG8=\r\n \t- BaSe64 -Hello] PASSED [  3%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[WGluIGNow6Bv-base64-Xin ch\xe0o] PASSED [  4%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[Xin ch=C3=A0o-quoted-printable-Xin ch\xe0o] PASSED [  6%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[a=3Db=0D=0Ac-quoted-printable-a=b\r\nc] PASSED [  7%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[long=\r\nline=\nnext-quoted-printable-longlinenext] PASSED [  9%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[a_b+c=2B=5F-quoted-printable-a_b+c+_] PASSED [ 11%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[=3d=3D-quoted-printable-==] PASSED [ 12%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[=253Cscript=253E-quoted-printable-%3Cscript%3E] PASSED [ 14%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[U0dWc2JHOD0=-base64-SGVsbG8=] PASSED [ 15%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[SGVsbG8=-None-SGVsbG8=] PASSED [ 17%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[raw text-7bit-raw text] PASSED [ 19%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[caf\xc3\xa9-8bit-caf\xe9] PASSED [ 20%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[text-binary-text] PASSED [ 22%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[-base64-] PASSED [ 23%]
+tests/lab02/test_decoder_mime.py::test_transfer_decoding_is_header_directed_and_one_pass[-quoted-printable-] PASSED [ 25%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[!SGVsbG8=] PASSED [ 26%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[SGVsbG8] PASSED [ 28%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[a===] PASSED [ 30%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[SGVsbG8=AAAA] PASSED [ 31%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[AAAA====] PASSED [ 33%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[AB==] PASSED [ 34%]
+tests/lab02/test_decoder_mime.py::test_invalid_base64_is_not_silently_accepted[SGVsbG8=\xff] PASSED [ 36%]
+tests/lab02/test_decoder_mime.py::test_invalid_qp_escape_is_preserved_and_marked_partial[bad=ZZ=20good-bad=ZZ good] PASSED [ 38%]
+tests/lab02/test_decoder_mime.py::test_invalid_qp_escape_is_preserved_and_marked_partial[bad=-bad=] PASSED [ 39%]
+tests/lab02/test_decoder_mime.py::test_invalid_qp_escape_is_preserved_and_marked_partial[a=1-a=1] PASSED [ 41%]
+tests/lab02/test_decoder_mime.py::test_invalid_qp_escape_is_preserved_and_marked_partial[a=\rX-a=\rX] PASSED [ 42%]
+tests/lab02/test_decoder_mime.py::test_qp_trailing_transport_space_is_removed_but_encoded_space_is_kept PASSED [ 44%]
+tests/lab02/test_decoder_mime.py::test_invalid_decoded_character_bytes_follow_policy[replace-partial-\ufffd-base64-/w==] PASSED [ 46%]
+tests/lab02/test_decoder_mime.py::test_invalid_decoded_character_bytes_follow_policy[replace-partial-\ufffd-quoted-printable-=FF] PASSED [ 47%]
+tests/lab02/test_decoder_mime.py::test_invalid_decoded_character_bytes_follow_policy[strict-error-None-base64-/w==] PASSED [ 49%]
+tests/lab02/test_decoder_mime.py::test_invalid_decoded_character_bytes_follow_policy[strict-error-None-quoted-printable-=FF] PASSED [ 50%]
+tests/lab02/test_decoder_mime.py::test_binary_content_retains_exact_decoded_bytes_without_utf8_errors PASSED [ 52%]
+tests/lab02/test_decoder_mime.py::test_raw_input_limit_precedes_transfer_decode[skip-skipped] PASSED [ 53%]
+tests/lab02/test_decoder_mime.py::test_raw_input_limit_precedes_transfer_decode[error-error] PASSED [ 55%]
+tests/lab02/test_decoder_mime.py::test_output_limits_decoded_bytes_and_replacement_text[skip-skipped] PASSED [ 57%]
+tests/lab02/test_decoder_mime.py::test_output_limits_decoded_bytes_and_replacement_text[error-error] PASSED [ 58%]
+tests/lab02/test_decoder_mime.py::test_invalid_input_types_return_safe_errors[SGVsbG8=-base64-text/plain-invalid_mime_body] PASSED [ 60%]
+tests/lab02/test_decoder_mime.py::test_invalid_input_types_return_safe_errors[abc-123-text/plain-invalid_transfer_encoding] PASSED [ 61%]
+tests/lab02/test_decoder_mime.py::test_invalid_input_types_return_safe_errors[abc-base64-None-invalid_mime_content_type] PASSED [ 63%]
+tests/lab02/test_decoder_mime.py::test_unsupported_encoding_or_structure_is_skipped_with_reason[x-uuencode-text/plain-unsupported_transfer_encoding] PASSED [ 65%]
+tests/lab02/test_decoder_mime.py::test_unsupported_encoding_or_structure_is_skipped_with_reason[base64-multipart/mixed-unsupported_mime_structure] PASSED [ 66%]
+tests/lab02/test_decoder_mime.py::test_unsupported_encoding_or_structure_is_skipped_with_reason[base64-message/rfc822-unsupported_mime_structure] PASSED [ 68%]
+tests/lab02/test_decoder_mime.py::test_mime_adapter_and_event_preserve_headers_wire_body_and_payload PASSED [ 69%]
+tests/lab02/test_decoder_mime.py::test_smtp_dot_unstuffing_is_separate_from_raw_body PASSED [ 71%]
+tests/lab02/test_decoder_mime.py::test_charset_header_has_priority_over_config_and_unsupported_is_reported PASSED [ 73%]
+tests/lab02/test_decoder_mime.py::test_bad_stored_raw_body_reports_error_and_next_message_continues[None-missing_raw_mime_body] PASSED [ 74%]
+tests/lab02/test_decoder_mime.py::test_bad_stored_raw_body_reports_error_and_next_message_continues[123-invalid_mime_body_base64] PASSED [ 76%]
+tests/lab02/test_decoder_mime.py::test_bad_stored_raw_body_reports_error_and_next_message_continues[!-invalid_mime_body_base64] PASSED [ 77%]
+tests/lab02/test_decoder_mime.py::test_stored_base64_limit_is_checked_before_allocation PASSED [ 79%]
+tests/lab02/test_decoder_mime.py::test_actual_wire_body_limit_when_base64_storage_length_matches_boundary PASSED [ 80%]
+tests/lab02/test_decoder_mime.py::test_malformed_or_ambiguous_headers_are_safe[None-invalid_mime_fields] PASSED [ 82%]
+tests/lab02/test_decoder_mime.py::test_malformed_or_ambiguous_headers_are_safe[headers1-ambiguous_mime_header] PASSED [ 84%]
+tests/lab02/test_decoder_mime.py::test_malformed_or_ambiguous_headers_are_safe[headers2-ambiguous_mime_header] PASSED [ 85%]
+tests/lab02/test_decoder_mime.py::test_malformed_or_ambiguous_headers_are_safe[headers3-invalid_mime_header] PASSED [ 87%]
+tests/lab02/test_decoder_mime.py::test_header_input_limit_and_empty_body PASSED [ 88%]
+tests/lab02/test_decoder_mime.py::test_existing_smtp_command_response_character_decoding_remains_available PASSED [ 90%]
+tests/lab02/test_decoder_mime.py::test_folded_duplicate_noncritical_headers_are_preserved PASSED [ 92%]
+tests/lab02/test_decoder_mime.py::test_incomplete_mime_has_safe_status_and_reason[Content-Type: text/plain\r\n] PASSED [ 93%]
+tests/lab02/test_decoder_mime.py::test_incomplete_mime_has_safe_status_and_reason[Content-Type: text/plain\r\nmalformed\r\n\r\nhello\r\n.\r\n] PASSED [ 95%]
+tests/lab02/test_decoder_mime.py::test_incomplete_mime_has_safe_status_and_reason[Content-Type: text/plain\r\n\r\nhello] PASSED [ 96%]
+tests/lab02/test_decoder_mime.py::test_data_prefix_and_bytes_after_terminator_are_preserved_and_marked_partial PASSED [ 98%]
+tests/lab02/test_decoder_mime.py::test_mime_detection_requires_smtp_port_and_does_not_override_other_protocols PASSED [100%]
+
+============================== 63 passed in 0.78s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 23%]
+........................................................................ [ 47%]
+........................................................................ [ 71%]
+........................................................................ [ 95%]
+.............                                                            [100%]
+301 passed in 1.20s
+
+exit_code=0

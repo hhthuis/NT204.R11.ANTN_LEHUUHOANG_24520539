@@ -1,7 +1,6 @@
-"""Event decoder: HTTP URI/form/HTML fields or raw payload character decoding.
+"""Event decoder: HTTP fields, SMTP/MIME body, or raw character decoding.
 
-MIME decoding is added in a later task. This function is not yet
-wired into the PCAP/live CLI pipeline.
+This function is not yet wired into the PCAP/live CLI pipeline.
 """
 
 import base64
@@ -9,6 +8,7 @@ import binascii
 
 from ids.config import DecoderConfig
 from ids.decoders.http import decode_http
+from ids.decoders.mime import decode_mime
 from ids.decoders.text import TextDecodeResult, decode_error, decode_text, limit_result
 from ids.models import PacketEvent
 from ids.processing_models import DecodeStatus, ProcessedEvent
@@ -31,6 +31,17 @@ def decode_event(
         processed.errors.extend(http_result.errors)
         if http_result.errors:
             processed.reason = "; ".join(error.message for error in http_result.errors)
+        return processed
+    if isinstance(protocol, str) and (
+        protocol.upper() == "MIME"
+        or (protocol.upper() == "SMTP" and processed.packet.application.kind == "message")
+    ):
+        mime_result = decode_mime(processed.packet.application, config, charset=charset)
+        processed.decoded["mime"] = mime_result.to_dict()
+        processed.decode_status = mime_result.status
+        processed.errors.extend(mime_result.errors)
+        if mime_result.errors:
+            processed.reason = "; ".join(error.message for error in mime_result.errors)
         return processed
     raw = processed.packet.payload.base64
 

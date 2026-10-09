@@ -1,6 +1,8 @@
 import re
 import struct
 
+from ids.parsers.application.mime import looks_like_mime
+
 
 HTTP_REQUEST_LINE = re.compile(
     rb"^(?:GET|POST|PUT|DELETE|HEAD|OPTIONS|PATCH|CONNECT|TRACE) "
@@ -44,7 +46,7 @@ def _looks_like_smtp(
         return True
 
     uses_smtp_port = src_port in SMTP_PORTS or dst_port in SMTP_PORTS
-    return uses_smtp_port and bool(SMTP_RESPONSE_LINE.match(payload))
+    return uses_smtp_port and bool(SMTP_RESPONSE_LINE.match(payload) or looks_like_mime(payload))
 
 
 def _skip_dns_name(message: bytes, offset: int) -> int | None:
