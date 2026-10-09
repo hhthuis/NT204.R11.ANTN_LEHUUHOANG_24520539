@@ -1,0 +1,112 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_preprocessor_policy.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 74 items
+
+tests/lab02/test_preprocessor_policy.py::test_empty_transport_packets_are_authorized_without_creating_flows[layer0] PASSED [  1%]
+tests/lab02/test_preprocessor_policy.py::test_empty_transport_packets_are_authorized_without_creating_flows[layer1] PASSED [  2%]
+tests/lab02/test_preprocessor_policy.py::test_empty_transport_packets_are_authorized_without_creating_flows[layer2] PASSED [  4%]
+tests/lab02/test_preprocessor_policy.py::test_empty_transport_packets_are_authorized_without_creating_flows[layer3] PASSED [  5%]
+tests/lab02/test_preprocessor_policy.py::test_absent_optional_model_does_not_crash_or_invoke_invalid_policy[mark-application] PASSED [  6%]
+tests/lab02/test_preprocessor_policy.py::test_absent_optional_model_does_not_crash_or_invoke_invalid_policy[mark-payload] PASSED [  8%]
+tests/lab02/test_preprocessor_policy.py::test_absent_optional_model_does_not_crash_or_invoke_invalid_policy[skip-application] PASSED [  9%]
+tests/lab02/test_preprocessor_policy.py::test_absent_optional_model_does_not_crash_or_invoke_invalid_policy[skip-payload] PASSED [ 10%]
+tests/lab02/test_preprocessor_policy.py::test_wrong_optional_model_type_is_malformed_instead_of_missing[mark-track-application] PASSED [ 12%]
+tests/lab02/test_preprocessor_policy.py::test_wrong_optional_model_type_is_malformed_instead_of_missing[mark-track-payload] PASSED [ 13%]
+tests/lab02/test_preprocessor_policy.py::test_wrong_optional_model_type_is_malformed_instead_of_missing[skip-skip_tracking-application] PASSED [ 14%]
+tests/lab02/test_preprocessor_policy.py::test_wrong_optional_model_type_is_malformed_instead_of_missing[skip-skip_tracking-payload] PASSED [ 16%]
+tests/lab02/test_preprocessor_policy.py::test_missing_dns_lists_have_empty_list_defaults_but_bad_lists_stay_null[None] PASSED [ 17%]
+tests/lab02/test_preprocessor_policy.py::test_missing_dns_lists_have_empty_list_defaults_but_bad_lists_stay_null[absent] PASSED [ 18%]
+tests/lab02/test_preprocessor_policy.py::test_missing_header_dictionary_defaults_to_empty_without_changing_raw[HTTP-response] PASSED [ 20%]
+tests/lab02/test_preprocessor_policy.py::test_missing_header_dictionary_defaults_to_empty_without_changing_raw[MIME-message] PASSED [ 21%]
+tests/lab02/test_preprocessor_policy.py::test_missing_header_dictionary_defaults_to_empty_without_changing_raw[SMTP-message] PASSED [ 22%]
+tests/lab02/test_preprocessor_policy.py::test_missing_tcp_flags_default_to_empty_without_inferring_a_state[fields0] PASSED [ 24%]
+tests/lab02/test_preprocessor_policy.py::test_missing_tcp_flags_default_to_empty_without_inferring_a_state[fields1] PASSED [ 25%]
+tests/lab02/test_preprocessor_policy.py::test_missing_smtp_command_list_does_not_invent_a_command[fields0] PASSED [ 27%]
+tests/lab02/test_preprocessor_policy.py::test_missing_smtp_command_list_does_not_invent_a_command[fields1] PASSED [ 28%]
+tests/lab02/test_preprocessor_policy.py::test_missing_smtp_command_list_does_not_invent_a_command[fields2] PASSED [ 29%]
+tests/lab02/test_preprocessor_policy.py::test_bad_smtp_command_list_is_not_reinterpreted_as_single_command[EHLO] PASSED [ 31%]
+tests/lab02/test_preprocessor_policy.py::test_bad_smtp_command_list_is_not_reinterpreted_as_single_command[bad1] PASSED [ 32%]
+tests/lab02/test_preprocessor_policy.py::test_bad_smtp_command_list_is_not_reinterpreted_as_single_command[1] PASSED [ 33%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-packet_id-True] PASSED [ 35%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-captured_length--1] PASSED [ 36%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-timestamp-bad] PASSED [ 37%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-timestamp-2026-10-09T00:00:00] PASSED [ 39%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-network-None] PASSED [ 40%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-network.src_ip-bad] PASSED [ 41%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-transport-None] PASSED [ 43%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-transport.src_port--1] PASSED [ 44%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-transport.dst_port-65536] PASSED [ 45%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-transport.src_port-True] PASSED [ 47%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[mark-parse_status-malformed] PASSED [ 48%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-packet_id-True] PASSED [ 50%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-captured_length--1] PASSED [ 51%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-timestamp-bad] PASSED [ 52%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-timestamp-2026-10-09T00:00:00] PASSED [ 54%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-network-None] PASSED [ 55%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-network.src_ip-bad] PASSED [ 56%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-transport-None] PASSED [ 58%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-transport.src_port--1] PASSED [ 59%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-transport.dst_port-65536] PASSED [ 60%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-transport.src_port-True] PASSED [ 62%]
+tests/lab02/test_preprocessor_policy.py::test_invalid_required_metadata_cannot_be_authorized_by_either_policy[skip-parse_status-malformed] PASSED [ 63%]
+tests/lab02/test_preprocessor_policy.py::test_unsupported_application_with_safe_transport_obeys_policy[mark-track] PASSED [ 64%]
+tests/lab02/test_preprocessor_policy.py::test_unsupported_application_with_safe_transport_obeys_policy[skip-skip_tracking] PASSED [ 66%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-network.protocol-ARP] PASSED [ 67%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-transport.protocol-SCTP] PASSED [ 68%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-network.fragment_offset-1] PASSED [ 70%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-parse_status-unsupported] PASSED [ 71%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-transport.fields-value4] PASSED [ 72%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[mark-transport.fields-value5] PASSED [ 74%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-network.protocol-ARP] PASSED [ 75%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-transport.protocol-SCTP] PASSED [ 77%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-network.fragment_offset-1] PASSED [ 78%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-parse_status-unsupported] PASSED [ 79%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-transport.fields-value4] PASSED [ 81%]
+tests/lab02/test_preprocessor_policy.py::test_unsafe_or_unsupported_transport_never_tracks[skip-transport.fields-value5] PASSED [ 82%]
+tests/lab02/test_preprocessor_policy.py::test_ipv6_is_preserved_as_unsupported_and_not_authorized_even_with_mark PASSED [ 83%]
+tests/lab02/test_preprocessor_policy.py::test_bad_optional_data_obeys_invalid_policy_without_changing_status[mark-track] PASSED [ 85%]
+tests/lab02/test_preprocessor_policy.py::test_bad_optional_data_obeys_invalid_policy_without_changing_status[skip-skip_tracking] PASSED [ 86%]
+tests/lab02/test_preprocessor_policy.py::test_normalization_limit_on_required_metadata_blocks_tracking_even_with_mark[max_output_bytes-20] PASSED [ 87%]
+tests/lab02/test_preprocessor_policy.py::test_normalization_limit_on_required_metadata_blocks_tracking_even_with_mark[max_input_bytes-10] PASSED [ 89%]
+tests/lab02/test_preprocessor_policy.py::test_empty_default_lists_are_checked_against_limits_and_not_restored_after_failure PASSED [ 90%]
+tests/lab02/test_preprocessor_policy.py::test_duplicate_flags_are_repaired_without_invoking_invalid_skip_policy PASSED [ 91%]
+tests/lab02/test_preprocessor_policy.py::test_decode_failure_remains_independent_and_preserved_with_safe_metadata PASSED [ 93%]
+tests/lab02/test_preprocessor_policy.py::test_lower_layer_parser_error_blocks_but_application_error_does_not PASSED [ 94%]
+tests/lab02/test_preprocessor_policy.py::test_mixed_invalid_and_unsupported_policies_both_apply_without_overriding_skip PASSED [ 95%]
+tests/lab02/test_preprocessor_policy.py::test_reprocessing_replaces_policy_diagnostics_and_recalculates_action PASSED [ 97%]
+tests/lab02/test_preprocessor_policy.py::test_toml_policy_overrides_change_actual_processing PASSED [ 98%]
+tests/lab02/test_preprocessor_policy.py::test_bad_packet_model_returns_diagnostics_and_next_packet_continues PASSED [100%]
+
+============================== 74 passed in 0.84s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t05 --output-dir /tmp/ids-task10-t05
+
+events 1/2: same normalized output; raw variants retained
+events 3/4: same normalized output; raw variants retained
+events 5/6: same normalized output; raw variants retained
+events 7/8: same normalized output; raw variants retained
+event 9: invalid timestamp marked; event 10: valid, processing continues
+T05 PASS: 10 events; outputs in /tmp/ids-task10-t05
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 13%]
+........................................................................ [ 26%]
+........................................................................ [ 40%]
+........................................................................ [ 53%]
+........................................................................ [ 66%]
+........................................................................ [ 80%]
+........................................................................ [ 93%]
+...................................                                      [100%]
+539 passed in 1.38s
+
+exit_code=0
+

@@ -72,7 +72,7 @@ def expectations() -> list[dict]:
     dns["application"] = {"protocol": "DNS", "kind": "response", "fields": {
         "questions": [{"name": "example.com", "type": "A", "class": "IN"}],
         "answers": [{"name": "www.example.com", "type": "CNAME", "data": "target.example.com"}],
-        "authorities": None, "additionals": None,
+        "authorities": [], "additionals": [],
     }}
     ehlo = deepcopy(BASE)
     ehlo["transport"]["dst_port"] = 25
@@ -90,7 +90,7 @@ def expectations() -> list[dict]:
     return [
         {
             "status": "invalid" if index == 8 else "valid", "normalized": deepcopy(value),
-            "error_codes": ["validation_invalid_timestamp", "normalization_invalid_timestamp"] if index == 8 else [],
+            "error_codes": ["validation_invalid_timestamp", "normalization_invalid_timestamp", "policy_invalid_skip"] if index == 8 else [],
         }
         for index, value in enumerate(values)
     ]

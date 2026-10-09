@@ -142,7 +142,7 @@ def test_preprocessor_preserves_raw_and_decoded_uri_views_without_double_decodin
     assert processed.decoded["http"]["uri"]["text"] == "/Admin/A?q=x+y&x=%2f"
     assert processed.normalized["application"]["fields"]["uri"]["target"] == "/Admin%2FA?q=x+y&x=%252f"
     assert processed.normalized["application"]["fields"]["headers"]["content-type"] == ["text/plain"]
-    assert processed.preprocess_status == "valid" and processed.processing_action == "skip_tracking" and processed.flow is None
+    assert processed.preprocess_status == "valid" and processed.processing_action == "track" and processed.flow is None
     processed.normalized["application"]["fields"]["headers"]["content-type"].append("changed")
     assert decoded.packet.application.fields["headers"]["content-type"] == "text/plain"
 

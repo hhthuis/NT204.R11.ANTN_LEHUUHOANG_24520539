@@ -100,6 +100,11 @@ class DecoderConfig:
 
 @dataclass(frozen=True, slots=True)
 class PreprocessorConfig:
+    """mark retains warnings and permits safe partial events; skip blocks tracking.
+
+    Both policies retain output for diagnostics. Required metadata failures are
+    always blocked. Missing optional data does not invoke invalid_event_policy.
+    """
     invalid_event_policy: EventPolicy = EventPolicy.SKIP
     unsupported_event_policy: EventPolicy = EventPolicy.MARK
     max_input_bytes: int = 1_048_576

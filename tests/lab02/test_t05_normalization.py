@@ -19,7 +19,8 @@ def test_t05_equivalent_event_formats_normalize_consistently_and_keep_raw(tmp_pa
         decoded = decode_event(packet_from_dict(source))
         assert event["decoded"] == decoded.to_dict()["decoded"]
         assert event["decode_status"] == decoded.decode_status
-        assert event["processing_action"] == "skip_tracking" and event["flow"] is None
+        assert event["processing_action"] == ("skip_tracking" if event["preprocess_status"] == "invalid" else "track")
+        assert event["flow"] is None
         if event["errors"]:
             assert event["reason"] and all(error["stage"] == "preprocess" for error in event["errors"])
         else:

@@ -1,5 +1,11 @@
 # T05 — Normalization
 
+> Bằng chứng đã lưu ở đây là lần chạy tại Task 09 (commit e27c084).
+> Từ Task 10, script/test hiện tại dùng defaults DNS [] và action track cho
+> metadata hợp lệ; event invalid có thêm policy diagnostic. Regression cùng
+> normalization rules được chạy lại ở Task 10, log tại ../task10/result.txt.
+> Dùng --output-dir /tmp/ids-t05 để chạy phiên bản hiện tại mà giữ snapshot này.
+
 Ngày kiểm thử: 09/10/2026.
 
 ## Yêu cầu và input

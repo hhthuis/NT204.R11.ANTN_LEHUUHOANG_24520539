@@ -300,7 +300,7 @@ def normalize_packet(packet: PacketEvent, config: PreprocessorConfig | None = No
         transport = {
             "protocol": protocol, "src_port": port(packet.transport.src_port),
             "dst_port": port(packet.transport.dst_port),
-            "flags": use(normalize_flags(raw_flags, config)) if protocol == "TCP" else None,
+            "flags": use(normalize_flags([] if raw_flags is None else raw_flags, config)) if protocol == "TCP" else None,
         }
     application = None
     if isinstance(packet.application, ApplicationInfo):
@@ -309,7 +309,7 @@ def normalize_packet(packet: PacketEvent, config: PreprocessorConfig | None = No
         fields = raw_app.fields if isinstance(raw_app.fields, dict) else {}
         normalized_fields = {}
         if protocol == "HTTP":
-            normalized_fields["headers"] = use(normalize_headers(fields.get("headers"), config))
+            normalized_fields["headers"] = use(normalize_headers({} if fields.get("headers") is None else fields["headers"], config))
             if raw_app.kind == "request":
                 normalized_fields["method"] = use(normalize_protocol(fields.get("method"), config))
                 target = fields.get("target")
@@ -324,7 +324,7 @@ def normalize_packet(packet: PacketEvent, config: PreprocessorConfig | None = No
             for section in ("questions", "answers", "authorities", "additionals"):
                 records = fields.get(section)
                 if records is None:
-                    normalized_fields[section] = None
+                    normalized_fields[section] = use(_collection([], config, "DNS records", output=True))
                 elif not isinstance(records, list):
                     normalized_fields[section] = use(_error("invalid_dns_records", f"DNS {section} must be a list"))
                 elif (checked := _collection(records, config, "DNS records")).errors:
@@ -348,9 +348,13 @@ def normalize_packet(packet: PacketEvent, config: PreprocessorConfig | None = No
                     normalized_fields[section] = use(_collection(normalized_records, config, "DNS records", output=True))
         elif protocol == "SMTP" and raw_app.kind == "command":
             commands = fields.get("commands")
+            if "commands" not in fields:
+                commands = [fields] if "command" in fields else []
+            elif commands is None:
+                commands = []
             if not isinstance(commands, list):
-                commands = [fields]
-            if (checked := _collection(commands, config, "SMTP commands")).errors:
+                normalized_fields["commands"] = use(_error("invalid_smtp_commands", "SMTP commands must be a list"))
+            elif (checked := _collection(commands, config, "SMTP commands")).errors:
                 normalized_fields["commands"] = use(checked)
             else:
                 normalized_commands = []
@@ -380,7 +384,7 @@ def normalize_packet(packet: PacketEvent, config: PreprocessorConfig | None = No
                     normalized_commands.append(item)
                 normalized_fields["commands"] = use(_collection(normalized_commands, config, "SMTP commands", output=True))
         elif protocol in ("SMTP", "MIME") and raw_app.kind == "message":
-            normalized_fields["headers"] = use(normalize_headers(fields.get("headers"), config))
+            normalized_fields["headers"] = use(normalize_headers({} if fields.get("headers") is None else fields["headers"], config))
         application = {"protocol": protocol, "kind": raw_app.kind, "fields": normalized_fields}
     value = {
         "timestamp": use(normalize_timestamp(packet.timestamp, config)),

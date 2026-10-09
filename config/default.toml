@@ -12,6 +12,7 @@ max_output_bytes = 1048576
 limit_policy = "skip"
 
 [preprocessor]
+# Both retain events for logs; missing optional data is not malformed data.
 # mark: record status/reason and process whatever fields remain safe.
 # skip: record status/reason, then skip tracking.
 # Neither policy authorizes tracking if required endpoint/time fields are invalid.

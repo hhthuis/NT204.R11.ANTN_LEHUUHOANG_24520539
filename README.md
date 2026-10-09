@@ -309,7 +309,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_normalization.py -v`.
 - Kết quả ngày 09/10/2026: 81 test mới passed; toàn bộ suite 464 passed.
   Tài liệu/log tại `TEST/lab02/task09/`; T05 có bằng chứng và commit riêng.
-- Policy còn ở Task 10 nên action vẫn skip_tracking, flow=null. Chưa nối CLI.
+- Tại commit Task 09, action vẫn skip_tracking, flow=null. Task 10 bên dưới
+  bổ sung policy/action; chưa nối CLI.
 
 ### Bài tập 2 — T05 Normalization
 
@@ -323,7 +324,31 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Input JSONL/expected JSON/actual JSONL và tài liệu/log tại `TEST/lab02/T05/`.
   Đây là synthetic event input cho Preprocessor, không phải PCAP capture thật.
 - Kết quả ngày 09/10/2026: T05 PASS, pytest 1 passed; toàn bộ suite 465 passed.
-  Mandatory cases T01–T05 hoàn thành (5/14); T06/T14 còn ở Task 10.
+  Đây là snapshot tại Task 09 (5/14). Từ Task 10, script/test T05 dùng DNS
+  missing lists=[] và action track cho metadata hợp lệ; giữ snapshot cũ, chạy
+  regression ngoài repo với log tại TEST/lab02/task10/result.txt.
+
+### Bài tập 2 — Missing/unsupported data và policy (Task 10)
+
+- Preprocessor nối validation → normalization → policy, cấp track khi cả raw
+  và normalized metadata an toàn. flow vẫn null vì chưa có Tracker runtime.
+- DNS lists và SMTP commands thiếu dùng []; TCP flags thiếu dùng [] kèm warning,
+  không suy đoán state; headers thiếu dùng {}; missing model/scalar dùng null.
+  Malformed/over-limit field giữ null kèm lỗi, không bị default che mất; raw và
+  decoded không đổi. Defaults vẫn chịu normalization limits.
+- invalid_event_policy áp dụng malformed/normalization issues, gồm optional
+  data lỗi trên partial event. unsupported_event_policy áp dụng dữ liệu chưa
+  hỗ trợ. mark giữ cảnh báo và chỉ track khi metadata an toàn; skip giữ event
+  log nhưng skip_tracking. Required invalid/unsafe luôn skip kể cả mark.
+- Optional missing, repaired duplicate flags và application parser partial
+  warning không tự kích hoạt invalid policy. UNKNOWN/TCP/UDP được tracking;
+  decode errors độc lập. Network/transport errors và noninitial fragments chặn.
+- Decoder không crash khi application/payload model null hoặc sai kiểu.
+  Rerun thay cấu hình/sửa input tính lại action, bỏ diagnostics đã hết.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_preprocessor_policy.py -v`.
+- Kết quả tại commit task: 74 test mới passed, T05 regression PASS, toàn bộ
+  suite 539 passed. Quy tắc/API/log tại `TEST/lab02/task10/`.
+- T06/T14 được thực hiện và commit riêng sau phần mã nguồn Task 10.
 
 ## Yêu cầu môi trường
 
@@ -658,6 +683,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_validation.py`,
   `ids/preprocessors/normalization.py`, `ids/preprocessors/preprocessor.py`,
   `tests/lab02/test_normalization.py`,
+  `ids/preprocessors/policy.py`, `tests/lab02/test_preprocessor_policy.py`,
+  `tests/lab02/preprocessor_case_support.py`,
   `tests/lab02/event_file_support.py`, `tests/lab02/reproduce_t05.py`,
   `tests/lab02/test_t05_normalization.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
@@ -677,7 +704,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 10: missing/unsupported data, policy/action, T06/T14.
+1. Hoàn thành artifacts/commit riêng T06 và T14 cho Task 10.
 2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
