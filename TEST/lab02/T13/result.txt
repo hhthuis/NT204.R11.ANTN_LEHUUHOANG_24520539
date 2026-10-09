@@ -1,0 +1,36 @@
+$ ./venv/bin/python -m tests.lab02.reproduce_t13
+
+TCP: packets=9, bytes=638; forward=5/356, backward=4/282; duration=1.6
+UDP: packets=3, bytes=137; forward=2/89, backward=1/48; duration=2.0
+T13 PASS: 13 packets, 2 flows; TCP flags 2/8/1/1; retransmission counted; skipped ICMP excluded
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest tests/lab02/test_t13_flow_statistics.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t13_flow_statistics.py::test_t13_pcap_statistics_match_exact_byte_flag_direction_time_and_application_expectations PASSED [100%]
+
+============================== 1 passed in 0.65s ===============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 11%]
+........................................................................ [ 22%]
+........................................................................ [ 34%]
+........................................................................ [ 45%]
+........................................................................ [ 56%]
+........................................................................ [ 68%]
+........................................................................ [ 79%]
+........................................................................ [ 90%]
+...........................................................              [100%]
+635 passed in 1.97s
+
+exit_code=0

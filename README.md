@@ -431,7 +431,7 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - PCAP/config/expected/actual/flow snapshots và README/log tại `TEST/lab02/T11/`.
 - Kết quả: T11 PASS 16/16, integration 1 passed; full suite 596 passed.
 - Mandatory T01–T06/T08/T11/T14 hoàn thành: 9/14. Còn T07/T09/T10/T12/T13.
-  Counters/state/time updates/expiry và main CLI integration thuộc task sau.
+  Đây là snapshot tại Task 11; Task 12 bổ sung counters/time bên dưới.
 
 ### Bài tập 2 — Flow statistics (Task 12)
 
@@ -451,6 +451,25 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   counters/time đúng. Regression chạy ngoài repo, hướng dẫn trong các README.
 - T13 có PCAP/artifacts và commit riêng sau mã nguồn. TCP state vẫn NEW, UDP
   null; chưa handshake/close/timeout/capacity enforcement/main CLI bài 2.
+  T13 đã hoàn thành ở mục tiếp theo.
+
+### Bài tập 2 — T13 Flow statistics
+
+- PCAP tổng hợp 13 packet: 9 TCP với SYN/ACK, HTTP GET/response nhận diện muộn,
+  retransmission, FIN/ACK, RST/ACK; 3 UDP hai chiều cùng endpoint pair và 1 ICMP
+  skipped. TCP/UDP đều có timestamp cũ hơn packet đầu tiên quan sát được.
+- TCP 9/638 byte, forward 5/356, backward 4/282, flags SYN/ACK/FIN/RST=2/8/1/1,
+  duration=1.6s, app=HTTP. UDP 3/137, forward 2/89, backward 1/48, duration=2s,
+  TCP counters zero. ICMP tại offset 99s không làm thay flow statistics/time.
+- Expected là literals độc lập; output exact-match, captured bytes/directional
+  sums/retransmission/JSON round-trip và raw/decoded preservation đều đạt.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t13`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t13_flow_statistics.py -v`.
+- PCAP/config/expected/actual/flows và README/log tại `TEST/lab02/T13/`.
+- Kết quả: T13 PASS, integration 1 passed; full suite 635 passed.
+- Mandatory T01–T06/T08/T11/T13/T14 hoàn thành: 10/14; còn T07/T09/T10/T12.
+  TCP NEW/UDP null, chưa state/close/timeout/main CLI; không suy ra T07/T09 đạt
+  chỉ từ flag counters, hoặc T10 đạt từ generic UDP statistics.
 
 ## Yêu cầu môi trường
 
@@ -779,6 +798,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/flow_pcap_support.py`,
   `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
   `tests/lab02/reproduce_t11.py`, `tests/lab02/test_t11_concurrent_flows.py`,
+  `tests/lab02/reproduce_t13.py`, `tests/lab02/test_t13_flow_statistics.py`,
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
@@ -813,9 +833,9 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Hoàn thành artifacts và commit riêng T13 cho Task 12.
-2. TCP handshake/close (T07/T09), UDP DNS (T10), timeout/capacity (T12),
-   thực hiện và commit lần lượt.
+1. Task 13: TCP handshake/state transitions, thực hiện T07.
+2. TCP close (T09), UDP DNS (T10), timeout/capacity (T12), thực hiện và commit
+   lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.
