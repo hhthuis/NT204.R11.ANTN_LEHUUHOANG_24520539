@@ -1,0 +1,24 @@
+Test case: Lab 2 T01 - HTTP URL decoding
+Test date: 2026-10-09
+Pipeline: PCAP -> Parser -> HTTP Decoder -> JSONL (not main CLI).
+
+Command: ./venv/bin/python -m tests.lab02.reproduce_t01
+
+raw='/search?q=%27%20OR%201%3D1' -> decoded="/search?q=' OR 1=1"; ok
+raw='/a+b?q=x+y%2Bz' -> decoded='/a+b?q=x+y+z'; ok
+raw='/caf%C3%A9?q=%2527' -> decoded='/café?q=%27'; ok
+raw='/broken?q=%ZZ' -> decoded='/broken?q=%ZZ'; partial
+raw='/next' -> decoded='/next'; ok
+T01 PASS: 5 events, raw URIs preserved; outputs in /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T01
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_t01_url_decode.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 1 item
+
+tests/lab02/test_t01_url_decode.py::test_t01_pcap_url_decoding_keeps_raw_uri_and_payload PASSED [100%]
+
+============================== 1 passed in 0.62s ===============================

@@ -143,7 +143,7 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Test: `./venv/bin/python -m pytest tests/lab02/test_t04_invalid_bytes.py -v`.
 - PCAP, expected JSON, actual JSONL và tài liệu/log tại `TEST/lab02/T04/`.
 - Kết quả ngày 09/10/2026: T04 2 passed; toàn bộ suite 144 passed.
-  Đã hoàn thành T04; T01–T03 và T05–T14 bài 2 sẽ triển khai sau.
+  Đã hoàn thành T04; tiến độ các case tiếp theo được ghi bên dưới.
 
 ### Bài tập 2 — HTTP URL/form decoder (Task 05)
 
@@ -161,6 +161,17 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả ngày 09/10/2026: 41 test HTTP mới passed; toàn bộ suite 185 passed.
   Tài liệu/log tại `TEST/lab02/task05/`; T01/form có commit bằng chứng riêng.
 - Chưa nối decoder vào main CLI; HTML/MIME decoding triển khai sau.
+
+### Bài tập 2 — T01 HTTP URL decode
+
+- PCAP 5 HTTP GET request kiểm tra percent decoding, UTF-8, giữ literal `+`,
+  chỉ decode một lần, escape sai được đánh dấu partial và request tiếp theo vẫn ok.
+- Raw URI và payload byte giữ nguyên; output decoder tại `decoded.http.uri`.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t01`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t01_url_decode.py -v`.
+- Input, expected, actual JSONL và tài liệu/log tại `TEST/lab02/T01/`.
+- Kết quả ngày 09/10/2026: T01 PASS, pytest 1 passed.
+  Đã hoàn thành T01/T04 bài 2; các case còn lại sẽ triển khai sau.
 
 ## Yêu cầu môi trường
 
@@ -488,6 +499,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_decoder_text.py`,
   `ids/decoders/http.py`, `tests/lab02/test_decoder_http.py`,
   `tests/lab02/http_pcap_support.py`,
+  `tests/lab02/reproduce_t01.py`, `tests/lab02/test_t01_url_decode.py`,
   `tests/lab02/reproduce_t04.py`, `tests/lab02/test_t04_invalid_bytes.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,

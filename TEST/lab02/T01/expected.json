@@ -1,0 +1,29 @@
+[
+  {
+    "text": "/search?q=' OR 1=1",
+    "status": "ok",
+    "error_codes": []
+  },
+  {
+    "text": "/a+b?q=x+y+z",
+    "status": "ok",
+    "error_codes": []
+  },
+  {
+    "text": "/café?q=%27",
+    "status": "ok",
+    "error_codes": []
+  },
+  {
+    "text": "/broken?q=%ZZ",
+    "status": "partial",
+    "error_codes": [
+      "invalid_percent_encoding"
+    ]
+  },
+  {
+    "text": "/next",
+    "status": "ok",
+    "error_codes": []
+  }
+]
