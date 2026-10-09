@@ -1,0 +1,33 @@
+Test case: Lab 2 T04 - Invalid bytes
+Test date: 2026-10-09
+Pipeline: PCAP reader -> packet parser -> character decoder -> ProcessedEvent JSONL. Preprocessor/Tracker not implemented yet.
+
+Command: ./venv/bin/python -m tests.lab02.reproduce_t04
+
+Created /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T04/input.pcap with 2 packets
+replace: 2 events -> /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T04/actual-replace.jsonl
+  packet 1: partial; text='bad utf8: �\r\n'
+  packet 2: ok; text='next valid event\r\n'
+strict: 2 events -> /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/TEST/lab02/T04/actual-strict.jsonl
+  packet 1: error; text=None
+  packet 2: ok; text='next valid event\r\n'
+T04 PASS: invalid bytes recorded; the next packet decoded under both policies
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_t04_invalid_bytes.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 2 items
+
+tests/lab02/test_t04_invalid_bytes.py::test_t04_invalid_packet_does_not_stop_next_packet[replace-partial-bad utf8: \ufffd\r\n] PASSED [ 50%]
+tests/lab02/test_t04_invalid_bytes.py::test_t04_invalid_packet_does_not_stop_next_packet[strict-error-None] PASSED [100%]
+
+============================== 2 passed in 0.65s ===============================
+
+Command: ./venv/bin/python -m pytest -q
+
+........................................................................ [ 50%]
+........................................................................ [100%]
+144 passed in 1.01s

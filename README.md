@@ -132,6 +132,19 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Chưa có HTTP URL/form/HTML/MIME decoding hoặc nối character decoder vào CLI;
   các phần đó triển khai sau. T04 có bằng chứng và commit riêng.
 
+### Bài tập 2 — T04 Invalid bytes
+
+- PCAP gồm một packet UTF-8 lỗi và một packet hợp lệ tiếp theo; script chạy
+  PCAP reader → parser bài 1 → character decoder → ProcessedEvent JSONL.
+- Replace đánh dấu packet đầu partial, giữ text có U+FFFD; strict đánh dấu
+  error và text null. Packet thứ hai vẫn ok trong cả hai policy, raw byte
+  của hai packet giữ nguyên trong Base64.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t04`.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_t04_invalid_bytes.py -v`.
+- PCAP, expected JSON, actual JSONL và tài liệu/log tại `TEST/lab02/T04/`.
+- Kết quả ngày 09/10/2026: T04 2 passed; toàn bộ suite 144 passed.
+  Đã hoàn thành T04; T01–T03 và T05–T14 bài 2 sẽ triển khai sau.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -456,6 +469,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
+  `tests/lab02/reproduce_t04.py`, `tests/lab02/test_t04_invalid_bytes.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,

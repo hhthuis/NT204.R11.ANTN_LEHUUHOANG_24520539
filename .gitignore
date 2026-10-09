@@ -17,6 +17,7 @@ venv/
 output/
 *.jsonl
 !TEST/*.jsonl
+!TEST/lab02/**/*.jsonl
 *.log
 
 # System files

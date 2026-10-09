@@ -1,0 +1,34 @@
+{
+  "replace": [
+    {
+      "packet_id": 1,
+      "decode_status": "partial",
+      "text": "bad utf8: �\r\n",
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "decode_status": "ok",
+      "text": "next valid event\r\n",
+      "error_codes": []
+    }
+  ],
+  "strict": [
+    {
+      "packet_id": 1,
+      "decode_status": "error",
+      "text": null,
+      "error_codes": [
+        "invalid_character_sequence"
+      ]
+    },
+    {
+      "packet_id": 2,
+      "decode_status": "ok",
+      "text": "next valid event\r\n",
+      "error_codes": []
+    }
+  ]
+}
