@@ -618,6 +618,15 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - 32 tests mới và regression T07–T11/T13 PASS; full suite804 passed. Source/API/
   log tại TEST/lab02/task16/. T12 có evidence và commit riêng ngay sau task.
 
+### Bài tập 2 — T12 Idle timeout
+
+- TCP ACK t0/t1, UDP t0, maintenance t2/t4 không có packet vẫn expire UDP/TCP;
+  UDP t4.1 cùng tuple tạo generation2 rồi expire t6.1. Active2→1→0→1→0,
+  contexts được dọn, 3 summaries tổng4 packet/192B, end_reason=idle_timeout.
+- Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t12`.
+- Evidence và log: TEST/lab02/T12/. Integration1 và full suite805 passed.
+- Mandatory T01–T14 đạt14/14; Task17 còn nối config/pipeline/output/live vào CLI.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -942,6 +951,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
+  `tests/lab02/reproduce_t12.py`, `tests/lab02/test_t12_idle_timeout.py`,
   `ids/flows/expiry.py`, `tests/lab02/test_flow_expiry.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/test_tcp_close.py`,

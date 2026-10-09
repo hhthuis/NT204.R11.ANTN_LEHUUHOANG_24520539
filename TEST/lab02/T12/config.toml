@@ -1,0 +1,6 @@
+[tracker]
+tcp_idle_timeout=3
+udp_idle_timeout=2
+expiry_check_interval=0.1
+max_active_flows=10
+max_pending_summaries=2
