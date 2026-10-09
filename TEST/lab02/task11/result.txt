@@ -1,0 +1,80 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_flow_tracker.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 53 items
+
+tests/lab02/test_flow_tracker.py::test_bidirectional_lookup_keeps_first_sender_direction_separate_from_key_sorting PASSED [  1%]
+tests/lab02/test_flow_tracker.py::test_starting_with_reverse_packet_changes_orientation_but_not_identity PASSED [  3%]
+tests/lab02/test_flow_tracker.py::test_each_5tuple_component_separates_concurrent_flows[change0] PASSED [  5%]
+tests/lab02/test_flow_tracker.py::test_each_5tuple_component_separates_concurrent_flows[change1] PASSED [  7%]
+tests/lab02/test_flow_tracker.py::test_each_5tuple_component_separates_concurrent_flows[change2] PASSED [  9%]
+tests/lab02/test_flow_tracker.py::test_each_5tuple_component_separates_concurrent_flows[change3] PASSED [ 11%]
+tests/lab02/test_flow_tracker.py::test_each_5tuple_component_separates_concurrent_flows[change4] PASSED [ 13%]
+tests/lab02/test_flow_tracker.py::test_key_encoding_cannot_confuse_endpoint_text_and_port_boundaries PASSED [ 15%]
+tests/lab02/test_flow_tracker.py::test_self_endpoint_has_deterministic_forward_direction PASSED [ 16%]
+tests/lab02/test_flow_tracker.py::test_identity_is_independent_of_unrelated_flow_creation_order PASSED [ 18%]
+tests/lab02/test_flow_tracker.py::test_normalized_protocol_and_ips_are_used_without_editing_raw PASSED [ 20%]
+tests/lab02/test_flow_tracker.py::test_real_parser_transport_packets_are_associated_without_state_transitions[layer0] PASSED [ 22%]
+tests/lab02/test_flow_tracker.py::test_real_parser_transport_packets_are_associated_without_state_transitions[layer1] PASSED [ 24%]
+tests/lab02/test_flow_tracker.py::test_real_parser_transport_packets_are_associated_without_state_transitions[layer2] PASSED [ 26%]
+tests/lab02/test_flow_tracker.py::test_real_parser_transport_packets_are_associated_without_state_transitions[layer3] PASSED [ 28%]
+tests/lab02/test_flow_tracker.py::test_real_parser_transport_packets_are_associated_without_state_transitions[layer4] PASSED [ 30%]
+tests/lab02/test_flow_tracker.py::test_application_protocol_is_initial_metadata_and_does_not_define_flow_identity PASSED [ 32%]
+tests/lab02/test_flow_tracker.py::test_new_flow_records_known_application_from_normalized_metadata PASSED [ 33%]
+tests/lab02/test_flow_tracker.py::test_creation_times_are_utc_and_counters_remain_unimplemented PASSED [ 35%]
+tests/lab02/test_flow_tracker.py::test_skipped_event_cannot_create_or_modify_flow_and_clears_stale_association PASSED [ 37%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path0-None] PASSED [ 39%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path1-value1] PASSED [ 41%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path2-IPv6] PASSED [ 43%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path3-bad] PASSED [ 45%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path4- 10.0.0.2 ] PASSED [ 47%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path5-None] PASSED [ 49%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path6-SCTP] PASSED [ 50%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path7-True] PASSED [ 52%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path8-65536] PASSED [ 54%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path9-None] PASSED [ 56%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path10-value10] PASSED [ 58%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path11-None] PASSED [ 60%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path12-bad] PASSED [ 62%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path13-2026-10-09T00:00:00] PASSED [ 64%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path14-2026-10-09T07:00:00+07:00] PASSED [ 66%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path15--1] PASSED [ 67%]
+tests/lab02/test_flow_tracker.py::test_corrupt_authorized_metadata_is_diagnosed_before_table_mutation[path16-True] PASSED [ 69%]
+tests/lab02/test_flow_tracker.py::test_forged_track_action_without_validated_status_cannot_create_flow[None] PASSED [ 71%]
+tests/lab02/test_flow_tracker.py::test_forged_track_action_without_validated_status_cannot_create_flow[invalid] PASSED [ 73%]
+tests/lab02/test_flow_tracker.py::test_forged_track_action_without_validated_status_cannot_create_flow[unrecognized] PASSED [ 75%]
+tests/lab02/test_flow_tracker.py::test_forged_track_action_does_not_bypass_unsafe_raw_fragment PASSED [ 77%]
+tests/lab02/test_flow_tracker.py::test_forged_track_action_does_not_override_preprocessor_skip_diagnostics PASSED [ 79%]
+tests/lab02/test_flow_tracker.py::test_failed_existing_flow_association_does_not_mutate_table_and_retry_clears_its_diagnostics PASSED [ 81%]
+tests/lab02/test_flow_tracker.py::test_tracker_preserves_prior_errors_reason_and_detached_views PASSED [ 83%]
+tests/lab02/test_flow_tracker.py::test_flow_inspection_and_export_cannot_mutate_internal_records_or_event_snapshots PASSED [ 84%]
+tests/lab02/test_flow_tracker.py::test_remove_and_recreate_key_starts_new_generation_without_mutating_old_event PASSED [ 86%]
+tests/lab02/test_flow_tracker.py::test_invalid_generation_is_rejected[0] PASSED [ 88%]
+tests/lab02/test_flow_tracker.py::test_invalid_generation_is_rejected[-1] PASSED [ 90%]
+tests/lab02/test_flow_tracker.py::test_invalid_generation_is_rejected[True] PASSED [ 92%]
+tests/lab02/test_flow_tracker.py::test_invalid_generation_is_rejected[1.5] PASSED [ 94%]
+tests/lab02/test_flow_tracker.py::test_flow_id_is_stable_across_python_hash_seeds PASSED [ 96%]
+tests/lab02/test_flow_tracker.py::test_unprocessed_default_event_does_not_create_flow PASSED [ 98%]
+tests/lab02/test_flow_tracker.py::test_wrong_api_object_type_is_a_clear_programming_error PASSED [100%]
+
+============================== 53 passed in 0.83s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 12%]
+........................................................................ [ 24%]
+........................................................................ [ 36%]
+........................................................................ [ 48%]
+........................................................................ [ 60%]
+........................................................................ [ 72%]
+........................................................................ [ 84%]
+........................................................................ [ 96%]
+..................                                                       [100%]
+594 passed in 1.85s
+
+exit_code=0

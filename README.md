@@ -331,7 +331,8 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 ### Bài tập 2 — Missing/unsupported data và policy (Task 10)
 
 - Preprocessor nối validation → normalization → policy, cấp track khi cả raw
-  và normalized metadata an toàn. flow vẫn null vì chưa có Tracker runtime.
+  và normalized metadata an toàn. Preprocessor trả flow=null; Task 11 gắn flow
+  khi gọi Tracker riêng sau bước này.
 - DNS lists và SMTP commands thiếu dùng []; TCP flags thiếu dùng [] kèm warning,
   không suy đoán state; headers thiếu dùng {}; missing model/scalar dùng null.
   Malformed/over-limit field giữ null kèm lỗi, không bị default che mất; raw và
@@ -359,7 +360,7 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   event hợp lệ tiếp theo. Source là mock, không phải PCAP capture mạng thật.
 - Defaults null/[]/{} đúng ngữ cảnh; không sửa raw hay decoded, không tự tạo
   endpoint/time/state. Optional missing vẫn được track dưới invalid=skip nếu
-  metadata an toàn; flow=null vì chưa triển khai Tracker runtime.
+  metadata an toàn; case này chỉ chạy tới Preprocessor nên flow=null.
 - Tái hiện: `./venv/bin/python -m tests.lab02.reproduce_t06`.
 - Test: `./venv/bin/python -m pytest tests/lab02/test_t06_missing_fields.py -v`.
 - Input/config/expected/actual và README/log tại `TEST/lab02/T06/`.
@@ -381,6 +382,24 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   Fixture ở model boundary, không phải capture thật hoặc JSON syntax parser.
 - Kết quả: T14 PASS 92/92, integration 1 passed; full suite 541 passed.
 - Mandatory cases T01–T06 và T14 hoàn thành: 7/14. T07–T13 thuộc Tracker.
+
+### Bài tập 2 — Flow identity/direction (Task 11)
+
+- `ids/flows/tracker.py`: FlowTracker tra cứu theo normalized bidirectional
+  FlowKey; A/B giữ sender/receiver đầu tiên, không dùng sort order hoặc port để
+  đoán direction/client-server. Event được gắn FlowAssociation bất biến.
+- flow_id dùng SHA-256 compact JSON key + per-key generation; ổn định hai chiều,
+  giữa process hashseed và thứ tự flow khác. remove_flow() là thao tác detach
+  rõ ràng cho task lifecycle sau; recreate cùng key có ID mới.
+- skip_tracking không tạo/sửa flow. Tracker kiểm tra authorization/raw eligible/
+  normalized metadata và policy skip diagnostics trước insertion; lỗi stage=track
+  không làm dừng event tiếp theo. Caller/raw/decoded/normalized được giữ nguyên.
+- active_flows/export_flows là snapshot độc lập. TCP NEW, UDP null; creation
+  timestamp được lưu, counters/last_seen/state transitions chưa cập nhật.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_flow_tracker.py -v`.
+- Kết quả tại commit task: 53 test mới passed; toàn bộ suite 594 passed.
+  API/rules/log tại `TEST/lab02/task11/`; T08/T11 có commit riêng tiếp theo.
+- Chưa handshake/close/counters/expiry/capacity enforcement, chưa nối main CLI.
 
 ## Yêu cầu môi trường
 
@@ -704,6 +723,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
+  `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
+  `tests/lab02/flow_pcap_support.py`,
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
   `ids/decoders/text.py`, `ids/decoders/decoder.py`,
   `tests/lab02/test_decoder_text.py`,
@@ -738,7 +759,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 11: flow key/flow_id hai chiều, direction và T08/T11.
+1. Hoàn thành artifacts và commit riêng T08/T11 cho Task 11.
 2. Tracker counters (T13), TCP handshake/close (T07/T09), UDP (T10) và timeout
    (T12), thực hiện và commit lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.

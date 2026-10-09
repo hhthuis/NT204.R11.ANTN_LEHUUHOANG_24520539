@@ -1,1 +1,1 @@
-"""Flow data models and, in later tasks, connection tracking."""
+"""Flow data models and bidirectional identity/direction tracking."""
