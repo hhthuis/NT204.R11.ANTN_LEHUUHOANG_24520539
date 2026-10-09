@@ -70,7 +70,8 @@ def test_empty_payload_tcp_packets_count_each_present_flag(flags, expected):
     assert tuple(flow[key] for key in ("syn_count", "ack_count", "fin_count", "rst_count")) == expected
     assert flow["packet_count"] == 1 and flow["byte_count"] == 54
     assert event.packet.payload.length == 0
-    assert associated.flow.state == ("HANDSHAKE" if "SYN" in flags else "NEW")
+    expected_state = "RESET" if "RST" in flags else ("CLOSING" if "FIN" in flags else ("HANDSHAKE" if "SYN" in flags else "NEW"))
+    assert associated.flow.state == expected_state
 
 
 def test_combined_flags_sum_across_both_directions_without_deduplicating_packets():

@@ -1,7 +1,7 @@
-"""Conservative handshake recognition from observed TCP flags and direction.
+"""Conservative handshake and close recognition from flags and direction.
 
 This is capture-order recognition, not TCP sequence/ACK-number validation,
-stream reassembly or simultaneous-open handling. Close/reset comes separately.
+stream reassembly or simultaneous-open handling.
 """
 
 from dataclasses import dataclass, replace
@@ -16,6 +16,16 @@ class TcpHandshake:
 
     initiator: FlowDirection | None = None
     syn_ack_seen: bool = False
+
+
+@dataclass(frozen=True, slots=True)
+class TcpClose:
+    """FIN and opposite-direction ACK evidence, separate from flag counters."""
+
+    forward_fin: bool = False
+    backward_fin: bool = False
+    forward_fin_acked: bool = False
+    backward_fin_acked: bool = False
 
 
 def update_handshake(
@@ -50,3 +60,49 @@ def update_handshake(
     if "ACK" in present and context.syn_ack_seen and direction == context.initiator:
         return TcpState.ESTABLISHED, context
     return state, context
+
+
+def update_close(
+    state: TcpState, context: TcpClose, *, direction: FlowDirection,
+    flags: tuple[str, ...],
+) -> tuple[TcpState, TcpClose]:
+    """Recognize both FINs and their opposite ACKs, or an immediate reset.
+
+    ACK can only acknowledge a previously observed opposite-direction FIN.
+    FIN/ACK may both acknowledge the peer and close its own sending side.
+    FIN retransmission preserves evidence; terminal states stay terminal.
+    Sequence/ACK numbers are not validated, so these are logical capture states.
+    """
+    state, direction = TcpState(state), FlowDirection(direction)
+    if not isinstance(context, TcpClose):
+        raise TypeError("Close context must be TcpClose")
+    if not isinstance(flags, (tuple, list)) or any(
+        not isinstance(flag, str) or flag not in TCP_FLAGS for flag in flags
+    ):
+        raise ValueError("Close tracking requires supported TCP flag names")
+    present = set(flags)
+    if state in (TcpState.CLOSED, TcpState.RESET):
+        return state, context
+    if "RST" in present:
+        return TcpState.RESET, context
+    # A contradictory SYN+FIN or a stray SYN/ACK is not close evidence.
+    if "SYN" in present:
+        return state, context
+    changes = {}
+    if direction == FlowDirection.FORWARD:
+        if "ACK" in present and context.backward_fin:
+            changes["backward_fin_acked"] = True
+        if "FIN" in present:
+            changes["forward_fin"] = True
+    else:
+        if "ACK" in present and context.forward_fin:
+            changes["forward_fin_acked"] = True
+        if "FIN" in present:
+            changes["backward_fin"] = True
+    updated = replace(context, **changes)
+    if updated.forward_fin and updated.backward_fin:
+        if updated.forward_fin_acked and updated.backward_fin_acked:
+            return TcpState.CLOSED, updated
+    if updated.forward_fin or updated.backward_fin:
+        return TcpState.CLOSING, updated
+    return state, updated

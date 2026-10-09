@@ -15,5 +15,7 @@ def test_t13_pcap_statistics_match_exact_byte_flag_direction_time_and_applicatio
     assert events[5]["flow"]["direction"] == "backward"  # oldest TCP timestamp does not redefine A
     assert events[11]["flow"]["direction"] == "backward"  # oldest UDP timestamp does not redefine A
     assert events[-1]["flow"]["flow_id"] == UDP_ID  # continues after skipped packet
+    assert tcp["state"] == "RESET"
+    assert [event["flow"]["state"] for event in events[7:9]] == ["CLOSING", "RESET"]
     assert (tcp["syn_count"], tcp["ack_count"], tcp["fin_count"], tcp["rst_count"]) == (2, 8, 1, 1)
     assert all(udp[name] == 0 for name in ("syn_count", "ack_count", "fin_count", "rst_count"))

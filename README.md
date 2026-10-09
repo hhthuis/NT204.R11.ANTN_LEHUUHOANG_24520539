@@ -511,6 +511,35 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   (DNS UDP), T12 (timeout). Main CLI bài 2 và capacity cũng chưa triển khai;
   không kết luận đủ bài chỉ từ handshake/statistics đã đạt.
 
+### Bài tập 2 — TCP close (Task 14)
+
+- `ids/flows/tcp.py`: TcpClose frozen nhớ FIN của từng chiều và ACK từ chiều
+  đối diện. FIN đầu tiên → CLOSING; chỉ khi cả hai FIN đã có ACK tương ứng mới
+  CLOSED. FIN/ACK vừa xác nhận FIN đối diện vừa gửi FIN của mình; một FIN hoặc
+  FIN retransmission không thể thay cho FIN của chiều còn lại.
+- RST ở state chưa kết thúc → RESET ngay, ưu tiên hơn FIN/SYN. CLOSED/RESET
+  giữ nguyên khi gặp late ACK/data/FIN/RST/SYN-ACK; những packet đó vẫn được
+  tính vào lifetime đang giữ. SYN+FIN không cung cấp close evidence.
+- Tracker giữ terminal record trong resident table cho tới remove/reuse;
+  valid bare SYN (không ACK/FIN/RST) sau terminal tạo generation mới, reset
+  counters/context/time/orientation, lưu summary lifetime cũ vào completed
+  queue. Đây là capture-order heuristic, chưa phân biệt late SYN bằng seq.
+- export_flows() trả resident records và queued summaries. Hàm mới
+  drain_completed_flows() lấy/xóa queue để caller ghi output; remove_flow()
+  trả summary cho caller và xóa hai loại context. Chưa timeout/capacity và
+  queue limit; pipeline sau cần drain thường xuyên để giải phóng summaries.
+- Statistics/handshake/close/association được tính trước khi commit. Lỗi hoặc
+  skip không đổi table/context/generation/queue; raw/decoded/normalized và
+  snapshots cũ được giữ nguyên. Sequence/ACK-number không được kiểm tra;
+  ACK sau FIN từ chiều ngược là evidence logic, không xác nhận TCP wire state.
+- 74 unit tests mới passed; T07/T08/T11/T13 regression PASS; full suite 750
+  passed tại commit mã nguồn. API/rules/log: `TEST/lab02/task14/`.
+- T13 expected hiện tại: packet 8 CLOSING, packet 9 RESET, final TCP RESET;
+  packet/byte/flag/time values giữ nguyên. Artifacts T13 cũ là snapshot Task 12,
+  regression mới chạy ngoài repo và lưu log Task 14.
+- T09 FIN/RST có artifacts và commit test riêng sau mã nguồn. Còn DNS UDP T10,
+  timeout T12, capacity và main CLI bài 2; sẽ triển khai ở các task tiếp theo.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -836,6 +865,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
   `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
+  `tests/lab02/test_tcp_close.py`,
   `tests/lab02/reproduce_t07.py`, `tests/lab02/test_t07_tcp_handshake.py`,
   `tests/lab02/flow_pcap_support.py`,
   `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
@@ -875,7 +905,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 14: TCP close transitions, thực hiện T09.
+1. Hoàn thành bằng chứng T09 sau phần mã nguồn Task 14.
 2. Task 15 UDP DNS (T10), Task 16 timeout/capacity (T12), thực hiện và commit
    lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.

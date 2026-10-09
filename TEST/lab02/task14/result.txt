@@ -1,0 +1,147 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_tcp_close.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 74 items
+
+tests/lab02/test_tcp_close.py::test_four_packet_close_in_either_direction_keeps_identity_and_snapshots[False] PASSED [  1%]
+tests/lab02/test_tcp_close.py::test_four_packet_close_in_either_direction_keeps_identity_and_snapshots[True] PASSED [  2%]
+tests/lab02/test_tcp_close.py::test_peer_fin_ack_can_acknowledge_first_fin_and_send_its_own[False] PASSED [  4%]
+tests/lab02/test_tcp_close.py::test_peer_fin_ack_can_acknowledge_first_fin_and_send_its_own[True] PASSED [  5%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows0] PASSED [  6%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows1] PASSED [  8%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows2] PASSED [  9%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows3] PASSED [ 10%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows4] PASSED [ 12%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows5] PASSED [ 13%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows6] PASSED [ 14%]
+tests/lab02/test_tcp_close.py::test_missing_wrong_direction_or_early_ack_never_fabricates_closed[rows7] PASSED [ 16%]
+tests/lab02/test_tcp_close.py::test_both_unacknowledged_fins_need_opposite_acks PASSED [ 17%]
+tests/lab02/test_tcp_close.py::test_fin_retransmissions_do_not_replace_the_missing_opposite_fin_or_erase_ack PASSED [ 18%]
+tests/lab02/test_tcp_close.py::test_half_closed_data_and_duplicate_final_ack_keep_same_flow_and_count_bytes PASSED [ 20%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[False-new] PASSED [ 21%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[False-handshake] PASSED [ 22%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[False-established] PASSED [ 24%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[False-closing] PASSED [ 25%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[True-new] PASSED [ 27%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[True-handshake] PASSED [ 28%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[True-established] PASSED [ 29%]
+tests/lab02/test_tcp_close.py::test_rst_terminates_any_nonterminal_state_without_waiting_for_ack[True-closing] PASSED [ 31%]
+tests/lab02/test_tcp_close.py::test_first_packet_rst_or_conflicting_flags_prioritize_reset[flags0] PASSED [ 32%]
+tests/lab02/test_tcp_close.py::test_first_packet_rst_or_conflicting_flags_prioritize_reset[flags1] PASSED [ 33%]
+tests/lab02/test_tcp_close.py::test_first_packet_rst_or_conflicting_flags_prioritize_reset[flags2] PASSED [ 35%]
+tests/lab02/test_tcp_close.py::test_first_packet_rst_or_conflicting_flags_prioritize_reset[flags3] PASSED [ 36%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags0-closed] PASSED [ 37%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags0-reset] PASSED [ 39%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags1-closed] PASSED [ 40%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags1-reset] PASSED [ 41%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags2-closed] PASSED [ 43%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags2-reset] PASSED [ 44%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags3-closed] PASSED [ 45%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags3-reset] PASSED [ 47%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags4-closed] PASSED [ 48%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags4-reset] PASSED [ 50%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags5-closed] PASSED [ 51%]
+tests/lab02/test_tcp_close.py::test_late_packets_keep_terminal_state_and_lifetime[flags5-reset] PASSED [ 52%]
+tests/lab02/test_tcp_close.py::test_bare_syn_after_terminal_starts_fresh_generation_and_retains_old_summary[False-closed] PASSED [ 54%]
+tests/lab02/test_tcp_close.py::test_bare_syn_after_terminal_starts_fresh_generation_and_retains_old_summary[False-reset] PASSED [ 55%]
+tests/lab02/test_tcp_close.py::test_bare_syn_after_terminal_starts_fresh_generation_and_retains_old_summary[True-closed] PASSED [ 56%]
+tests/lab02/test_tcp_close.py::test_bare_syn_after_terminal_starts_fresh_generation_and_retains_old_summary[True-reset] PASSED [ 58%]
+tests/lab02/test_tcp_close.py::test_completed_export_and_drain_views_are_detached_and_multiple_lifetimes_preserved PASSED [ 59%]
+tests/lab02/test_tcp_close.py::test_concurrent_close_reset_and_udp_do_not_share_evidence PASSED [ 60%]
+tests/lab02/test_tcp_close.py::test_remove_clears_close_and_handshake_context_and_returns_detached_summary PASSED [ 62%]
+tests/lab02/test_tcp_close.py::test_missing_flags_in_closing_do_not_invent_final_ack PASSED [ 63%]
+tests/lab02/test_tcp_close.py::test_syn_during_closing_keeps_lifetime_and_cannot_return_to_handshake PASSED [ 64%]
+tests/lab02/test_tcp_close.py::test_skipped_new_syn_after_reset_cannot_archive_or_replace_terminal_lifetime PASSED [ 66%]
+tests/lab02/test_tcp_close.py::test_close_uses_observation_order_and_preserves_caller_views_and_time_bounds PASSED [ 67%]
+tests/lab02/test_tcp_close.py::test_skip_or_bad_metadata_changes_no_context_record_generation_or_queue[flags0] PASSED [ 68%]
+tests/lab02/test_tcp_close.py::test_skip_or_bad_metadata_changes_no_context_record_generation_or_queue[flags1] PASSED [ 70%]
+tests/lab02/test_tcp_close.py::test_skip_or_bad_metadata_changes_no_context_record_generation_or_queue[flags2] PASSED [ 71%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_statistics-first] PASSED [ 72%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_statistics-fin] PASSED [ 74%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_statistics-reset] PASSED [ 75%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_statistics-final_ack] PASSED [ 77%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_statistics-reopen] PASSED [ 78%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_handshake-first] PASSED [ 79%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_handshake-fin] PASSED [ 81%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_handshake-reset] PASSED [ 82%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_handshake-final_ack] PASSED [ 83%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_handshake-reopen] PASSED [ 85%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_close-first] PASSED [ 86%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_close-fin] PASSED [ 87%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_close-reset] PASSED [ 89%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_close-final_ack] PASSED [ 90%]
+tests/lab02/test_tcp_close.py::test_failed_update_is_atomic_including_terminal_rollover[update_close-reopen] PASSED [ 91%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_rejects_malformed_flags[None] PASSED [ 93%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_rejects_malformed_flags[FIN] PASSED [ 94%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_rejects_malformed_flags[flags2] PASSED [ 95%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_rejects_malformed_flags[flags3] PASSED [ 97%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_requires_typed_context PASSED [ 98%]
+tests/lab02/test_tcp_close.py::test_pure_close_handler_keeps_input_immutable_and_flags_do_not_act_as_counters PASSED [100%]
+
+============================== 74 passed in 0.94s ==============================
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t07 --output-dir /tmp/ids-task14-t07
+
+packet 1: forward; HANDSHAKE
+packet 2: backward; HANDSHAKE
+packet 3: forward; ESTABLISHED
+T07 PASS: 3 empty-payload packets; 1 ESTABLISHED flow; bytes=162; SYN=2, ACK=2
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t08 --output-dir /tmp/ids-task14-t08
+
+packet 1: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 2: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 3: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 4: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 5: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+T08 PASS: 5 packets; 1 flow; first sender A differs from key sort order
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t11 --output-dir /tmp/ids-task14-t11
+
+packet 1: F1; forward
+packet 2: F2; forward
+packet 3: F3; forward
+packet 4: F4; forward
+packet 5: F5; forward
+packet 6: F6; forward
+packet 7: F1; backward
+packet 8: F4; backward
+packet 9: F2; backward
+packet 10: F3; backward
+packet 11: F5; backward
+packet 12: F6; backward
+packet 13: ICMP; skip_tracking
+packet 14: F1; forward
+packet 15: F4; forward
+packet 16: F2; backward
+T11 PASS: 16 packets; 6 distinct flows; skipped ICMP adds no flow; processing continues
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t13 --output-dir /tmp/ids-task14-t13
+
+TCP: packets=9, bytes=638; forward=5/356, backward=4/282; duration=1.6
+UDP: packets=3, bytes=137; forward=2/89, backward=1/48; duration=2.0
+T13 PASS: 13 packets, 2 flows; TCP flags 2/8/1/1; retransmission counted; skipped ICMP excluded
+Exit code: 0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [  9%]
+........................................................................ [ 19%]
+........................................................................ [ 28%]
+........................................................................ [ 38%]
+........................................................................ [ 48%]
+........................................................................ [ 57%]
+........................................................................ [ 67%]
+........................................................................ [ 76%]
+........................................................................ [ 86%]
+........................................................................ [ 96%]
+..............................                                           [100%]
+750 passed in 2.34s
+Exit code: 0

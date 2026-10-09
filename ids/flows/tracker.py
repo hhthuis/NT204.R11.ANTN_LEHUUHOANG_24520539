@@ -1,4 +1,4 @@
-"""Bidirectional identity, statistics and TCP handshake; close/expiry come later."""
+"""Bidirectional identity, statistics and TCP states; expiry comes later."""
 
 import hashlib
 import json
@@ -9,7 +9,7 @@ from ipaddress import ip_address
 
 from ids.flows.models import Endpoint, FlowDirection, FlowKey, FlowProtocol, FlowRecord, TcpState
 from ids.flows.statistics import update_statistics
-from ids.flows.tcp import TcpHandshake, update_handshake
+from ids.flows.tcp import TcpClose, TcpHandshake, update_close, update_handshake
 from ids.preprocessors.validation import TCP_FLAGS, validate_packet
 from ids.processing_models import (
     PreprocessStatus, ProcessedEvent, ProcessingAction, ProcessingError, ProcessingStage,
@@ -103,27 +103,43 @@ class FlowTracker:
     A is the first observed sender, not a key sort order or a client/server guess.
     Every accepted call counts one observation; retransmissions are not removed.
     Handshake requires observed SYN → reverse SYN/ACK → initiator ACK.
-    Close/reset transitions and timeout/capacity are not implemented yet.
+    Terminal records remain resident for late packets until removal or reuse.
+    Bare SYN after CLOSED/RESET starts a new lifetime and queues the old summary.
+    Timeout/capacity are not implemented yet.
     """
 
     def __init__(self) -> None:
         self._active_flows: dict[FlowKey, FlowRecord] = {}
         self._generations: dict[FlowKey, int] = {}
         self._tcp_handshakes: dict[FlowKey, TcpHandshake] = {}
+        self._tcp_closes: dict[FlowKey, TcpClose] = {}
+        self._completed_flows: list[FlowRecord] = []
 
     @property
     def active_flows(self) -> dict[FlowKey, FlowRecord]:
-        """Inspection snapshot: caller changes cannot corrupt tracker identity."""
+        """Resident snapshots including terminal records awaiting removal/reuse."""
         return deepcopy(self._active_flows)
 
     def export_flows(self) -> list[dict]:
-        """Detached snapshots with current statistics and UTC time bounds."""
-        return [record.to_dict() for record in sorted(self._active_flows.values(), key=lambda flow: flow.flow_id)]
+        """Detached resident plus queued prior-lifetime summaries, sorted by ID."""
+        records = [*self._completed_flows, *self._active_flows.values()]
+        return [record.to_dict() for record in sorted(records, key=lambda flow: flow.flow_id)]
+
+    def drain_completed_flows(self) -> list[dict]:
+        """Take queued replaced lifetimes for output; resident records stay put.
+
+        Callers should drain regularly; the queue has no capacity limit yet.
+        Serialize these summaries before discarding the returned list.
+        """
+        records = [flow.to_dict() for flow in self._completed_flows]
+        self._completed_flows.clear()
+        return records
 
     def remove_flow(self, key: FlowKey) -> FlowRecord | None:
-        """Explicit detach for future close/expiry; this does not infer TCP close."""
+        """Explicit detach including all TCP context; caller owns returned summary."""
         flow = self._active_flows.pop(key, None)
         self._tcp_handshakes.pop(key, None)
+        self._tcp_closes.pop(key, None)
         return deepcopy(flow) if flow is not None else None
 
     def track(self, event: ProcessedEvent) -> ProcessedEvent:
@@ -146,8 +162,14 @@ class FlowTracker:
             data = _tracking_input(processed)
             key, src, dst = data.key, data.src, data.dst
             record = self._active_flows.get(key)
-            is_new = record is None
-            if record is None:
+            reopen = (
+                record is not None and key.protocol == FlowProtocol.TCP
+                and record.state in (TcpState.CLOSED, TcpState.RESET)
+                and "SYN" in data.flags and not set(data.flags) & {"ACK", "FIN", "RST"}
+            )
+            archived = deepcopy(record) if reopen else None
+            is_new = record is None or reopen
+            if is_new:
                 generation = self._generations.get(key, 0) + 1
                 record = FlowRecord(
                     flow_id=make_flow_id(key, generation), protocol=key.protocol,
@@ -162,14 +184,21 @@ class FlowTracker:
             )
             if key.protocol == FlowProtocol.TCP:
                 state, handshake = update_handshake(
-                    record.state, self._tcp_handshakes.get(key, TcpHandshake()),
+                    record.state, TcpHandshake() if is_new else self._tcp_handshakes[key],
+                    direction=direction, flags=data.flags,
+                )
+                state, close = update_close(
+                    state, TcpClose() if is_new else self._tcp_closes[key],
                     direction=direction, flags=data.flags,
                 )
                 updated = replace(updated, state=state)
             processed.flow = updated.association(direction)
+            if archived is not None:
+                self._completed_flows.append(archived)
             self._active_flows[key] = updated
             if key.protocol == FlowProtocol.TCP:
                 self._tcp_handshakes[key] = handshake
+                self._tcp_closes[key] = close
             if is_new:
                 self._generations[key] = generation
         except (KeyError, TypeError, ValueError, OverflowError) as error:

@@ -106,7 +106,8 @@ def test_real_parser_transport_packets_have_conservative_initial_states(layer):
     parsed = parse_packet(Ether() / IP(src="10.0.0.2", dst="10.0.0.1") / layer, 1, CaptureSource("pcap", "synthetic.pcap"))
     event = preprocess_event(decode_event(parsed))
     result = FlowTracker().track(event)
-    expected = "HANDSHAKE" if "SYN" in (event.normalized["transport"]["flags"] or []) else "NEW"
+    flags = event.normalized["transport"]["flags"] or []
+    expected = "RESET" if "RST" in flags else ("HANDSHAKE" if "SYN" in flags else "NEW")
     assert result.flow.state == (expected if parsed.transport.protocol == "TCP" else None)
     assert result.decode_status == "skipped" and result.flow.direction == "forward"
 

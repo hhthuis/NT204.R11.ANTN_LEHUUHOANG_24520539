@@ -84,7 +84,8 @@ def test_missing_ack_or_close_reset_flags_do_not_complete_handshake(flags):
     tracker, base = FlowTracker(), prepared()
     tracker.track(packet(base, ["SYN"]))
     tracker.track(packet(base, ["SYN", "ACK"], True))
-    assert tracker.track(packet(base, flags)).flow.state == "HANDSHAKE"
+    expected = "RESET" if "RST" in flags else ("CLOSING" if "FIN" in flags and "SYN" not in flags else "HANDSHAKE")
+    assert tracker.track(packet(base, flags)).flow.state == expected
 
 
 def test_missing_flags_remain_trackable_without_inventing_handshake():
@@ -95,11 +96,12 @@ def test_missing_flags_remain_trackable_without_inventing_handshake():
 
 
 @pytest.mark.parametrize("flags", [["ACK"], ["PSH", "ACK"], ["SYN"], ["SYN", "ACK"], [], ["FIN", "ACK"], ["RST", "ACK"]])
-def test_established_does_not_regress_and_close_is_deferred(flags):
+def test_established_keeps_handshake_evidence_and_dispatches_close(flags):
     tracker, base = FlowTracker(), prepared()
     for step, backward in [(["SYN"], False), (["SYN", "ACK"], True), (["ACK"], False)]:
         tracker.track(packet(base, step, backward))
-    assert tracker.track(packet(base, flags)).flow.state == "ESTABLISHED"
+    expected = "RESET" if "RST" in flags else ("CLOSING" if "FIN" in flags else "ESTABLISHED")
+    assert tracker.track(packet(base, flags)).flow.state == expected
 
 
 def test_concurrent_flows_cannot_share_handshake_evidence_and_udp_has_no_context():
@@ -185,6 +187,6 @@ def test_pure_handler_rejects_malformed_flags_without_mutating_context(flags):
 
 def test_contradictory_first_syn_flags_do_not_start_handshake():
     tracker, base = FlowTracker(), prepared()
-    for flags in (["SYN", "FIN"], ["SYN", "RST"], ["RST", "ACK"]):
-        assert tracker.track(packet(base, flags)).flow.state == "NEW"
+    for flags, expected in [(["SYN", "FIN"], "NEW"), (["SYN", "RST"], "RESET"), (["RST", "ACK"], "RESET")]:
+        assert tracker.track(packet(base, flags)).flow.state == expected
     assert tracker.export_flows()[0]["packet_count"] == 3
