@@ -115,6 +115,23 @@ config = load_config("config/default.toml")
 print(config.tracker.tcp_idle_timeout)  # 180.0
 ```
 
+### Bài tập 2 — Character decoder (Task 04)
+
+- `ids/decoders/text.py` decode ASCII/UTF-8, trả text/charset/status/errors và
+  sử dụng policy, giới hạn input/output của `DecoderConfig`.
+- `ids/decoders/decoder.py` đọc payload Base64 đầy đủ từ `PacketEvent`, giữ
+  raw packet và trả `ProcessedEvent` với `decoded.payload.text/charset/status`.
+  Không dùng preview 256 byte làm nguồn decode.
+- Byte lỗi: replace trả text có U+FFFD và status partial; strict trả error và
+  text null. Charset sai/Base64 lỗi/raw thiếu được ghi nhận an toàn.
+- Vượt giới hạn trả skipped/error theo policy, giữ raw và ghi reason. Output
+  limit tính theo UTF-8 bytes trước JSON escaping, gồm expansion do replacement.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_decoder_text.py -v`.
+- Kết quả ngày 09/10/2026: 25 test mới passed, toàn bộ suite 142 passed.
+  Tài liệu/log tại `TEST/lab02/task04/`.
+- Chưa có HTTP URL/form/HTML/MIME decoding hoặc nối character decoder vào CLI;
+  các phần đó triển khai sau. T04 có bằng chứng và commit riêng.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -437,6 +454,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/config.py`, `config/default.toml`, `tests/lab02/test_config.py`,
+  `ids/decoders/text.py`, `ids/decoders/decoder.py`,
+  `tests/lab02/test_decoder_text.py`,
   `ids/capture/pcap.py`, `ids/capture/live.py`, `ids/parsers/network.py`,
   `ids/parsers/transport.py`, `ids/parsers/application/detector.py`,
   `ids/parsers/application/http.py`, `ids/parsers/application/dns.py`,

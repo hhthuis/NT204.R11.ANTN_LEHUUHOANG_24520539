@@ -1,0 +1,45 @@
+Task: Lab 2, Stage 2, Task 04 - Implement ASCII/UTF-8 decoder
+Test date: 2026-10-09
+Scope: Character decoder and PacketEvent adapter; HTTP/MIME field decoders and CLI integration are later tasks.
+
+Command: ./venv/bin/python -m pytest tests/lab02/test_decoder_text.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 25 items
+
+tests/lab02/test_decoder_text.py::test_valid_ascii_utf8_and_empty_bytes[Hello IDS-ASCII-Hello IDS] PASSED [  4%]
+tests/lab02/test_decoder_text.py::test_valid_ascii_utf8_and_empty_bytes[Xin ch\xc3\xa0o IDS-UTF8-Xin ch\xe0o IDS] PASSED [  8%]
+tests/lab02/test_decoder_text.py::test_valid_ascii_utf8_and_empty_bytes[-utf-8-] PASSED [ 12%]
+tests/lab02/test_decoder_text.py::test_character_decoder_uses_configured_ascii_and_marks_non_ascii_bytes PASSED [ 16%]
+tests/lab02/test_decoder_text.py::test_invalid_utf8_is_reported_even_when_replacement_returns_text[a\xffb] PASSED [ 20%]
+tests/lab02/test_decoder_text.py::test_invalid_utf8_is_reported_even_when_replacement_returns_text[\xc0\xaf] PASSED [ 24%]
+tests/lab02/test_decoder_text.py::test_invalid_utf8_is_reported_even_when_replacement_returns_text[\xe2\x82] PASSED [ 28%]
+tests/lab02/test_decoder_text.py::test_strict_byte_error_does_not_prevent_next_decode PASSED [ 32%]
+tests/lab02/test_decoder_text.py::test_bad_charset_returns_error_without_exception[utf-16] PASSED [ 36%]
+tests/lab02/test_decoder_text.py::test_bad_charset_returns_error_without_exception[unknown-charset] PASSED [ 40%]
+tests/lab02/test_decoder_text.py::test_bad_charset_returns_error_without_exception[\x00] PASSED [ 44%]
+tests/lab02/test_decoder_text.py::test_bad_charset_returns_error_without_exception[123] PASSED [ 48%]
+tests/lab02/test_decoder_text.py::test_non_bytes_input_returns_error PASSED [ 52%]
+tests/lab02/test_decoder_text.py::test_input_limit_discards_decode_and_records_reason[skip-skipped] PASSED [ 56%]
+tests/lab02/test_decoder_text.py::test_input_limit_discards_decode_and_records_reason[error-error] PASSED [ 60%]
+tests/lab02/test_decoder_text.py::test_output_limit_accounts_for_utf8_replacement_expansion[skip-skipped] PASSED [ 64%]
+tests/lab02/test_decoder_text.py::test_output_limit_accounts_for_utf8_replacement_expansion[error-error] PASSED [ 68%]
+tests/lab02/test_decoder_text.py::test_event_uses_full_raw_bytes_not_lossy_256_byte_preview PASSED [ 72%]
+tests/lab02/test_decoder_text.py::test_empty_packet_payload_is_skipped_without_error PASSED [ 76%]
+tests/lab02/test_decoder_text.py::test_bad_raw_payload_is_logged_and_next_event_still_decodes[None-missing_raw_payload] PASSED [ 80%]
+tests/lab02/test_decoder_text.py::test_bad_raw_payload_is_logged_and_next_event_still_decodes[not base64!-invalid_payload_base64] PASSED [ 84%]
+tests/lab02/test_decoder_text.py::test_bad_raw_payload_is_logged_and_next_event_still_decodes[\xe9-invalid_payload_base64] PASSED [ 88%]
+tests/lab02/test_decoder_text.py::test_bad_raw_payload_is_logged_and_next_event_still_decodes[123-invalid_payload_base64] PASSED [ 92%]
+tests/lab02/test_decoder_text.py::test_encoded_payload_limit_is_checked_before_allocating_raw_bytes PASSED [ 96%]
+tests/lab02/test_decoder_text.py::test_actual_input_limit_is_checked_when_base64_lengths_are_equal PASSED [100%]
+
+============================== 25 passed in 0.07s ==============================
+
+Command: ./venv/bin/python -m pytest -q
+
+........................................................................ [ 50%]
+......................................................................   [100%]
+142 passed in 1.08s
