@@ -17,6 +17,9 @@ limit_policy = "skip"
 # Neither policy authorizes tracking if required endpoint/time fields are invalid.
 invalid_event_policy = "skip"
 unsupported_event_policy = "mark"
+# Normalization limits per text field or header/record collection; no truncation.
+max_input_bytes = 1048576
+max_output_bytes = 1048576
 
 [tracker]
 # Seconds. PCAP uses event timestamps; live capture also needs periodic expiry.

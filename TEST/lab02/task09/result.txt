@@ -1,0 +1,108 @@
+Task 09 — kiểm thử ngày 09/10/2026
+
+$ ./venv/bin/python -m pytest tests/lab02/test_normalization.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 81 items
+
+tests/lab02/test_normalization.py::test_protocol_names_have_a_canonical_spelling[ tcp -TCP] PASSED [  1%]
+tests/lab02/test_normalization.py::test_protocol_names_have_a_canonical_spelling[HtTp-HTTP] PASSED [  2%]
+tests/lab02/test_normalization.py::test_protocol_names_have_a_canonical_spelling[ IPV4 -IPv4] PASSED [  3%]
+tests/lab02/test_normalization.py::test_protocol_names_have_a_canonical_spelling[ipv6-IPv6] PASSED [  4%]
+tests/lab02/test_normalization.py::test_ip_representation_is_canonical_without_guessed_addresses[ 10.0.0.1 -10.0.0.1] PASSED [  6%]
+tests/lab02/test_normalization.py::test_ip_representation_is_canonical_without_guessed_addresses[2001:0DB8:0000:0000:0000:0000:0000:0001-2001:db8::1] PASSED [  7%]
+tests/lab02/test_normalization.py::test_same_instant_has_one_utc_microsecond_representation[2026-10-09T00:00:00Z] PASSED [  8%]
+tests/lab02/test_normalization.py::test_same_instant_has_one_utc_microsecond_representation[2026-10-09T07:00:00+07:00] PASSED [  9%]
+tests/lab02/test_normalization.py::test_same_instant_has_one_utc_microsecond_representation[2026-10-08T20:00:00-04:00] PASSED [ 11%]
+tests/lab02/test_normalization.py::test_domain_ascii_case_is_normalized_without_another_unicode_mapping[ Example.COM. -example.com] PASSED [ 12%]
+tests/lab02/test_normalization.py::test_domain_ascii_case_is_normalized_without_another_unicode_mapping[_SIP._TCP.Example.COM-_sip._tcp.example.com] PASSED [ 13%]
+tests/lab02/test_normalization.py::test_domain_ascii_case_is_normalized_without_another_unicode_mapping[b\xfccher.Example-b\xfccher.example] PASSED [ 14%]
+tests/lab02/test_normalization.py::test_domain_ascii_case_is_normalized_without_another_unicode_mapping[B\xdcCHER.example-b\xdccher.example] PASSED [ 16%]
+tests/lab02/test_normalization.py::test_dns_root_is_normalized_only_in_dns_context PASSED [ 17%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_protocol-6] PASSED [ 18%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_protocol-] PASSED [ 19%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_protocol-TCP UDP] PASSED [ 20%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_ip-167772161] PASSED [ 22%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_ip-999.0.0.1] PASSED [ 23%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_timestamp-2026-10-09] PASSED [ 24%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_timestamp-0001-01-01T00:00:00+14:00] PASSED [ 25%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_domain-example..com] PASSED [ 27%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_domain-bad/name] PASSED [ 28%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_domain-example.com..] PASSED [ 29%]
+tests/lab02/test_normalization.py::test_bad_text_fields_return_none_and_preprocess_error[normalize_domain-bad\x00name] PASSED [ 30%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_protocol] PASSED [ 32%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_ip] PASSED [ 33%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_timestamp] PASSED [ 34%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_domain] PASSED [ 35%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_headers] PASSED [ 37%]
+tests/lab02/test_normalization.py::test_missing_optional_value_is_not_invented[normalize_flags] PASSED [ 38%]
+tests/lab02/test_normalization.py::test_headers_preserve_values_and_case_collisions_as_ordered_lists PASSED [ 39%]
+tests/lab02/test_normalization.py::test_invalid_headers_do_not_create_a_partial_silent_dictionary[raw0] PASSED [ 40%]
+tests/lab02/test_normalization.py::test_invalid_headers_do_not_create_a_partial_silent_dictionary[raw1] PASSED [ 41%]
+tests/lab02/test_normalization.py::test_invalid_headers_do_not_create_a_partial_silent_dictionary[raw2] PASSED [ 43%]
+tests/lab02/test_normalization.py::test_invalid_headers_do_not_create_a_partial_silent_dictionary[raw3] PASSED [ 44%]
+tests/lab02/test_normalization.py::test_invalid_headers_do_not_create_a_partial_silent_dictionary[raw4] PASSED [ 45%]
+tests/lab02/test_normalization.py::test_flags_are_deduplicated_and_sorted_in_bit_order PASSED [ 46%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[/Admin%2fA?q=x+y&tag=a&tag=b&x=%26-/Admin%2FA?q=x+y&tag=a&tag=b&x=%26-/Admin%2FA-q=x+y&tag=a&tag=b&x=%26-origin] PASSED [ 48%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[/%252f-/%252f-/%252f-None-origin] PASSED [ 49%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[/a//b/../c?-/a//b/../c?-/a//b/../c--origin] PASSED [ 50%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[//path/a-//path/a-//path/a-None-origin] PASSED [ 51%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[/caf\xe9-/caf%C3%A9-/caf%C3%A9-None-origin] PASSED [ 53%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[/x\xff-/x%FF-/x%FF-None-origin] PASSED [ 54%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[*-*-*-None-asterisk] PASSED [ 55%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[HTTP://Example.COM/Admin%2fA?q=x+y-HTTP://Example.COM/Admin%2FA?q=x+y-/Admin%2FA-q=x+y-absolute] PASSED [ 56%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[Example.COM:000080-Example.COM:000080-None-None-authority] PASSED [ 58%]
+tests/lab02/test_normalization.py::test_uri_is_normalized_from_raw_without_decoding_or_changing_delimiters[[2001:db8::1]:443-[2001:db8::1]:443-None-None-authority] PASSED [ 59%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[None] PASSED [ 60%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[] PASSED [ 61%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[/%ZZ] PASSED [ 62%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[/bad path] PASSED [ 64%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[/tab\tx] PASSED [ 65%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[/a#fragment] PASSED [ 66%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[/\ud800] PASSED [ 67%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[http://[bad]/x] PASSED [ 69%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[http://host:70000/x] PASSED [ 70%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[host:70000] PASSED [ 71%]
+tests/lab02/test_normalization.py::test_malformed_or_unsupported_uri_has_reason_instead_of_silent_repair[relative/path] PASSED [ 72%]
+tests/lab02/test_normalization.py::test_text_limits_count_utf8_bytes_and_post_normalization_expansion PASSED [ 74%]
+tests/lab02/test_normalization.py::test_collection_limits_include_json_structure_and_discard_the_whole_field PASSED [ 75%]
+tests/lab02/test_normalization.py::test_preprocessor_preserves_raw_and_decoded_uri_views_without_double_decoding PASSED [ 76%]
+tests/lab02/test_normalization.py::test_http_parser_latin1_target_recovers_literal_utf8_bytes_once PASSED [ 77%]
+tests/lab02/test_normalization.py::test_dns_question_record_names_and_domain_rdata_are_normalized_but_txt_is_preserved PASSED [ 79%]
+tests/lab02/test_normalization.py::test_smtp_mailbox_local_part_is_preserved[MAIL FROM-Alice@Example.COM.-Alice@example.com] PASSED [ 80%]
+tests/lab02/test_normalization.py::test_smtp_mailbox_local_part_is_preserved[RCPT TO-"A@B"@Example.COM-"A@B"@example.com] PASSED [ 81%]
+tests/lab02/test_normalization.py::test_smtp_mailbox_local_part_is_preserved[MAIL FROM--] PASSED [ 82%]
+tests/lab02/test_normalization.py::test_smtp_mailbox_local_part_is_preserved[RCPT TO-Bob@[192.0.2.1]-Bob@[192.0.2.1]] PASSED [ 83%]
+tests/lab02/test_normalization.py::test_smtp_mailbox_local_part_is_preserved[RCPT TO-Bob@[ipv6:2001:0DB8::1]-Bob@[IPv6:2001:db8::1]] PASSED [ 85%]
+tests/lab02/test_normalization.py::test_smtp_helo_domain_and_mime_header_names_are_normalized PASSED [ 86%]
+tests/lab02/test_normalization.py::test_invalid_required_fields_remain_invalid_and_never_get_default_endpoint_or_time PASSED [ 87%]
+tests/lab02/test_normalization.py::test_normalization_errors_are_partial_and_preserve_successful_fields PASSED [ 88%]
+tests/lab02/test_normalization.py::test_repeated_preprocessing_is_idempotent_and_resolved_errors_do_not_linger PASSED [ 90%]
+tests/lab02/test_normalization.py::test_bad_application_collections_return_safe_fields_without_crashing PASSED [ 91%]
+tests/lab02/test_normalization.py::test_collection_limits_do_not_return_truncated_dns_records PASSED [ 92%]
+tests/lab02/test_normalization.py::test_missing_models_are_not_fabricated_and_wrong_packet_model_is_safe PASSED [ 93%]
+tests/lab02/test_normalization.py::test_preprocessor_limits_are_validated[max_input_bytes-0] PASSED [ 95%]
+tests/lab02/test_normalization.py::test_preprocessor_limits_are_validated[max_input_bytes-True] PASSED [ 96%]
+tests/lab02/test_normalization.py::test_preprocessor_limits_are_validated[max_output_bytes--1] PASSED [ 97%]
+tests/lab02/test_normalization.py::test_preprocessor_limits_are_validated[max_output_bytes-1.5] PASSED [ 98%]
+tests/lab02/test_normalization.py::test_preprocessor_limits_can_be_loaded_from_toml PASSED [100%]
+
+============================== 81 passed in 0.78s ==============================
+
+exit_code=0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 15%]
+........................................................................ [ 31%]
+........................................................................ [ 46%]
+........................................................................ [ 62%]
+........................................................................ [ 77%]
+........................................................................ [ 93%]
+................................                                         [100%]
+464 passed in 1.40s
+
+exit_code=0

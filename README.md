@@ -280,8 +280,36 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
 - Kết quả ngày 09/10/2026: 80 test mới passed; toàn bộ suite 383 passed.
   Tài liệu/log tại `TEST/lab02/task08/`. T14 chưa hoàn thành; sẽ có artifacts
   riêng sau khi Preprocessor có đầy đủ normalization/policy.
-- Validation chạy qua API/test tích hợp parser → decoder → validation; chưa
-  nối vào main CLI. Bước tiếp theo: Task 09 normalization và T05.
+- Validation được nối normalization ở Task 09 qua API; chưa nối vào main CLI.
+
+### Bài tập 2 — Normalization (Task 09)
+
+- `ids/preprocessors/normalization.py`: canonical protocol/IP/time/domain/
+  header names/TCP flags/URI vào một view riêng trong ProcessedEvent.normalized.
+- `ids/preprocessors/preprocessor.py`: preprocess_event() nối validation →
+  normalization, giữ packet/decoded và lỗi stage trước đó; không tự tạo default
+  IP/port/time khi dữ liệu sai. Chạy lại không cộng lặp lỗi hoặc giữ lỗi đã hết.
+- Protocol canonical TCP/UDP/HTTP/DNS/SMTP/MIME/UNKNOWN, IPv4/IPv6; IP canonical,
+  timestamp UTC microsecond Z; port/kích thước hợp lệ giữ integer.
+- Domain DNS và SMTP dùng ASCII case normalization, bỏ một trailing dot; không
+  áp dụng IDNA/Unicode mapping lần nữa. SMTP mailbox giữ local-part/quoted text,
+  chỉ chuẩn hóa domain; hỗ trợ null reverse-path và IPv4/IPv6 address literal.
+- Headers thành dict[str, list[str]], lowercase tên, giữ nguyên value và mọi giá
+  trị lặp/case collision. DNS normalize question/RR names và CNAME/NS/PTR/DNAME
+  domain data, A/AAAA IP data; TXT data giữ nguyên. Flags dedup và xếp theo bit order.
+- HTTP URI bắt đầu từ raw target bytes: chỉ uppercase percent hex, percent-
+  represent non-ASCII wire bytes; không decode tiếp, đổi '+' hoặc lowercase path,
+  không collapse slash/dot-segments/sort query. Tách path/query trước decoded view.
+- Origin/absolute/authority/asterisk target có target_form; form không hỗ trợ hoặc
+  dữ liệu sai có normalization error/reason. Field lỗi/limit thành null, field
+  thành công vẫn giữ; preprocess invalid không bị chuyển thành valid.
+- Thêm preprocessor.max_input_bytes/max_output_bytes trong config/TOML (1 MiB
+  mặc định). Giới hạn text tính UTF-8 bytes; collection tính compact JSON UTF-8
+  bytes. Vượt limit bỏ cả field, không truncate và không thay đổi raw.
+- Test: `./venv/bin/python -m pytest tests/lab02/test_normalization.py -v`.
+- Kết quả ngày 09/10/2026: 81 test mới passed; toàn bộ suite 464 passed.
+  Tài liệu/log tại `TEST/lab02/task09/`; T05 có bằng chứng và commit riêng.
+- Policy còn ở Task 10 nên action vẫn skip_tracking, flow=null. Chưa nối CLI.
 
 ## Yêu cầu môi trường
 
@@ -614,6 +642,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `tests/lab02/test_decoder_mime.py`,
   `ids/preprocessors/__init__.py`, `ids/preprocessors/validation.py`,
   `tests/lab02/test_validation.py`,
+  `ids/preprocessors/normalization.py`, `ids/preprocessors/preprocessor.py`,
+  `tests/lab02/test_normalization.py`,
   `tests/lab02/smtp_pcap_support.py`, `tests/lab02/reproduce_t03.py`,
   `tests/lab02/test_t03_smtp_mime.py`,
   `tests/lab02/reproduce_t02.py`, `tests/lab02/test_t02_html_entity.py`,
@@ -631,9 +661,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 09: Preprocessor normalization và T05.
-2. Task 10: missing/unsupported data, policy/action, T06/T14.
-3. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
-4. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
-5. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
+1. Task 10: missing/unsupported data, policy/action, T06/T14.
+2. Flow Tracker: flow hai chiều, TCP/UDP state/counters/timeout và T07–T13.
+3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
+4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message
    qua nhiều segment.

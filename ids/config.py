@@ -102,8 +102,12 @@ class DecoderConfig:
 class PreprocessorConfig:
     invalid_event_policy: EventPolicy = EventPolicy.SKIP
     unsupported_event_policy: EventPolicy = EventPolicy.MARK
+    max_input_bytes: int = 1_048_576
+    max_output_bytes: int = 1_048_576
 
     def __post_init__(self) -> None:
+        for name in ("max_input_bytes", "max_output_bytes"):
+            _positive_integer(f"preprocessor.{name}", getattr(self, name))
         for name in ("invalid_event_policy", "unsupported_event_policy"):
             object.__setattr__(
                 self,
