@@ -62,14 +62,15 @@ def test_bytes_are_captured_length_including_headers_not_wire_or_payload_length(
     (["RST", "ACK"], (0, 1, 0, 1)), (["PSH", "ACK"], (0, 1, 0, 0)),
     (["ECE", "CWR", "NS"], (0, 0, 0, 0)), ([], (0, 0, 0, 0)),
 ])
-def test_empty_payload_tcp_packets_count_each_present_flag_without_state_transitions(flags, expected):
+def test_empty_payload_tcp_packets_count_each_present_flag(flags, expected):
     tracker = FlowTracker()
     event = observation(prepared(), flags=flags)
     associated = tracker.track(event)
     flow = tracker.export_flows()[0]
     assert tuple(flow[key] for key in ("syn_count", "ack_count", "fin_count", "rst_count")) == expected
     assert flow["packet_count"] == 1 and flow["byte_count"] == 54
-    assert event.packet.payload.length == 0 and associated.flow.state == "NEW"
+    assert event.packet.payload.length == 0
+    assert associated.flow.state == ("HANDSHAKE" if "SYN" in flags else "NEW")
 
 
 def test_combined_flags_sum_across_both_directions_without_deduplicating_packets():

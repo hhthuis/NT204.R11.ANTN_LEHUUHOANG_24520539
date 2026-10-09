@@ -42,7 +42,7 @@ def test_bidirectional_lookup_keeps_first_sender_direction_separate_from_key_sor
     key, record = next(iter(tracker.active_flows.items()))
     assert key.endpoint_low.ip == "10.0.0.1" and record.endpoint_a.ip == "10.0.0.2"
     assert record.endpoint_a.port == 51000 and record.endpoint_b.port == 8080
-    assert forward.flow.state == "NEW" and len(tracker.active_flows) == 1
+    assert forward.flow.state == "HANDSHAKE" and len(tracker.active_flows) == 1
 
 
 def test_starting_with_reverse_packet_changes_orientation_but_not_identity():
@@ -102,11 +102,12 @@ def test_normalized_protocol_and_ips_are_used_without_editing_raw():
 
 
 @pytest.mark.parametrize("layer", [TCP(flags="S"), TCP(flags="SA"), TCP(flags="A"), TCP(flags="R"), UDP()])
-def test_real_parser_transport_packets_are_associated_without_state_transitions(layer):
+def test_real_parser_transport_packets_have_conservative_initial_states(layer):
     parsed = parse_packet(Ether() / IP(src="10.0.0.2", dst="10.0.0.1") / layer, 1, CaptureSource("pcap", "synthetic.pcap"))
     event = preprocess_event(decode_event(parsed))
     result = FlowTracker().track(event)
-    assert result.flow.state == ("NEW" if parsed.transport.protocol == "TCP" else None)
+    expected = "HANDSHAKE" if "SYN" in (event.normalized["transport"]["flags"] or []) else "NEW"
+    assert result.flow.state == (expected if parsed.transport.protocol == "TCP" else None)
     assert result.decode_status == "skipped" and result.flow.direction == "forward"
 
 
@@ -256,7 +257,7 @@ def test_flow_inspection_and_export_cannot_mutate_internal_records_or_event_snap
     exported[0]["flow_id"] = "changed"
     assert associated.to_dict() == snapshot
     assert tracker.track(prepared()).flow.flow_id == associated.flow.flow_id
-    assert tracker.track(prepared()).flow.state == "NEW" and len(tracker.active_flows) == 1
+    assert tracker.track(prepared()).flow.state == "HANDSHAKE" and len(tracker.active_flows) == 1
 
 
 def test_remove_and_recreate_key_starts_new_generation_without_mutating_old_event():

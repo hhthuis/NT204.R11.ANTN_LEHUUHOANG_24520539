@@ -34,10 +34,10 @@ ROWS = [
 ]
 CAPTURED_LENGTHS = [54, 54, 54, 97, 120, 54, 97, 54, 54, 47, 42, 48, 42]
 ASSOCIATIONS = [
-    (TCP_ID, "forward", "NEW"), (TCP_ID, "backward", "NEW"),
-    (TCP_ID, "forward", "NEW"), (TCP_ID, "forward", "NEW"),
-    (TCP_ID, "backward", "NEW"), (TCP_ID, "backward", "NEW"),
-    (TCP_ID, "forward", "NEW"), (TCP_ID, "forward", "NEW"), (TCP_ID, "backward", "NEW"),
+    (TCP_ID, "forward", "HANDSHAKE"), (TCP_ID, "backward", "HANDSHAKE"),
+    (TCP_ID, "forward", "ESTABLISHED"), (TCP_ID, "forward", "ESTABLISHED"),
+    (TCP_ID, "backward", "ESTABLISHED"), (TCP_ID, "backward", "ESTABLISHED"),
+    (TCP_ID, "forward", "ESTABLISHED"), (TCP_ID, "forward", "ESTABLISHED"), (TCP_ID, "backward", "ESTABLISHED"),
     (UDP_ID, "forward", None), (None, None, None),
     (UDP_ID, "backward", None), (UDP_ID, "forward", None),
 ]
@@ -53,7 +53,7 @@ EXPECTED = {
             "flow_id": TCP_ID, "protocol": "TCP", "application_protocol": "HTTP",
             "endpoint_a": {"ip": "10.0.0.2", "port": 51000}, "endpoint_b": {"ip": "10.0.0.1", "port": 8080},
             "start_time": "2026-10-09T00:00:01.000000Z", "last_seen": "2026-10-09T00:00:02.600000Z",
-            "duration": 1.6, "state": "NEW", "packet_count": 9, "byte_count": 638,
+            "duration": 1.6, "state": "ESTABLISHED", "packet_count": 9, "byte_count": 638,
             "forward_packet_count": 5, "forward_byte_count": 356,
             "backward_packet_count": 4, "backward_byte_count": 282,
             "syn_count": 2, "ack_count": 8, "fin_count": 1, "rst_count": 1,

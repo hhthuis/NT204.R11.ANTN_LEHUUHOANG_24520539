@@ -1,0 +1,104 @@
+$ ./venv/bin/python -m pytest tests/lab02/test_tcp_handshake.py -v
+
+============================= test session starts ==============================
+platform linux -- Python 3.12.3, pytest-9.1.1, pluggy-1.6.0 -- /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN/venv/bin/python
+cachedir: .pytest_cache
+rootdir: /home/lehuuhoang/NT204/IDPS---NT204.R11.ANTN
+collecting ... collected 40 items
+
+tests/lab02/test_tcp_handshake.py::test_complete_handshake_counts_empty_packets_and_preserves_event_snapshots PASSED [  2%]
+tests/lab02/test_tcp_handshake.py::test_initiator_may_be_backward_when_capture_starts_with_server_packet[final_flags0] PASSED [  5%]
+tests/lab02/test_tcp_handshake.py::test_initiator_may_be_backward_when_capture_starts_with_server_packet[final_flags1] PASSED [  7%]
+tests/lab02/test_tcp_handshake.py::test_initiator_may_be_backward_when_capture_starts_with_server_packet[final_flags2] PASSED [ 10%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows0-NEW] PASSED [ 12%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows1-HANDSHAKE] PASSED [ 15%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows2-HANDSHAKE] PASSED [ 17%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows3-HANDSHAKE] PASSED [ 20%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows4-HANDSHAKE] PASSED [ 22%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows5-HANDSHAKE] PASSED [ 25%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows6-HANDSHAKE] PASSED [ 27%]
+tests/lab02/test_tcp_handshake.py::test_incomplete_out_of_order_or_wrong_direction_cannot_establish[rows7-HANDSHAKE] PASSED [ 30%]
+tests/lab02/test_tcp_handshake.py::test_retransmitted_syn_and_syn_ack_keep_evidence_and_count_each_observation PASSED [ 32%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags0] PASSED [ 35%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags1] PASSED [ 37%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags2] PASSED [ 40%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags3] PASSED [ 42%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags4] PASSED [ 45%]
+tests/lab02/test_tcp_handshake.py::test_missing_ack_or_close_reset_flags_do_not_complete_handshake[flags5] PASSED [ 47%]
+tests/lab02/test_tcp_handshake.py::test_missing_flags_remain_trackable_without_inventing_handshake PASSED [ 50%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags0] PASSED [ 52%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags1] PASSED [ 55%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags2] PASSED [ 57%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags3] PASSED [ 60%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags4] PASSED [ 62%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags5] PASSED [ 65%]
+tests/lab02/test_tcp_handshake.py::test_established_does_not_regress_and_close_is_deferred[flags6] PASSED [ 67%]
+tests/lab02/test_tcp_handshake.py::test_concurrent_flows_cannot_share_handshake_evidence_and_udp_has_no_context PASSED [ 70%]
+tests/lab02/test_tcp_handshake.py::test_remove_then_recreate_clears_handshake_and_starts_new_lifetime PASSED [ 72%]
+tests/lab02/test_tcp_handshake.py::test_skipped_or_invalid_syn_ack_does_not_supply_handshake_evidence PASSED [ 75%]
+tests/lab02/test_tcp_handshake.py::test_failed_update_commits_neither_context_statistics_nor_generation[update_statistics-False] PASSED [ 77%]
+tests/lab02/test_tcp_handshake.py::test_failed_update_commits_neither_context_statistics_nor_generation[update_statistics-True] PASSED [ 80%]
+tests/lab02/test_tcp_handshake.py::test_failed_update_commits_neither_context_statistics_nor_generation[update_handshake-False] PASSED [ 82%]
+tests/lab02/test_tcp_handshake.py::test_failed_update_commits_neither_context_statistics_nor_generation[update_handshake-True] PASSED [ 85%]
+tests/lab02/test_tcp_handshake.py::test_pure_handler_returns_new_frozen_evidence PASSED [ 87%]
+tests/lab02/test_tcp_handshake.py::test_pure_handler_rejects_malformed_flags_without_mutating_context[None] PASSED [ 90%]
+tests/lab02/test_tcp_handshake.py::test_pure_handler_rejects_malformed_flags_without_mutating_context[SYN] PASSED [ 92%]
+tests/lab02/test_tcp_handshake.py::test_pure_handler_rejects_malformed_flags_without_mutating_context[flags2] PASSED [ 95%]
+tests/lab02/test_tcp_handshake.py::test_pure_handler_rejects_malformed_flags_without_mutating_context[flags3] PASSED [ 97%]
+tests/lab02/test_tcp_handshake.py::test_contradictory_first_syn_flags_do_not_start_handshake PASSED [100%]
+
+============================== 40 passed in 0.77s ==============================
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t08 --output-dir /tmp/ids-task13-t08
+
+packet 1: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 2: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 3: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 4: backward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+packet 5: forward; flow-1fe9c6e2d237245fc75aa343a84d919999f77e68a25badcda8718b81b3aa7cb2
+T08 PASS: 5 packets; 1 flow; first sender A differs from key sort order
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t11 --output-dir /tmp/ids-task13-t11
+
+packet 1: F1; forward
+packet 2: F2; forward
+packet 3: F3; forward
+packet 4: F4; forward
+packet 5: F5; forward
+packet 6: F6; forward
+packet 7: F1; backward
+packet 8: F4; backward
+packet 9: F2; backward
+packet 10: F3; backward
+packet 11: F5; backward
+packet 12: F6; backward
+packet 13: ICMP; skip_tracking
+packet 14: F1; forward
+packet 15: F4; forward
+packet 16: F2; backward
+T11 PASS: 16 packets; 6 distinct flows; skipped ICMP adds no flow; processing continues
+Exit code: 0
+
+$ ./venv/bin/python -m tests.lab02.reproduce_t13 --output-dir /tmp/ids-task13-t13
+
+TCP: packets=9, bytes=638; forward=5/356, backward=4/282; duration=1.6
+UDP: packets=3, bytes=137; forward=2/89, backward=1/48; duration=2.0
+T13 PASS: 13 packets, 2 flows; TCP flags 2/8/1/1; retransmission counted; skipped ICMP excluded
+Exit code: 0
+
+$ ./venv/bin/python -m pytest -q
+
+........................................................................ [ 10%]
+........................................................................ [ 21%]
+........................................................................ [ 32%]
+........................................................................ [ 42%]
+........................................................................ [ 53%]
+........................................................................ [ 64%]
+........................................................................ [ 74%]
+........................................................................ [ 85%]
+........................................................................ [ 96%]
+...........................                                              [100%]
+675 passed in 2.10s
+Exit code: 0

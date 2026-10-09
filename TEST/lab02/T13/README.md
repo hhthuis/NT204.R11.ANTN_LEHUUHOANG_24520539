@@ -1,5 +1,12 @@
 # T13 — Flow statistics
 
+> Artifacts trong thư mục là snapshot Task 12 (TCP NEW). Từ Task 13,
+> script/test dùng expected HANDSHAKE → HANDSHAKE → ESTABLISHED, còn counters,
+> time, direction và IDs giữ nguyên. FIN/RST close chưa triển khai ở Task 13.
+> Tái hiện phiên bản hiện tại ngoài repo để giữ log/artifacts lịch sử:
+> `./venv/bin/python -m tests.lab02.reproduce_t13 --output-dir /tmp/ids-task13-t13`.
+> Log regression hiện tại: `TEST/lab02/task13/result.txt`.
+
 ## Mục đích và nguồn input
 
 Kiểm tra packet/byte/flag counters và duration khi có nhiều packet hai chiều.

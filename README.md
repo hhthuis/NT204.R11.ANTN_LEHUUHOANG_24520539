@@ -471,6 +471,29 @@ print(config.tracker.tcp_idle_timeout)  # 180.0
   TCP NEW/UDP null, chưa state/close/timeout/main CLI; không suy ra T07/T09 đạt
   chỉ từ flag counters, hoặc T10 đạt từ generic UDP statistics.
 
+### Bài tập 2 — TCP handshake (Task 13)
+
+- `ids/flows/tcp.py`: hàm update_handshake() trả state/context mới; cần quan
+  sát SYN → SYN/ACK chiều ngược → ACK từ bên gửi SYN theo thứ tự đọc capture.
+  State tương ứng HANDSHAKE → HANDSHAKE → ESTABLISHED. SYN/ACK đơn lẻ chỉ
+  đánh dấu HANDSHAKE; ACK đơn lẻ/midstream vẫn NEW, không đoán ESTABLISHED.
+- Initiator có thể ở direction forward hoặc backward; A/B luôn theo packet
+  đầu tiên quan sát được. Context bất biến, riêng mỗi flow lifetime, xóa khi
+  remove_flow(); không dùng counters để đoán bước handshake.
+- SYN/SYN/ACK gửi lại không làm lùi evidence hoặc state; mỗi observation vẫn
+  tăng statistics. ACK+PSH/ECE có thể hoàn tất; FIN/RST không hoàn tất handshake.
+- Tracker dựng statistics/state/association trước khi commit bảng, context và
+  generation. Skip/error không đổi các phần này; raw/decoded/normalized và
+  association của event cũ được giữ nguyên. UDP vẫn state=null.
+- 40 tests mới passed, T08/T11/T13 regression PASS; full suite 675 passed tại
+  commit mã nguồn. Chi tiết và log tại `TEST/lab02/task13/`.
+- T13 artifacts cũ là snapshot Task 12, TCP NEW. Script/test hiện tại xác nhận
+  thêm handshake và TCP ESTABLISHED; regression chạy ngoài repo, không ghi đè
+  bằng chứng lịch sử. T08/T11 chỉ ACK nên vẫn NEW.
+- T07 có PCAP/artifacts và commit riêng sau mã nguồn, xem mục tiếp theo khi
+  hoàn thành. Chưa FIN/RST close transitions, timeout/capacity hoặc main CLI
+  bài 2; không kiểm tra sequence/ACK numbers, simultaneous open hay reassembly.
+
 ## Yêu cầu môi trường
 
 - Python 3.12 trở lên.
@@ -795,6 +818,7 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
   `ids/flows/statistics.py`, `tests/lab02/test_flow_statistics.py`,
+  `ids/flows/tcp.py`, `tests/lab02/test_tcp_handshake.py`,
   `tests/lab02/flow_pcap_support.py`,
   `tests/lab02/reproduce_t08.py`, `tests/lab02/test_t08_bidirectional_flow.py`,
   `tests/lab02/reproduce_t11.py`, `tests/lab02/test_t11_concurrent_flows.py`,
@@ -833,8 +857,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
 
 ## Kế hoạch tiếp theo
 
-1. Task 13: TCP handshake/state transitions, thực hiện T07.
-2. TCP close (T09), UDP DNS (T10), timeout/capacity (T12), thực hiện và commit
+1. Task 14: TCP close transitions, thực hiện T09 sau khi hoàn tất T07.
+2. Task 15 UDP DNS (T10), Task 16 timeout/capacity (T12), thực hiện và commit
    lần lượt.
 3. Nối pipeline PCAP/live, config CLI, event/flow output và kiểm tra đủ T01–T14.
 4. Kiểm thử traffic thực tế và nghiên cứu TCP stream reassembly cho message

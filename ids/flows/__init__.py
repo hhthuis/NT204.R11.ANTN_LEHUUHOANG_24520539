@@ -1,1 +1,1 @@
-"""Flow data models, bidirectional identity/direction and statistics."""
+"""Flow models, bidirectional identity, statistics and TCP handshake."""

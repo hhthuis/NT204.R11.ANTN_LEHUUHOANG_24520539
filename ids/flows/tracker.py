@@ -1,14 +1,15 @@
-"""Bidirectional flow identity, direction and statistics; state/expiry come later."""
+"""Bidirectional identity, statistics and TCP handshake; close/expiry come later."""
 
 import hashlib
 import json
 from copy import deepcopy
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timezone
 from ipaddress import ip_address
 
 from ids.flows.models import Endpoint, FlowDirection, FlowKey, FlowProtocol, FlowRecord, TcpState
 from ids.flows.statistics import update_statistics
+from ids.flows.tcp import TcpHandshake, update_handshake
 from ids.preprocessors.validation import TCP_FLAGS, validate_packet
 from ids.processing_models import (
     PreprocessStatus, ProcessedEvent, ProcessingAction, ProcessingError, ProcessingStage,
@@ -101,12 +102,14 @@ class FlowTracker:
 
     A is the first observed sender, not a key sort order or a client/server guess.
     Every accepted call counts one observation; retransmissions are not removed.
-    Timeout/capacity and TCP state transitions are intentionally not implemented.
+    Handshake requires observed SYN → reverse SYN/ACK → initiator ACK.
+    Close/reset transitions and timeout/capacity are not implemented yet.
     """
 
     def __init__(self) -> None:
         self._active_flows: dict[FlowKey, FlowRecord] = {}
         self._generations: dict[FlowKey, int] = {}
+        self._tcp_handshakes: dict[FlowKey, TcpHandshake] = {}
 
     @property
     def active_flows(self) -> dict[FlowKey, FlowRecord]:
@@ -120,6 +123,7 @@ class FlowTracker:
     def remove_flow(self, key: FlowKey) -> FlowRecord | None:
         """Explicit detach for future close/expiry; this does not infer TCP close."""
         flow = self._active_flows.pop(key, None)
+        self._tcp_handshakes.pop(key, None)
         return deepcopy(flow) if flow is not None else None
 
     def track(self, event: ProcessedEvent) -> ProcessedEvent:
@@ -156,8 +160,16 @@ class FlowTracker:
                 record, direction=direction, timestamp=data.timestamp,
                 captured_length=data.captured_length, flags=data.flags, application_protocol=data.application,
             )
+            if key.protocol == FlowProtocol.TCP:
+                state, handshake = update_handshake(
+                    record.state, self._tcp_handshakes.get(key, TcpHandshake()),
+                    direction=direction, flags=data.flags,
+                )
+                updated = replace(updated, state=state)
             processed.flow = updated.association(direction)
             self._active_flows[key] = updated
+            if key.protocol == FlowProtocol.TCP:
+                self._tcp_handshakes[key] = handshake
             if is_new:
                 self._generations[key] = generation
         except (KeyError, TypeError, ValueError, OverflowError) as error:
