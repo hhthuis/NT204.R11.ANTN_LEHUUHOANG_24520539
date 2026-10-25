@@ -16,6 +16,19 @@ bằng chứng capture thật trong task này. Xem [kết quả Task 17](TEST/la
 Các mục theo task bên dưới ghi kết quả tại thời điểm hoàn thành từng task;
 những ghi chú “chưa nối CLI” trong task cũ mô tả trạng thái khi đó.
 
+### Bài 3 — Giai đoạn 1, Task 01: Model và phạm vi
+
+- Tạo `ids/engine/models.py`: Rule/các điều kiện, EngineInput, FlowContext,
+  MatchResult và DetectionEvent. Tái sử dụng model bài 1–2, export JSON giữ
+  binary bằng Base64 và thời gian UTC.
+- [Phạm vi và policy lỗi](docs/BT3_SCOPE.md) ghi rõ cú pháp sẽ hỗ trợ và hợp đồng
+  giữa các module. Task này chưa viết config, adapter, parser, matcher hoặc CLI.
+- Chỉ kiểm thử hợp đồng model; các case bắt buộc TC01–TC14 bài 3 chưa triển khai.
+  Chạy: `./venv/bin/python -m pytest tests/bt3/test_models.py -v`.
+  Kết quả: **5 passed**; toàn bộ suite **843 passed**. Log tại
+  [TEST/BT3/task01/](TEST/BT3/task01/README.md).
+  Bước tiếp theo: Task 02 — Adapter và flow context.
+
 ## Trạng thái hiện tại
 
 Đã triển khai:
@@ -990,6 +1003,8 @@ Tiến độ test case bắt buộc: 12/12, đạt 100%.
   triển khai PCAP reader, live capture, IPv4/TCP/UDP parser, application protocol
   detector, pipeline, JSONL writer, kiểm thử tự động và tài liệu kiểm thử.
 - Các phần có sử dụng hỗ trợ AI: `ids/models.py`, `ids/output/jsonl.py`,
+  `ids/engine/__init__.py`, `ids/engine/models.py`, `tests/bt3/test_models.py`,
+  `docs/BT3_SCOPE.md`,
   `ids/processing_models.py`, `tests/lab02/test_processing_models.py`,
   `ids/flows/models.py`, `tests/lab02/test_flow_models.py`,
   `ids/flows/tracker.py`, `tests/lab02/test_flow_tracker.py`,
